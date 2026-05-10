@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head><base href="https://d16ilfvy4mv02r.cloudfront.net/workspaces/ce3626457234d7e089014f01f13b68c3/8bc6a10d-7b0f-4b7d-9b98-97559fdf2732/files/">
+<head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ZS UpBrawl – Elojob Brawl Stars #1 do Brasil</title>
@@ -195,6 +195,24 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .admin-table th{background:rgba(255,255,255,.04);padding:.7rem 1rem;text-align:left;font-size:.78rem;color:var(--text-muted);letter-spacing:.4px;font-weight:700}
 .admin-table td{padding:.8rem 1rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.86rem}
 .admin-table tr:hover td{background:rgba(168,85,247,.04)}
+.admin-card{background:rgba(13,13,31,.9);border:1px solid var(--border-glow);border-radius:1rem;padding:1.3rem;margin-bottom:1rem}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.admin-actions{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.mini-btn{padding:.38rem .7rem;border-radius:.45rem;font-size:.73rem}
+.role-pill{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .6rem;border-radius:50px;font-size:.72rem;font-weight:800;border:1px solid rgba(255,255,255,.12)}
+.role-owner{color:#fbbf24;background:rgba(251,191,36,.12)}
+.role-uploader{color:#60a5fa;background:rgba(96,165,250,.12)}
+.locked-note{font-size:.78rem;color:var(--text-muted);line-height:1.6;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:.65rem;padding:.75rem;margin-bottom:1rem}
+.chat-box{height:360px;overflow-y:auto;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.08);border-radius:.8rem;padding:1rem;display:flex;flex-direction:column;gap:.75rem}
+.chat-message{max-width:78%;padding:.7rem .85rem;border-radius:.8rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+.chat-message.mine{align-self:flex-end;background:rgba(168,85,247,.16);border-color:rgba(168,85,247,.3)}
+.chat-meta{font-size:.68rem;color:var(--text-muted);margin-bottom:.25rem;font-weight:700}
+.brand-icon{width:1.1em;height:1.1em;display:inline-block;vertical-align:-.18em;fill:currentColor;flex-shrink:0}
+.icon-btn-content{display:inline-flex;align-items:center;justify-content:center;gap:.45rem}
+.code-box{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.35);border-radius:.8rem;padding:1rem;text-align:center;margin:1rem 0}
+.code-value{font-family:'Orbitron',monospace;font-size:1.55rem;font-weight:900;letter-spacing:2px;color:var(--neon-cyan)}
+.trust-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.24);border-radius:.85rem;padding:1rem;color:var(--text-muted);font-size:.86rem;line-height:1.65;margin-bottom:1rem}
+.danger-text{color:#f87171;font-size:.78rem;margin-top:.35rem;display:none}
 
 /* ── TOAST ── */
 #toast-container{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:.7rem;pointer-events:none}
@@ -242,7 +260,9 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 <canvas id="bgCanvas"></canvas>
 
 <!-- WHATSAPP -->
-<a href="https://wa.me/5511999999999" target="_blank" class="wa-float" title="WhatsApp">💬</a>
+<a href="https://wa.me/5512992025025" target="_blank" class="wa-float" title="WhatsApp" aria-label="WhatsApp">
+  <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M16.03 3.2A12.72 12.72 0 0 0 5.1 22.44L3.2 29l6.7-1.76a12.69 12.69 0 0 0 6.12 1.56h.01A12.8 12.8 0 0 0 28.8 16.04 12.77 12.77 0 0 0 16.03 3.2Zm0 23.44h-.01a10.55 10.55 0 0 1-5.37-1.47l-.39-.23-3.97 1.04 1.06-3.87-.25-.4a10.57 10.57 0 1 1 8.93 4.93Zm5.8-7.91c-.32-.16-1.88-.93-2.17-1.03-.29-.11-.5-.16-.71.16-.21.31-.82 1.03-1 1.24-.19.21-.37.24-.69.08-.32-.16-1.34-.49-2.55-1.57-.94-.84-1.58-1.88-1.77-2.2-.18-.31-.02-.48.14-.64.14-.14.32-.37.48-.55.16-.19.21-.32.32-.53.11-.21.05-.39-.03-.55-.08-.16-.71-1.72-.98-2.35-.26-.62-.52-.53-.71-.54h-.61c-.21 0-.55.08-.84.39-.29.32-1.11 1.09-1.11 2.65 0 1.56 1.14 3.07 1.3 3.28.16.21 2.24 3.42 5.42 4.79.76.33 1.35.52 1.81.67.76.24 1.45.21 2 .13.61-.09 1.88-.77 2.15-1.51.26-.74.26-1.38.18-1.51-.08-.13-.29-.21-.61-.37Z"/></svg>
+</a>
 
 <!-- TOAST -->
 <div id="toast-container"></div>
@@ -258,7 +278,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <li><a href="#" onclick="openAdmin();return false">Admin</a></li>
   </ul>
   <div class="nav-cta">
-    <button class="btn btn-outline" onclick="openLogin()">Entrar</button>
+    <button class="btn btn-outline" id="login-nav-btn" onclick="openLogin()">Entrar</button>
     <button class="btn btn-primary" onclick="openScheduleMain()">🗓 Agendar</button>
   </div>
 </nav>
@@ -371,10 +391,13 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <div>
       <div class="logo">⚡ ZS UpBrawl</div>
       <p style="color:var(--text-muted);font-size:.84rem;line-height:1.7;margin-top:.75rem">O melhor serviço de Elojob para Brawl Stars do Brasil. Profissional, seguro e rápido.</p>
-      <div style="display:flex;gap:.6rem;margin-top:1rem"><a href="#" class="social-link">💬</a><a href="#" class="social-link">🎮</a><a href="#" class="social-link">📱</a><a href="#" class="social-link">📸</a></div>
+      <div style="display:flex;gap:.6rem;margin-top:1rem">
+        <a href="https://wa.me/5512992025025" target="_blank" class="social-link" aria-label="WhatsApp"><svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M16.03 3.2A12.72 12.72 0 0 0 5.1 22.44L3.2 29l6.7-1.76a12.69 12.69 0 0 0 6.12 1.56h.01A12.8 12.8 0 0 0 28.8 16.04 12.77 12.77 0 0 0 16.03 3.2Zm0 23.44h-.01a10.55 10.55 0 0 1-5.37-1.47l-.39-.23-3.97 1.04 1.06-3.87-.25-.4a10.57 10.57 0 1 1 8.93 4.93Zm5.8-7.91c-.32-.16-1.88-.93-2.17-1.03-.29-.11-.5-.16-.71.16-.21.31-.82 1.03-1 1.24-.19.21-.37.24-.69.08-.32-.16-1.34-.49-2.55-1.57-.94-.84-1.58-1.88-1.77-2.2-.18-.31-.02-.48.14-.64.14-.14.32-.37.48-.55.16-.19.21-.32.32-.53.11-.21.05-.39-.03-.55-.08-.16-.71-1.72-.98-2.35-.26-.62-.52-.53-.71-.54h-.61c-.21 0-.55.08-.84.39-.29.32-1.11 1.09-1.11 2.65 0 1.56 1.14 3.07 1.3 3.28.16.21 2.24 3.42 5.42 4.79.76.33 1.35.52 1.81.67.76.24 1.45.21 2 .13.61-.09 1.88-.77 2.15-1.51.26-.74.26-1.38.18-1.51-.08-.13-.29-.21-.61-.37Z"/></svg></a>
+        <a href="https://discord.com" target="_blank" class="social-link" aria-label="Discord"><svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.32 4.37A19.8 19.8 0 0 0 15.36 2l-.24.49c1.75.43 2.56 1.04 3.41 1.8A16.57 16.57 0 0 0 12 3a16.5 16.5 0 0 0-6.53 1.29c.85-.76 1.82-1.43 3.41-1.8L8.64 2a19.74 19.74 0 0 0-4.96 2.37C.54 9.04-.31 13.6.12 18.1a19.9 19.9 0 0 0 6.08 3.07l.73-1.2a12.9 12.9 0 0 1-1.9-.91l.46-.36A14.18 14.18 0 0 0 12 20.33a14.18 14.18 0 0 0 6.51-1.63l.46.36c-.6.36-1.23.66-1.9.91l.73 1.2a19.87 19.87 0 0 0 6.08-3.07c.5-5.23-.84-9.75-3.56-13.73ZM8.02 15.33c-1.18 0-2.14-1.08-2.14-2.4 0-1.33.94-2.4 2.14-2.4 1.2 0 2.16 1.08 2.14 2.4 0 1.32-.94 2.4-2.14 2.4Zm7.96 0c-1.18 0-2.14-1.08-2.14-2.4 0-1.33.94-2.4 2.14-2.4 1.2 0 2.16 1.08 2.14 2.4 0 1.32-.94 2.4-2.14 2.4Z"/></svg></a>
+      </div>
     </div>
     <div class="footer-col"><h4>Serviços</h4><ul><li><a href="#" onclick="openTrofeu()">UP Troféu</a></li><li><a href="#" onclick="openRanked()">UP Ranked</a></li><li><a href="#" onclick="openPrestigio()">UP Prestígio</a></li><li><a href="#" onclick="openContas()">Contas</a></li></ul></div>
-    <div class="footer-col"><h4>Suporte</h4><ul><li><a href="#">WhatsApp</a></li><li><a href="#">Discord</a></li><li><a href="#">Email</a></li><li><a href="#">FAQ</a></li></ul></div>
+    <div class="footer-col"><h4>Suporte</h4><ul><li><a href="https://wa.me/5512992025025" target="_blank">WhatsApp</a></li><li><a href="https://discord.com" target="_blank">Discord</a></li><li><a href="mailto:suporte@zsupbrawl.com">Email</a></li><li><a href="#faq">FAQ</a></li></ul></div>
     <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Termos de Uso</a></li><li><a href="#">Privacidade</a></li><li><a href="#">Reembolso</a></li><li><a href="#">Contato</a></li></ul></div>
   </div>
   <div class="footer-bottom">© 2025 ZS UpBrawl — Todos os direitos reservados. Não afiliado à Supercell.</div>
@@ -393,10 +416,11 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
       <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem;border-color:#5865F2;color:#5865F2" onclick="loginSocial('Discord')">🎮 Continuar com Discord</button>
     </div>
     <div style="display:flex;align-items:center;gap:.7rem;margin:1rem 0"><div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div><span style="color:var(--text-muted);font-size:.78rem">ou email</span><div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div></div>
-    <div class="form-group"><label>Email</label><input type="email" class="form-control" placeholder="seu@email.com"/></div>
-    <div class="form-group"><label>Senha</label><input type="password" class="form-control" placeholder="••••••••"/></div>
+    <div class="form-group"><label>Email</label><input type="email" class="form-control" id="login-email" placeholder="seu@email.com"/></div>
+    <div class="form-group"><label>Senha</label><input type="password" class="form-control" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter') loginEmail()"/></div>
+    <div class="danger-text" id="login-error"></div>
     <button class="btn btn-primary" style="width:100%;padding:.82rem;margin-top:.25rem" onclick="loginEmail()">Entrar</button>
-    <p style="text-align:center;font-size:.8rem;color:var(--text-muted);margin-top:.9rem">Não tem conta? <a href="#" style="color:var(--neon-purple)">Cadastre-se grátis</a></p>
+    <p style="text-align:center;font-size:.8rem;color:var(--text-muted);margin-top:.9rem">Dono padrão: <strong style="color:var(--neon-purple)">admin@zsupbrawl.com</strong> / <strong>admin123</strong></p>
   </div>
 </div>
 
@@ -527,6 +551,9 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <div class="admin-nav-item active" onclick="adminNav('dashboard',this)">📊 Dashboard</div>
     <div class="admin-nav-item" onclick="adminNav('orders',this)">📋 Pedidos</div>
     <div class="admin-nav-item" onclick="adminNav('schedule',this)">🗓 Agendamentos</div>
+    <div class="admin-nav-item" onclick="adminNav('uploaders',this)">⚡ Upadores</div>
+    <div class="admin-nav-item" onclick="adminNav('chat',this)">💬 Chat Upador</div>
+    <div class="admin-nav-item" onclick="adminNav('products',this)">🛒 Produtos</div>
     <div class="admin-nav-item" onclick="adminNav('users',this)">👥 Usuários</div>
     <div class="admin-nav-item" onclick="adminNav('contas',this)">👑 Contas</div>
     <div class="admin-nav-item" onclick="adminNav('financeiro',this)">💰 Financeiro</div>
@@ -799,10 +826,93 @@ let currentService='', currentBrawler=null, selectedPrestigio=0;
 let rankedFrom=-1, rankedTo=-1;
 let schedStep=1, schedDate='', schedTime='', schedPayment='';
 let pixTimer=null;
+let currentUser=null, currentOrder=null;
+const WHATSAPP_URL = 'https://wa.me/5512992025025';
+const LS_KEYS = {
+  users:'zsup_users',
+  orders:'zsup_orders',
+  chat:'zsup_chat',
+  products:'zsup_products',
+  currentUser:'zsup_current_user'
+};
+
+function loadStore(key, fallback){
+  try{ return JSON.parse(localStorage.getItem(key)) || fallback; }catch(e){ return fallback; }
+}
+function saveStore(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+function uid(prefix='ZS'){ return prefix + Math.random().toString(36).slice(2,8).toUpperCase(); }
+function todayLabel(){ return new Date().toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'}); }
+function moneyFromText(v){ return Number(String(v||'0').replace(/[^\d,.-]/g,'').replace('.','').replace(',','.')) || 0; }
+function ensureSeedData(){
+  if(!localStorage.getItem(LS_KEYS.users)){
+    saveStore(LS_KEYS.users, [
+      {id:'USR-DONO',name:'Dono ZS',email:'admin@zsupbrawl.com',password:'admin123',role:'dono',active:true},
+      {id:'USR-UP1',name:'Upador Alpha',email:'upador@zsupbrawl.com',password:'upador123',role:'upador',active:true}
+    ]);
+  }
+  if(!localStorage.getItem(LS_KEYS.orders)){
+    saveStore(LS_KEYS.orders, [
+      {id:'ZS-A1B2C3',client:'Gabriel S.',owner:'Gabriel S.',service:'UP Troféu',details:'5.000 troféus',price:'R$ 25,00',date:'10/05/2026',time:'18:00',payment:'PIX',status:'pendente',uploaderId:null,uploaderName:null,createdAt:todayLabel()},
+      {id:'ZS-D4E5F6',client:'Maria L.',owner:'Maria L.',service:'UP Prestígio',details:'Prestígio III - Spike',price:'R$ 70,00',date:'10/05/2026',time:'20:00',payment:'Mercado Pago',status:'andamento',uploaderId:'USR-UP1',uploaderName:'Upador Alpha',createdAt:todayLabel()}
+    ]);
+  }
+  if(!localStorage.getItem(LS_KEYS.products)){
+    saveStore(LS_KEYS.products, [
+      {id:'PRD-TROFEU',name:'UP Troféu',price:'R$ 5,00 / 1.000 abaixo de 40k',active:true},
+      {id:'PRD-RANKED',name:'UP Ranked',price:'R$ 35,00 base por divisão',active:true},
+      {id:'PRD-PREST',name:'UP Prestígio',price:'R$ 10,00 a R$ 70,00',active:true},
+      {id:'PRD-CONTA',name:'Conta Lendária Suprema',price:'R$ 1.299,00',active:false}
+    ]);
+  }
+  if(!localStorage.getItem(LS_KEYS.chat)){
+    saveStore(LS_KEYS.chat, [
+      {id:uid('MSG'),author:'Sistema',role:'dono',text:'Canal da equipe iniciado. Donos e upadores podem combinar entregas por aqui.',createdAt:todayLabel()}
+    ]);
+  }
+  const savedUser = localStorage.getItem(LS_KEYS.currentUser);
+  if(savedUser) currentUser = loadStore(LS_KEYS.users, []).find(u => u.id === savedUser) || null;
+}
+function isOwner(){ return currentUser?.role === 'dono'; }
+function requireOwner(){
+  if(isOwner()) return true;
+  showToast('Apenas donos podem alterar esta área.','🔒');
+  return false;
+}
+function statusLabel(status){
+  const labels = {
+    pendente:'<span class="status-badge status-pending">⏳ Pendente</span>',
+    andamento:'<span class="status-badge status-active">⚡ Em andamento</span>',
+    realizado:'<span class="status-badge status-done">✔ Realizado</span>'
+  };
+  return labels[status] || labels.pendente;
+}
+function serviceLabel(){
+  const labels = {trofeu:'UP Troféu',ranked:'UP Ranked',prestigio:'UP Prestígio'};
+  return labels[currentService] || 'Agendamento';
+}
+function serviceDetails(){
+  if(currentService==='trofeu'){
+    const atual = document.getElementById('trofeu-atual')?.value || '0';
+    const subir = document.getElementById('trofeu-subir')?.value || '0';
+    const price = document.getElementById('t-price-val')?.textContent || 'A combinar';
+    return {details:`Atual: ${atual} troféus | Subir: ${subir} troféus`, price};
+  }
+  if(currentService==='ranked'){
+    const price = document.getElementById('r-price-val')?.textContent || 'A combinar';
+    const note = document.getElementById('r-price-note')?.textContent || 'Elo a confirmar';
+    return {details:note, price};
+  }
+  if(currentService==='prestigio'){
+    const price = document.getElementById('p-price-val')?.textContent || 'A combinar';
+    const note = document.getElementById('p-price-note')?.textContent || `Brawler: ${currentBrawler?.name || 'A confirmar'}`;
+    return {details:note, price};
+  }
+  return {details:'Detalhes a confirmar', price:'A combinar'};
+}
 
 // ═══ INIT ═══
 window.onload = () => {
-  animateStats(); renderFAQ(); buildBrawlers(); buildRanks(); buildContas();
+  ensureSeedData(); animateStats(); renderFAQ(); buildBrawlers(); buildRanks(); buildContas(); updateAuthUI();
 };
 
 function animateStats(){
@@ -890,10 +1000,26 @@ function closeModal(id){ document.getElementById(id).classList.remove('active');
 function openPage(id){ document.getElementById(id).classList.add('active'); document.body.style.overflow='hidden'; }
 function closePage(id){ document.getElementById(id).classList.remove('active'); document.body.style.overflow=''; }
 
-function openLogin(){ openModal('login-modal'); }
+function openLogin(){
+  if(currentUser){
+    showToast(`${currentUser.name} saiu da conta.`, '👋');
+    currentUser = null;
+    localStorage.removeItem(LS_KEYS.currentUser);
+    updateAuthUI();
+    return;
+  }
+  openModal('login-modal');
+}
 function openTrofeu(){ openModal('trofeu-modal'); }
 function openContas(){ openPage('contas-page'); }
-function openAdmin(){ openPage('admin-page'); renderAdminDashboard(); }
+function openAdmin(){
+  if(!currentUser){
+    openLogin();
+    showToast('Entre para acessar o admin.','🔐');
+    return;
+  }
+  openPage('admin-page'); renderAdminDashboard();
+}
 function openScheduleMain(){ showToast('Escolha um serviço primeiro!','ℹ️'); document.getElementById('services').scrollIntoView({behavior:'smooth'}); }
 function openPrestigio(){ openPage('brawlers-page'); }
 function openRanked(){ openModal('ranked-modal'); }
@@ -1050,15 +1176,16 @@ function renderCalendar(){
   for(let i=0; i<first; i++) grid += '<div class="cal-day empty"></div>';
   for(let d=1; d<=last; d++){
     const past = d < today;
-    grid += `<div class="cal-day${past?' disabled':d===today?' today':''}" onclick="${past?'':'selectDate('+d+',this)'}">${d}</div>`;
+    const fullDate = new Date(now.getFullYear(), now.getMonth(), d).toLocaleDateString('pt-BR');
+    grid += `<div class="cal-day${past?' disabled':d===today?' today':''}" onclick="${past ? '' : "selectDate('"+fullDate+"',this)"}">${d}</div>`;
   }
   grid += '</div>';
   return `<div style="font-size:.9rem;font-weight:700;text-align:center;margin-bottom:.9rem">${months[now.getMonth()]} ${now.getFullYear()}</div>
   ${grid}
   <button class="btn btn-primary" style="width:100%;padding:.78rem;margin-top:.9rem" onclick="goStep(2)" ${schedDate?'':'disabled'} id="cal-next-btn">Próximo →</button>`;
 }
-function selectDate(d, el){
-  schedDate = d;
+function selectDate(dateText, el){
+  schedDate = dateText;
   document.querySelectorAll('.cal-day').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
   const btn = document.getElementById('cal-next-btn');
@@ -1092,6 +1219,14 @@ function renderPayment(){
   return `<div style="font-weight:600;margin-bottom:.9rem;font-size:.9rem">
     📅 <strong style="color:var(--neon-purple)">Dia ${schedDate}</strong> às <strong style="color:var(--neon-purple)">${schedTime}</strong>
   </div>
+  <div class="trust-box">
+    Somos uma equipe confiável e organizada. Para realizar o up, você precisará passar o login da conta e depois o código de segurança que chegar para você. Esse acesso é usado apenas para executar o agendamento combinado.
+  </div>
+  <div class="admin-grid" style="grid-template-columns:1fr 1fr">
+    <div class="form-group"><label>Seu nome</label><input class="form-control" id="sched-client" placeholder="Nome do dono da conta"/></div>
+    <div class="form-group"><label>WhatsApp</label><input class="form-control" id="sched-whatsapp" placeholder="(12) 99999-9999"/></div>
+  </div>
+  <div class="form-group"><label>Observações do serviço</label><textarea class="form-control" id="sched-notes" rows="2" placeholder="Login, tag, detalhes do pedido ou horários melhores"></textarea></div>
   <div style="color:var(--text-muted);font-size:.83rem;margin-bottom:1rem">Escolha a forma de pagamento:</div>
   <div class="payment-methods">
     <div class="pay-method" onclick="selectPay('pix',this)"><span class="pay-icon">🟢</span><div class="pay-label">PIX</div><div style="font-size:.7rem;color:var(--text-muted)">Aprovação imediata</div></div>
@@ -1180,27 +1315,73 @@ function copyPix(key){
 }
 
 function confirmOrder(){
+  const client = document.getElementById('sched-client')?.value.trim();
+  const whatsapp = document.getElementById('sched-whatsapp')?.value.trim();
+  if(!client || !whatsapp){
+    showToast('Preencha nome e WhatsApp para concluir.','⚠️');
+    return;
+  }
   if(pixTimer) clearInterval(pixTimer);
+  const detail = serviceDetails();
+  currentOrder = {
+    id: uid('ZS-'),
+    client,
+    owner: client,
+    whatsapp,
+    service: serviceLabel(),
+    details: detail.details,
+    price: detail.price,
+    date: schedDate,
+    time: schedTime,
+    payment: schedPayment.toUpperCase(),
+    notes: document.getElementById('sched-notes')?.value.trim() || '',
+    status:'pendente',
+    uploaderId:null,
+    uploaderName:null,
+    createdAt:todayLabel()
+  };
+  const orders = loadStore(LS_KEYS.orders, []);
+  orders.unshift(currentOrder);
+  saveStore(LS_KEYS.orders, orders);
   schedStep=4; renderScheduleStep();
-  showToast('Pedido confirmado com sucesso! 🎉','✅');
+  showToast('Agendamento salvo no admin! 🎉','✅');
 }
 
 function renderConfirm(){
-  const id = 'ZS'+Math.random().toString(36).substr(2,8).toUpperCase();
+  if(!currentOrder) currentOrder = {id:uid('ZS-'),service:serviceLabel(),details:'Detalhes a confirmar',price:'A combinar',date:schedDate,time:schedTime,payment:schedPayment.toUpperCase(),client:'Cliente',notes:''};
+  const msg = encodeURIComponent(`Olá! Quero concluir meu agendamento na ZS UpBrawl.\n\nCódigo: ${currentOrder.id}\nCliente: ${currentOrder.client}\nServiço: ${currentOrder.service}\nDetalhes: ${currentOrder.details}\nValor: ${currentOrder.price}\nData/Horário: ${currentOrder.date} às ${currentOrder.time}\nPagamento: ${currentOrder.payment}\nObservações: ${currentOrder.notes || 'Nenhuma'}\n\nEntendi que esse código é muito importante e vou enviar login/código de segurança quando solicitado.`);
   return `<div class="confirm-box">
     <div style="font-size:3rem;margin-bottom:.5rem">🎉</div>
     <h3 style="font-family:'Orbitron',sans-serif;font-size:1.15rem;color:#22c55e;margin-bottom:.5rem">Pedido Confirmado!</h3>
-    <p style="color:var(--text-muted);font-size:.87rem;line-height:1.6">Seu serviço foi agendado. Nossa equipe entrará em contato em breve.</p>
-    <div style="font-size:.78rem;color:var(--text-muted);margin-top:.9rem">ID do Pedido: <strong style="color:var(--neon-purple);font-family:monospace">#${id}</strong></div>
+    <p style="color:var(--text-muted);font-size:.87rem;line-height:1.6">Seu serviço foi agendado. Guarde o código abaixo: ele é muito importante para localizar seu pedido no atendimento e no admin.</p>
+    <div class="code-box">
+      <div style="font-size:.72rem;color:var(--text-muted);font-weight:800;letter-spacing:1px;text-transform:uppercase">Código único do agendamento</div>
+      <div class="code-value">${currentOrder.id}</div>
+      <button class="btn btn-outline mini-btn" onclick="regenerateOrderCode()" style="margin-top:.6rem">Gerar outro código</button>
+    </div>
+    <div style="font-size:.82rem;color:var(--text-muted);line-height:1.7;text-align:left;background:rgba(255,255,255,.04);border-radius:.75rem;padding:.9rem">
+      <strong style="color:var(--text-primary)">Detalhes:</strong><br/>
+      ${currentOrder.service} - ${currentOrder.details}<br/>
+      ${currentOrder.date} às ${currentOrder.time} | ${currentOrder.price} | ${currentOrder.payment}
+    </div>
     <div style="margin-top:.75rem"><span class="status-badge status-pending">⏳ Aguardando Processamento</span></div>
-    <div style="margin-top:.6rem;font-size:.8rem;color:var(--text-muted)">📅 Agendado para: Dia ${schedDate} às ${schedTime}</div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1.1rem">
     <button class="btn btn-outline" style="padding:.78rem;font-size:.83rem" onclick="closeModal('schedule-modal')">Fechar</button>
-    <a href="https://wa.me/5511999999999?text=Meu+pedido+%23${id}" target="_blank" style="text-decoration:none"><button class="btn btn-primary" style="padding:.78rem;font-size:.83rem;width:100%">💬 WhatsApp</button></a>
+    <a href="${WHATSAPP_URL}?text=${msg}" target="_blank" style="text-decoration:none"><button class="btn btn-primary" style="padding:.78rem;font-size:.83rem;width:100%"><span class="icon-btn-content">Concluir agendamento no WhatsApp</span></button></a>
   </div>`;
 }
 
+function regenerateOrderCode(){
+  if(!currentOrder) return;
+  const oldId = currentOrder.id;
+  currentOrder.id = uid('ZS-');
+  const orders = loadStore(LS_KEYS.orders, []);
+  const idx = orders.findIndex(o => o.id === oldId);
+  if(idx >= 0){ orders[idx].id = currentOrder.id; saveStore(LS_KEYS.orders, orders); }
+  renderScheduleStep();
+  showToast('Código atualizado no admin.','✅');
+}
 function goStep(n){ schedStep=n; renderScheduleStep(); }
 
 // ═══ ADMIN ═══
@@ -1251,7 +1432,7 @@ function adminNav(section, el){
   document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
   if(section==='dashboard') renderAdminDashboard();
-  else document.getElementById('admin-content').innerHTML=`<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">${el.textContent}</h2><div style="background:rgba(13,13,31,.9);border:1px solid var(--border-glow);border-radius:1rem;padding:3rem;text-align:center;color:var(--text-muted)"><div style="font-size:2.5rem;margin-bottom:1rem">🔧</div>Seção em desenvolvimento</div>`;
+  else renderAdminDashboard();
 }
 
 // ═══ UTILS ═══
@@ -1266,6 +1447,185 @@ function showToast(msg, icon){
   document.getElementById('toast-container').appendChild(t);
   setTimeout(()=>{ t.style.cssText='transform:translateX(110%);opacity:0;transition:.4s'; }, 2800);
   setTimeout(()=>t.remove(), 3300);
+}
+
+// Overrides funcionais para login, admin, upadores, chat e produtos
+function updateAuthUI(){
+  const btn = document.getElementById('login-nav-btn');
+  if(!btn) return;
+  btn.textContent = currentUser ? `${currentUser.name} · Sair` : 'Entrar';
+}
+function loginSocial(p){
+  const users = loadStore(LS_KEYS.users, []);
+  currentUser = users.find(u => u.role === 'dono');
+  localStorage.setItem(LS_KEYS.currentUser, currentUser.id);
+  closeModal('login-modal'); updateAuthUI();
+  showToast(`Login com ${p} realizado como ${currentUser.name}.`,'✅');
+}
+function loginEmail(){
+  const email = document.getElementById('login-email')?.value.trim().toLowerCase();
+  const pass = document.getElementById('login-password')?.value;
+  const err = document.getElementById('login-error');
+  const user = loadStore(LS_KEYS.users, []).find(u => u.email.toLowerCase() === email && u.password === pass && u.active);
+  if(!user){
+    if(err){ err.textContent = 'Email ou senha inválidos.'; err.style.display='block'; }
+    return;
+  }
+  currentUser = user;
+  localStorage.setItem(LS_KEYS.currentUser, user.id);
+  if(err) err.style.display='none';
+  closeModal('login-modal'); updateAuthUI();
+  showToast(`Bem-vindo, ${user.name}!`,'✅');
+}
+function renderAdminDashboard(){
+  const orders = loadStore(LS_KEYS.orders, []);
+  const revenue = orders.reduce((sum,o)=>sum + moneyFromText(o.price), 0);
+  const pending = orders.filter(o=>o.status==='pendente').length;
+  const done = orders.filter(o=>o.status==='realizado').length;
+  document.getElementById('admin-content').innerHTML = `
+    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem;font-size:1.4rem">📊 Dashboard</h2>
+    ${currentUser ? `<div class="locked-note">Logado como <strong>${currentUser.name}</strong> ${roleBadge(currentUser.role)}. Upadores podem pegar e finalizar tarefas, mas não alteram produtos, usuários ou cadastro de equipe.</div>` : ''}
+    <div class="admin-stat-grid">
+      <div class="admin-stat-card"><div class="admin-stat-val">R$ ${revenue.toFixed(2).replace('.',',')}</div><div class="admin-stat-label">💰 Faturamento registrado</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">${orders.length}</div><div class="admin-stat-label">📋 Pedidos totais</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">${pending}</div><div class="admin-stat-label">⏳ Pendentes</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">${done}</div><div class="admin-stat-label">✔ Realizados</div></div>
+    </div>
+    <div class="admin-card">
+      <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Últimos pedidos</h4>
+      ${ordersTable(orders.slice(0,6))}
+    </div>`;
+}
+function roleBadge(role){
+  return `<span class="role-pill ${role==='dono'?'role-owner':'role-uploader'}">${role==='dono'?'Dono':'Upador'}</span>`;
+}
+function ordersTable(orders){
+  if(!orders.length) return '<div style="color:var(--text-muted);font-size:.86rem">Nenhum pedido registrado ainda.</div>';
+  return `<div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Código</th><th>Dono</th><th>Serviço</th><th>Agenda</th><th>Status</th><th>Upador</th><th>Ação</th></tr></thead><tbody>
+    ${orders.map(o=>`<tr>
+      <td style="font-family:monospace;color:var(--neon-purple)">${o.id}</td>
+      <td>${o.owner || o.client}<br/><span style="color:var(--text-muted);font-size:.72rem">${o.whatsapp || ''}</span></td>
+      <td>${o.service}<br/><span style="color:var(--text-muted);font-size:.72rem">${o.details}</span></td>
+      <td>${o.date} ${o.time}<br/><strong>${o.price}</strong></td>
+      <td>${statusLabel(o.status)}</td>
+      <td>${o.uploaderName || 'Não atribuído'}</td>
+      <td>${orderActions(o)}</td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+function orderActions(o){
+  if(o.status==='realizado') return '<span style="color:var(--text-muted);font-size:.78rem">Concluído</span>';
+  if(o.uploaderId && o.uploaderId !== currentUser?.id && !isOwner()) return `<button class="btn btn-outline mini-btn" disabled>Pego por ${o.uploaderName}</button>`;
+  if(!o.uploaderId) return `<button class="btn btn-primary mini-btn" onclick="takeTask('${o.id}')">Realizar tarefa</button>`;
+  return `<div class="admin-actions"><button class="btn btn-outline mini-btn" disabled>${o.uploaderName} pegou</button><button class="btn btn-primary mini-btn" onclick="completeTask('${o.id}')">Marcar realizada</button></div>`;
+}
+function takeTask(id){
+  if(!currentUser) return openLogin();
+  const orders = loadStore(LS_KEYS.orders, []);
+  const o = orders.find(x=>x.id===id);
+  if(!o || o.uploaderId) return showToast('Essa tarefa já foi pega.','🔒');
+  o.uploaderId = currentUser.id; o.uploaderName = currentUser.name; o.status='andamento';
+  saveStore(LS_KEYS.orders, orders); renderAdminOrders(); showToast('Tarefa atribuída a você.','✅');
+}
+function completeTask(id){
+  const orders = loadStore(LS_KEYS.orders, []);
+  const o = orders.find(x=>x.id===id);
+  if(!o) return;
+  if(o.uploaderId !== currentUser?.id && !isOwner()) return showToast('Só o upador responsável ou dono pode finalizar.','🔒');
+  o.status='realizado'; saveStore(LS_KEYS.orders, orders); renderAdminOrders(); showToast('Pedido marcado como realizado.','✅');
+}
+function renderAdminOrders(){
+  document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">📋 Pedidos e agendamentos</h2><div class="admin-card">${ordersTable(loadStore(LS_KEYS.orders, []))}</div>`;
+}
+function renderUploaders(){
+  if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">⚡ Upadores</h2><div class="locked-note">Upadores comuns não podem cadastrar ou alterar equipe.</div>`; return; }
+  const users = loadStore(LS_KEYS.users, []);
+  const orders = loadStore(LS_KEYS.orders, []);
+  document.getElementById('admin-content').innerHTML = `
+    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">⚡ Upadores</h2>
+    <div class="admin-card"><div class="admin-grid">
+      <input class="form-control" id="up-name" placeholder="Nome do upador"/>
+      <input class="form-control" id="up-email" placeholder="Email"/>
+      <input class="form-control" id="up-pass" placeholder="Senha"/>
+      <button class="btn btn-primary" onclick="createUploader()">Cadastrar upador</button>
+    </div></div>
+    <div class="admin-grid">${users.map(u=>{
+      const mine = orders.filter(o=>o.uploaderId===u.id);
+      const owners = [...new Set(mine.map(o=>o.owner || o.client))].join(', ') || 'Nenhum';
+      return `<div class="admin-card"><div style="display:flex;justify-content:space-between;gap:1rem"><strong>${u.name}</strong>${roleBadge(u.role)}</div><div style="color:var(--text-muted);font-size:.82rem;margin:.5rem 0">${u.email}</div><div>${mine.length} pedidos realizados/pegos</div><div style="color:var(--text-muted);font-size:.78rem;margin-top:.35rem">Donos/clientes: ${owners}</div></div>`;
+    }).join('')}</div>`;
+}
+function createUploader(){
+  if(!requireOwner()) return;
+  const users = loadStore(LS_KEYS.users, []);
+  const name = document.getElementById('up-name').value.trim();
+  const email = document.getElementById('up-email').value.trim();
+  const password = document.getElementById('up-pass').value.trim();
+  if(!name || !email || !password) return showToast('Preencha nome, email e senha.','⚠️');
+  users.push({id:uid('USR-'),name,email,password,role:'upador',active:true});
+  saveStore(LS_KEYS.users, users); renderUploaders(); showToast('Upador cadastrado.','✅');
+}
+function renderChat(){
+  const messages = loadStore(LS_KEYS.chat, []);
+  document.getElementById('admin-content').innerHTML = `
+    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💬 Chat Upador</h2>
+    <div class="admin-card">
+      <div class="chat-box" id="chat-box">${messages.map(m=>`<div class="chat-message ${m.author===currentUser?.name?'mine':''}"><div class="chat-meta">${m.author} · ${m.createdAt}</div><div>${m.text}</div></div>`).join('')}</div>
+      <div style="display:flex;gap:.7rem;margin-top:1rem"><input class="form-control" id="chat-input" placeholder="Mensagem para donos e upadores" onkeydown="if(event.key==='Enter') sendChat()"/><button class="btn btn-primary" onclick="sendChat()">Enviar</button></div>
+    </div>`;
+  const box = document.getElementById('chat-box'); if(box) box.scrollTop = box.scrollHeight;
+}
+function sendChat(){
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if(!text) return;
+  const messages = loadStore(LS_KEYS.chat, []);
+  messages.push({id:uid('MSG-'),author:currentUser?.name || 'Equipe',role:currentUser?.role || 'dono',text,createdAt:todayLabel()});
+  saveStore(LS_KEYS.chat, messages); renderChat();
+}
+function renderProducts(){
+  if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">🛒 Produtos</h2><div class="locked-note">Upadores comuns não podem alterar produtos ou preços.</div>`; return; }
+  const products = loadStore(LS_KEYS.products, []);
+  document.getElementById('admin-content').innerHTML = `
+    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">🛒 Produtos e preços</h2>
+    <div class="admin-card"><div class="admin-grid"><input class="form-control" id="prd-name" placeholder="Produto"/><input class="form-control" id="prd-price" placeholder="Preço"/><button class="btn btn-primary" onclick="saveProduct()">Criar produto</button></div></div>
+    <div class="admin-card"><table class="admin-table"><thead><tr><th>Produto</th><th>Preço</th><th>Status</th><th>Ação</th></tr></thead><tbody>${products.map(p=>`<tr><td><input class="form-control" id="name-${p.id}" value="${p.name}"/></td><td><input class="form-control" id="price-${p.id}" value="${p.price}"/></td><td>${p.active?'Ativo':'Pausado'}</td><td><button class="btn btn-outline mini-btn" onclick="updateProduct('${p.id}')">Salvar</button></td></tr>`).join('')}</tbody></table></div>`;
+}
+function saveProduct(){
+  if(!requireOwner()) return;
+  const products = loadStore(LS_KEYS.products, []);
+  const name = document.getElementById('prd-name').value.trim();
+  const price = document.getElementById('prd-price').value.trim();
+  if(!name || !price) return showToast('Preencha produto e preço.','⚠️');
+  products.push({id:uid('PRD-'),name,price,active:true});
+  saveStore(LS_KEYS.products, products); renderProducts(); showToast('Produto criado.','✅');
+}
+function updateProduct(id){
+  if(!requireOwner()) return;
+  const products = loadStore(LS_KEYS.products, []);
+  const p = products.find(x=>x.id===id);
+  if(p){ p.name=document.getElementById(`name-${id}`).value.trim(); p.price=document.getElementById(`price-${id}`).value.trim(); }
+  saveStore(LS_KEYS.products, products); renderProducts(); showToast('Produto atualizado.','✅');
+}
+function renderUsers(){
+  if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="locked-note">Upadores comuns não podem mexer nos usuários do admin.</div>`; return; }
+  document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="admin-card">${loadStore(LS_KEYS.users, []).map(u=>`<div style="display:flex;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06)"><span>${u.name}<br/><small style="color:var(--text-muted)">${u.email}</small></span>${roleBadge(u.role)}</div>`).join('')}</div>`;
+}
+function renderFinance(){
+  if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💰 Financeiro</h2><div class="locked-note">Upadores comuns não podem acessar o financeiro.</div>`; return; }
+  const orders = loadStore(LS_KEYS.orders, []);
+  const revenue = orders.reduce((sum,o)=>sum + moneyFromText(o.price), 0);
+  document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💰 Financeiro</h2><div class="admin-stat-grid"><div class="admin-stat-card"><div class="admin-stat-val">R$ ${revenue.toFixed(2).replace('.',',')}</div><div class="admin-stat-label">Total registrado</div></div><div class="admin-stat-card"><div class="admin-stat-val">${orders.filter(o=>o.payment==='PIX').length}</div><div class="admin-stat-label">Pagamentos PIX</div></div></div>`;
+}
+function adminNav(section, el){
+  document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  if(section==='dashboard') renderAdminDashboard();
+  if(section==='orders' || section==='schedule') renderAdminOrders();
+  if(section==='uploaders') renderUploaders();
+  if(section==='chat') renderChat();
+  if(section==='products' || section==='contas') renderProducts();
+  if(section==='users') renderUsers();
+  if(section==='financeiro') renderFinance();
 }
 
 // Close on backdrop click
