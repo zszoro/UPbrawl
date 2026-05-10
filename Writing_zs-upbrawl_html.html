@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><base href="https://d16ilfvy4mv02r.cloudfront.net/workspaces/ce3626457234d7e089014f01f13b68c3/8bc6a10d-7b0f-4b7d-9b98-97559fdf2732/files/">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ZS UpBrawl – Elojob Brawl Stars #1 do Brasil</title>
+<meta name="description" content="O melhor serviço de Elojob para Brawl Stars. UP Troféu, UP Ranked, UP Prestígio e Contas premium."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --neon-purple:#a855f7;--neon-blue:#3b82f6;--neon-cyan:#06b6d4;--neon-pink:#ec4899;
+  --bg-dark:#000;--bg-card:#0d0d1f;--bg-card2:#0a0a1a;
+  --border-glow:rgba(168,85,247,.35);--text-primary:#f1f5f9;--text-muted:#94a3b8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#000;color:var(--text-primary);overflow-x:hidden;min-height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#000}::-webkit-scrollbar-thumb{background:var(--neon-purple);border-radius:3px}
+
+/* ── CANVAS BG (interactive particles) ── */
+#bgCanvas{position:fixed;inset:0;z-index:0;display:block;background:#000}
+
+/* ── CONTENT WRAPPER ── */
+.content{position:relative;z-index:1}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-glow)}
+.logo{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,var(--neon-purple),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;cursor:pointer}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:.88rem;font-weight:500;transition:.3s}
+.nav-links a:hover{color:var(--neon-purple);text-shadow:0 0 12px var(--neon-purple)}
+.nav-cta{display:flex;gap:.75rem;align-items:center}
+.btn{padding:.55rem 1.2rem;border-radius:.5rem;font-weight:600;cursor:pointer;border:none;font-size:.84rem;transition:.3s;font-family:'Inter',sans-serif;letter-spacing:.4px}
+.btn-outline{background:transparent;border:1px solid var(--neon-purple);color:var(--neon-purple)}
+.btn-outline:hover{background:var(--neon-purple);color:#fff;box-shadow:0 0 20px rgba(168,85,247,.5)}
+.btn-primary{background:linear-gradient(135deg,var(--neon-purple),var(--neon-blue));color:#fff;box-shadow:0 0 18px rgba(168,85,247,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 32px rgba(168,85,247,.6)}
+.btn-lg{padding:.85rem 2rem;font-size:1rem;border-radius:.75rem}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:7rem 2rem 4rem;position:relative}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(168,85,247,.14) 0%,transparent 65%),radial-gradient(ellipse at 80% 80%,rgba(59,130,246,.09) 0%,transparent 55%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;border-radius:50px;background:rgba(168,85,247,.14);border:1px solid rgba(168,85,247,.4);font-size:.78rem;font-weight:700;color:var(--neon-purple);margin-bottom:1.5rem;animation:pulse-badge 2s ease-in-out infinite;letter-spacing:.5px}
+@keyframes pulse-badge{0%,100%{box-shadow:0 0 0 0 rgba(168,85,247,.4)}50%{box-shadow:0 0 0 10px rgba(168,85,247,0)}}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(2.4rem,7vw,5rem);font-weight:900;line-height:1.1;margin-bottom:1.5rem}
+.gradient-text{background:linear-gradient(135deg,#fff 0%,var(--neon-purple) 45%,var(--neon-blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:1.05rem;color:var(--text-muted);max-width:580px;margin:0 auto 2.5rem;line-height:1.75}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hero-stats{display:flex;gap:2.5rem;justify-content:center;margin-top:4rem;flex-wrap:wrap}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--neon-purple),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:.78rem;color:var(--text-muted);margin-top:.25rem;text-align:center}
+
+/* ── SECTION ── */
+section{position:relative;z-index:1;padding:5rem 2rem}
+.section-header{text-align:center;margin-bottom:3rem}
+.section-tag{display:inline-block;padding:.3rem .9rem;border-radius:50px;background:rgba(168,85,247,.14);border:1px solid rgba(168,85,247,.3);color:var(--neon-purple);font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem}
+.section-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.7rem,4vw,2.7rem);font-weight:900;margin-bottom:.75rem}
+.section-sub{color:var(--text-muted);max-width:540px;margin:0 auto;line-height:1.7;font-size:.95rem}
+
+/* ── SERVICE CARDS ── */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto}
+.service-card{background:rgba(13,13,31,.85);border:1px solid var(--border-glow);border-radius:1.25rem;padding:2rem;cursor:pointer;transition:.35s;position:relative;overflow:hidden;backdrop-filter:blur(10px)}
+.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(168,85,247,.07),rgba(59,130,246,.04));opacity:0;transition:.35s}
+.service-card:hover{transform:translateY(-8px);border-color:var(--neon-purple);box-shadow:0 0 40px rgba(168,85,247,.22),0 20px 60px rgba(0,0,0,.5)}
+.service-card:hover::before{opacity:1}
+.service-icon{width:64px;height:64px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.25rem}
+.service-card h3{font-family:'Orbitron',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:.5rem}
+.service-card p{color:var(--text-muted);font-size:.87rem;line-height:1.65;margin-bottom:1.5rem}
+.service-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .7rem;border-radius:50px;font-size:.73rem;font-weight:700}
+.badge-purple{background:rgba(168,85,247,.14);color:var(--neon-purple);border:1px solid rgba(168,85,247,.3)}
+.badge-blue{background:rgba(59,130,246,.14);color:var(--neon-blue);border:1px solid rgba(59,130,246,.3)}
+.badge-cyan{background:rgba(6,182,212,.14);color:var(--neon-cyan);border:1px solid rgba(6,182,212,.3)}
+.badge-pink{background:rgba(236,72,153,.14);color:var(--neon-pink);border:1px solid rgba(236,72,153,.3)}
+.card-arrow{position:absolute;top:1.25rem;right:1.25rem;width:34px;height:34px;border-radius:50%;background:rgba(168,85,247,.14);display:flex;align-items:center;justify-content:center;transition:.35s;font-size:.9rem}
+.service-card:hover .card-arrow{background:var(--neon-purple);transform:rotate(45deg)}
+
+/* ── TESTIMONIALS ── */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}
+.testimonial{background:rgba(13,13,31,.85);border:1px solid var(--border-glow);border-radius:1rem;padding:1.75rem;position:relative;overflow:hidden;backdrop-filter:blur(8px)}
+.testimonial::before{content:'❝';position:absolute;top:.5rem;right:1rem;font-size:3rem;color:rgba(168,85,247,.12);line-height:1}
+.stars{color:#fbbf24;font-size:1rem;margin-bottom:.75rem}
+.testimonial p{color:var(--text-muted);font-size:.88rem;line-height:1.65;margin-bottom:1rem}
+.t-user{display:flex;align-items:center;gap:.75rem}
+.t-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--neon-purple),var(--neon-blue));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0}
+.t-name{font-weight:600;font-size:.88rem}
+.t-meta{font-size:.73rem;color:var(--text-muted)}
+
+/* ── MODALS ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.active{display:flex;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:linear-gradient(135deg,#0d0d1f,#070714);border:1px solid var(--border-glow);border-radius:1.5rem;padding:2rem;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;animation:slideUp .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes slideUp{from{transform:translateY(40px) scale(.95);opacity:0}to{transform:none;opacity:1}}
+.modal-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,.07);border:none;color:var(--text-muted);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:.25s}
+.modal-close:hover{background:rgba(236,72,153,.3);color:#fff}
+.modal h2{font-family:'Orbitron',sans-serif;font-size:1.35rem;font-weight:900;margin-bottom:.4rem}
+.modal-sub{color:var(--text-muted);font-size:.88rem;margin-bottom:1.75rem}
+.form-group{margin-bottom:1.2rem}
+.form-group label{display:block;font-size:.82rem;font-weight:600;color:var(--text-muted);margin-bottom:.45rem;letter-spacing:.4px;text-transform:uppercase}
+.form-control{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:.7rem;padding:.72rem 1rem;color:var(--text-primary);font-size:.93rem;transition:.25s;outline:none;font-family:'Inter',sans-serif}
+.form-control:focus{border-color:var(--neon-purple);box-shadow:0 0 0 3px rgba(168,85,247,.14)}
+.form-control option{background:#0d0d1f}
+.price-display{background:linear-gradient(135deg,rgba(168,85,247,.13),rgba(59,130,246,.08));border:1px solid rgba(168,85,247,.3);border-radius:1rem;padding:1.25rem;margin:1.25rem 0;text-align:center}
+.price-amount{font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--neon-purple),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.price-note{font-size:.8rem;color:var(--text-muted);margin-top:.35rem}
+.price-tag{padding:.28rem .7rem;border-radius:50px;font-size:.72rem;font-weight:700;background:rgba(6,182,212,.14);color:var(--neon-cyan);border:1px solid rgba(6,182,212,.3)}
+.progress-bar-wrap{background:rgba(255,255,255,.06);border-radius:50px;height:8px;overflow:hidden;margin:.75rem 0}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--neon-purple),var(--neon-blue));border-radius:50px;width:0;transition:width 1s ease}
+.prestige-options{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:1rem 0}
+.prestige-opt{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);border-radius:.75rem;padding:.75rem;text-align:center;cursor:pointer;transition:.3s}
+.prestige-opt:hover,.prestige-opt.selected{border-color:var(--neon-purple);background:rgba(168,85,247,.12)}
+.prestige-opt img{width:52px;height:52px;border-radius:.5rem;object-fit:cover;margin-bottom:.4rem;display:block;margin-left:auto;margin-right:auto}
+.prestige-opt span{display:block;font-size:.78rem;font-weight:700}
+.error-msg{color:#f87171;font-size:.82rem;margin-top:.4rem;padding:.6rem 1rem;background:rgba(248,113,113,.1);border-radius:.5rem;border:1px solid rgba(248,113,113,.25)}
+
+/* ── BRAWLERS PAGE ── */
+.page{display:none;position:fixed;inset:0;background:#000;z-index:200;overflow-y:auto;padding-top:80px}
+.page.active{display:block}
+.page-header{padding:1.5rem 2rem;text-align:center;border-bottom:1px solid var(--border-glow);background:rgba(0,0,0,.9);backdrop-filter:blur(12px)}
+.back-btn{display:inline-flex;align-items:center;gap:.5rem;color:var(--text-muted);background:none;border:none;cursor:pointer;font-size:.88rem;margin-bottom.75rem;transition:.3s;font-family:'Inter',sans-serif;padding:.4rem .8rem;border-radius:.5rem}
+.back-btn:hover{color:var(--neon-purple);background:rgba(168,85,247,.1)}
+.rarity-section{padding:1.5rem 2rem;max-width:1400px;margin:0 auto}
+.rarity-label{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;padding:.4rem 1rem;border-radius:50px;display:inline-flex;align-items:center;gap:.6rem;margin-bottom:1.1rem;letter-spacing:.5px}
+.brawlers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.9rem;margin-bottom:2.5rem}
+.brawler-card{background:rgba(13,13,31,.9);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.85rem .6rem;text-align:center;cursor:pointer;transition:.3s;position:relative;overflow:hidden}
+.brawler-card:hover{transform:translateY(-5px) scale(1.04);border-color:var(--neon-purple);box-shadow:0 0 22px rgba(168,85,247,.3)}
+.brawler-card img{width:72px;height:72px;object-fit:cover;border-radius:.6rem;margin-bottom:.45rem;display:block;margin-left:auto;margin-right:auto;transition:.3s}
+.brawler-card:hover img{transform:scale(1.08)}
+.brawler-name{font-size:.7rem;font-weight:700;color:var(--text-primary);text-transform:uppercase;letter-spacing:.3px}
+.brawler-btn{margin-top:.5rem;padding:.28rem .55rem;border-radius:.4rem;background:rgba(168,85,247,.2);border:1px solid rgba(168,85,247,.35);color:var(--neon-purple);font-size:.68rem;font-weight:700;cursor:pointer;transition:.3s;width:100%;font-family:'Inter',sans-serif}
+.brawler-btn:hover{background:var(--neon-purple);color:#fff}
+
+/* ── RANKS ── */
+.ranks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.6rem;margin:1rem 0;max-height:320px;overflow-y:auto;padding-right:.25rem}
+.ranks-grid::-webkit-scrollbar{width:4px}
+.ranks-grid::-webkit-scrollbar-thumb{background:var(--neon-purple)}
+.rank-card{background:rgba(13,13,31,.9);border:2px solid transparent;border-radius:.7rem;padding:.85rem .6rem;text-align:center;cursor:pointer;transition:.3s}
+.rank-card:hover,.rank-card.selected{border-color:var(--neon-purple);background:rgba(168,85,247,.12);transform:scale(1.05)}
+.rank-emoji{font-size:1.8rem;display:block;margin-bottom:.3rem}
+.rank-name{font-size:.7rem;font-weight:700;line-height:1.3}
+.rank-sub{font-size:.62rem;color:var(--text-muted)}
+
+/* ── CONTAS PAGE ── */
+.contas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto;padding:2rem}
+.conta-card{background:rgba(13,13,31,.9);border:1px solid var(--border-glow);border-radius:1.25rem;padding:1.75rem;position:relative;overflow:hidden;backdrop-filter:blur(8px)}
+.conta-card::before{content:'SEM ESTOQUE';position:absolute;top:1rem;right:-2.2rem;background:#ef4444;color:#fff;font-size:.62rem;font-weight:800;padding:.28rem 2.5rem;transform:rotate(35deg);letter-spacing:1px}
+.conta-price{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;color:var(--neon-purple);margin-bottom:1rem}
+.btn-disabled{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.08)!important;color:rgba(255,255,255,.25)!important;cursor:not-allowed!important;transform:none!important;box-shadow:none!important}
+
+/* ── SCHEDULE ── */
+.steps{display:flex;gap:.4rem;margin-bottom:1.75rem;justify-content:center;align-items:center}
+.step{width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--text-muted);transition:.3s;flex-shrink:0}
+.step.active{border-color:var(--neon-purple);color:var(--neon-purple);background:rgba(168,85,247,.14)}
+.step.done{border-color:#22c55e;background:rgba(34,197,94,.14);color:#22c55e}
+.step-line{flex:1;height:2px;background:rgba(255,255,255,.08);transition:.3s;max-width:50px}
+.step-line.done{background:var(--neon-purple)}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem;margin:.75rem 0}
+.cal-day{aspect-ratio:1;border-radius:.45rem;display:flex;align-items:center;justify-content:center;font-size:.82rem;cursor:pointer;transition:.25s;border:1px solid transparent;user-select:none}
+.cal-day:hover:not(.disabled):not(.empty){background:rgba(168,85,247,.14);border-color:rgba(168,85,247,.35)}
+.cal-day.selected{background:var(--neon-purple);color:#fff!important}
+.cal-day.disabled{color:rgba(255,255,255,.2)!important;cursor:not-allowed}
+.cal-day.today{border-color:var(--neon-cyan);color:var(--neon-cyan)}
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem;margin-bottom:.35rem}
+.cal-header span{text-align:center;font-size:.68rem;font-weight:700;color:var(--text-muted);letter-spacing:.4px}
+.time-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:.55rem;margin:.75rem 0}
+.time-slot{padding:.55rem;border-radius:.55rem;border:1px solid rgba(255,255,255,.1);text-align:center;cursor:pointer;font-size:.8rem;transition:.25s;background:rgba(255,255,255,.03)}
+.time-slot:hover:not(.blocked){border-color:var(--neon-purple);color:var(--neon-purple)}
+.time-slot.selected{background:var(--neon-purple);color:#fff;border-color:var(--neon-purple)}
+.time-slot.blocked{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.18);color:rgba(255,255,255,.25);cursor:not-allowed;text-decoration:line-through;font-size:.73rem}
+.payment-methods{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1rem 0}
+.pay-method{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);border-radius:.75rem;padding:1.1rem;text-align:center;cursor:pointer;transition:.3s}
+.pay-method:hover,.pay-method.selected{border-color:var(--neon-purple);background:rgba(168,85,247,.1)}
+.pay-icon{font-size:1.8rem;display:block;margin-bottom:.4rem}
+.pay-label{font-size:.85rem;font-weight:700}
+.pix-box{background:linear-gradient(135deg,rgba(0,180,100,.1),rgba(6,182,212,.08));border:1px solid rgba(0,200,100,.25);border-radius:1rem;padding:1.5rem;text-align:center;margin:1rem 0}
+.pix-qr{background:#fff;border-radius:.75rem;width:130px;height:130px;margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#000;font-weight:700;text-align:center;padding:.5rem}
+.pix-key{font-family:monospace;font-size:.8rem;color:var(--neon-cyan);background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);padding:.5rem 1rem;border-radius:.5rem;margin-top.5rem;word-break:break-all}
+.confirm-box{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(6,182,212,.07));border:1px solid rgba(34,197,94,.3);border-radius:1rem;padding:1.5rem;text-align:center;margin:1rem 0}
+.status-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.28rem .7rem;border-radius:50px;font-size:.73rem;font-weight:700}
+.status-pending{background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+.status-active{background:rgba(34,197,94,.14);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+.status-done{background:rgba(148,163,184,.1);color:#94a3b8;border:1px solid rgba(148,163,184,.2)}
+
+/* ── ADMIN ── */
+.admin-sidebar{width:230px;background:rgba(0,0,0,.95);border-right:1px solid var(--border-glow);padding:1.5rem;min-height:100vh;position:fixed;top:0;left:0;z-index:201}
+.admin-content{margin-left:230px;padding:2rem;min-height:100vh;background:#000}
+.admin-nav-item{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;border-radius:.55rem;cursor:pointer;color:var(--text-muted);font-size:.88rem;transition:.25s;margin-bottom:.2rem}
+.admin-nav-item:hover,.admin-nav-item.active{background:rgba(168,85,247,.14);color:var(--neon-purple)}
+.admin-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:1rem;margin-bottom:2rem}
+.admin-stat-card{background:rgba(13,13,31,.9);border:1px solid var(--border-glow);border-radius:1rem;padding:1.4rem}
+.admin-stat-val{font-family:'Orbitron',sans-serif;font-size:1.7rem;font-weight:900;background:linear-gradient(135deg,var(--neon-purple),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.admin-stat-label{font-size:.78rem;color:var(--text-muted);margin-top:.3rem}
+.admin-table{width:100%;border-collapse:collapse}
+.admin-table th{background:rgba(255,255,255,.04);padding:.7rem 1rem;text-align:left;font-size:.78rem;color:var(--text-muted);letter-spacing:.4px;font-weight:700}
+.admin-table td{padding:.8rem 1rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.86rem}
+.admin-table tr:hover td{background:rgba(168,85,247,.04)}
+
+/* ── TOAST ── */
+#toast-container{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:.7rem;pointer-events:none}
+.toast{background:rgba(13,13,31,.97);border:1px solid var(--border-glow);border-radius:.75rem;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;min-width:260px;animation:toastIn .3s ease;box-shadow:0 8px 32px rgba(0,0,0,.5);backdrop-filter:blur(12px)}
+@keyframes toastIn{from{transform:translateX(110%);opacity:0}to{transform:none;opacity:1}}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px solid var(--border-glow);padding:3rem 2rem 1.5rem}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:2rem;max-width:1200px;margin:0 auto 2rem}
+.footer-col h4{font-weight:700;font-size:.88rem;margin-bottom:1rem}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:.55rem}
+.footer-col a{color:var(--text-muted);text-decoration:none;font-size:.84rem;transition:.25s}
+.footer-col a:hover{color:var(--neon-purple)}
+.social-link{width:36px;height:36px;border-radius:50%;border:1px solid var(--border-glow);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:.88rem;transition:.25s;text-decoration:none}
+.social-link:hover{border-color:var(--neon-purple);color:var(--neon-purple);box-shadow:0 0 14px rgba(168,85,247,.3)}
+.footer-bottom{text-align:center;color:var(--text-muted);font-size:.78rem;border-top:1px solid rgba(255,255,255,.06);padding-top:1.5rem;max-width:1200px;margin:0 auto}
+.sep{height:1px;background:linear-gradient(90deg,transparent,var(--border-glow),transparent);max-width:1200px;margin:0 auto}
+
+/* ── WHATSAPP FLOAT ── */
+.wa-float{position:fixed;bottom:2rem;left:2rem;z-index:500;width:52px;height:52px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 18px rgba(37,211,102,.5);transition:.3s;text-decoration:none}
+.wa-float:hover{transform:scale(1.12);box-shadow:0 0 32px rgba(37,211,102,.7)}
+
+/* ── CHART BAR ── */
+.chart-wrap{display:flex;align-items:flex-end;gap:.4rem;height:90px;margin:1rem 0}
+.chart-bar{flex:1;border-radius:.25rem .25rem 0 0;background:linear-gradient(180deg,var(--neon-purple),rgba(168,85,247,.25));transition:.8s ease;min-height:4px}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .admin-sidebar{display:none}
+  .admin-content{margin-left:0}
+  .payment-methods{grid-template-columns:1fr}
+  .ranks-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
+}
+
+/* ── MP PIX SIMULATION ── */
+.pix-progress{height:6px;background:rgba(255,255,255,.07);border-radius:50px;overflow:hidden;margin:.75rem 0}
+.pix-progress-bar{height:100%;background:linear-gradient(90deg,#25D366,var(--neon-cyan));width:0;transition:width .5s ease;border-radius:50px}
+.mp-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:50px;background:rgba(0,174,240,.14);border:1px solid rgba(0,174,240,.3);color:#00aef0;font-size:.72rem;font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- ═══ INTERACTIVE CANVAS BACKGROUND ═══ -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/5511999999999" target="_blank" class="wa-float" title="WhatsApp">💬</a>
+
+<!-- TOAST -->
+<div id="toast-container"></div>
+
+<!-- ═══ NAV ═══ -->
+<div class="content">
+<nav id="navbar">
+  <div class="logo" onclick="scrollToTop()">⚡ ZS UpBrawl</div>
+  <ul class="nav-links">
+    <li><a href="#services">Serviços</a></li>
+    <li><a href="#testimonials">Depoimentos</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#" onclick="openAdmin();return false">Admin</a></li>
+  </ul>
+  <div class="nav-cta">
+    <button class="btn btn-outline" onclick="openLogin()">Entrar</button>
+    <button class="btn btn-primary" onclick="openScheduleMain()">🗓 Agendar</button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div style="position:relative;z-index:2;max-width:800px">
+    <div class="hero-badge">⚡ O MELHOR ELOJOB DO BRASIL</div>
+    <h1><span class="gradient-text">ZS UpBrawl</span><br/><span style="font-size:60%;opacity:.85">Seu rank. Nossa missão.</span></h1>
+    <p>Serviços profissionais de UP Troféu, UP Ranked, UP Prestígio e Contas para Brawl Stars. Seguro, rápido e garantido.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary btn-lg" onclick="openScheduleMain()">🗓 Agendar Agora</button>
+      <button class="btn btn-outline btn-lg" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Ver Serviços</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num" id="s1">0</div><div class="stat-label">Pedidos Realizados</div></div>
+      <div><div class="stat-num" id="s2">0</div><div class="stat-label">Clientes Satisfeitos</div></div>
+      <div><div class="stat-num" id="s3">0</div><div class="stat-label">Troféus Upados</div></div>
+      <div><div class="stat-num" id="s4">0%</div><div class="stat-label">Satisfação</div></div>
+    </div>
+  </div>
+</section>
+<div class="sep"></div>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services">
+  <div class="section-header">
+    <div class="section-tag">🎮 SERVIÇOS</div>
+    <h2 class="section-title">Escolha seu <span class="gradient-text">Serviço</span></h2>
+    <p class="section-sub">Todos os serviços são realizados por jogadores profissionais com total segurança.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card" onclick="openTrofeu()">
+      <div class="card-arrow">→</div>
+      <div class="service-icon" style="background:linear-gradient(135deg,rgba(251,191,36,.22),rgba(245,158,11,.1))">🏆</div>
+      <h3>UP Troféu</h3>
+      <p>Suba seus troféus com preço calculado automaticamente. Abaixo de 40k = R$5 por 1.000 troféus.</p>
+      <div class="service-badge badge-purple">A partir de R$5/1k troféus</div>
+    </div>
+    <div class="service-card" onclick="openRanked()">
+      <div class="card-arrow">→</div>
+      <div class="service-icon" style="background:linear-gradient(135deg,rgba(59,130,246,.22),rgba(99,102,241,.1))">🎯</div>
+      <h3>UP Ranked</h3>
+      <p>Suba de elo no ranked com nossos profissionais. Do Bronze ao Pro sem preocupações.</p>
+      <div class="service-badge badge-blue">Preço por IA automática</div>
+    </div>
+    <div class="service-card" onclick="openPrestigio()">
+      <div class="card-arrow">→</div>
+      <div class="service-icon" style="background:linear-gradient(135deg,rgba(168,85,247,.22),rgba(139,92,246,.1))">💎</div>
+      <h3>UP Prestígio</h3>
+      <p>Alcance o prestígio desejado em qualquer brawler. 7 raridades com imagens reais.</p>
+      <div class="service-badge badge-purple">100+ Brawlers disponíveis</div>
+    </div>
+    <div class="service-card" onclick="openContas()">
+      <div class="card-arrow">→</div>
+      <div class="service-icon" style="background:linear-gradient(135deg,rgba(236,72,153,.22),rgba(219,39,119,.1))">👑</div>
+      <h3>Contas</h3>
+      <p>Contas premium com brawlers raros, gemas e skins exclusivas. Loja completa.</p>
+      <div class="service-badge badge-pink">Loja premium</div>
+    </div>
+  </div>
+</section>
+<div class="sep"></div>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section style="padding:4rem 2rem">
+  <div class="section-header">
+    <div class="section-tag">⚙️ COMO FUNCIONA</div>
+    <h2 class="section-title">Simples, Rápido e <span class="gradient-text">Seguro</span></h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:1.5rem;max-width:900px;margin:0 auto">
+    <div style="text-align:center;padding:1.5rem"><div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--neon-purple),var(--neon-blue));display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-weight:900;font-size:1.1rem">1</div><h4 style="font-weight:700;margin-bottom:.4rem">Escolha o serviço</h4><p style="color:var(--text-muted);font-size:.84rem">UP Troféu, Ranked, Prestígio ou Contas</p></div>
+    <div style="text-align:center;padding:1.5rem"><div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--neon-blue),var(--neon-cyan));display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-weight:900;font-size:1.1rem">2</div><h4 style="font-weight:700;margin-bottom:.4rem">Configure e agende</h4><p style="color:var(--text-muted);font-size:.84rem">Defina detalhes, data e horário</p></div>
+    <div style="text-align:center;padding:1.5rem"><div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--neon-cyan),var(--neon-pink));display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-weight:900;font-size:1.1rem">3</div><h4 style="font-weight:700;margin-bottom:.4rem">Pague com PIX</h4><p style="color:var(--text-muted);font-size:.84rem">PIX, Mercado Pago ou cartão</p></div>
+    <div style="text-align:center;padding:1.5rem"><div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--neon-pink),var(--neon-purple));display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-weight:900;font-size:1.1rem">4</div><h4 style="font-weight:700;margin-bottom:.4rem">Pronto!</h4><p style="color:var(--text-muted);font-size:.84rem">Profissional realiza e você recebe confirmação</p></div>
+  </div>
+</section>
+<div class="sep"></div>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials">
+  <div class="section-header">
+    <div class="section-tag">⭐ DEPOIMENTOS</div>
+    <h2 class="section-title">O que nossos <span class="gradient-text">Clientes</span> dizem</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial"><div class="stars">★★★★★</div><p>Serviço incrível! Pedi UP de Troféu e em menos de 24h estava pronto. Atendimento nota 10!</p><div class="t-user"><div class="t-avatar">GS</div><div><div class="t-name">Gabriel Silva</div><div class="t-meta">UP Troféu • 15k troféus</div></div></div></div>
+    <div class="testimonial"><div class="stars">★★★★★</div><p>Fiz prestígio 3 no Spike e ficou perfeito. Preço justo e entrega rápida. Já é a segunda vez!</p><div class="t-user"><div class="t-avatar">ML</div><div><div class="t-name">Maria Luiza</div><div class="t-meta">UP Prestígio 3 • Spike</div></div></div></div>
+    <div class="testimonial"><div class="stars">★★★★★</div><p>Passei do Ouro para o Diamante em 3 dias. Seguro, rápido e profissional. O melhor!</p><div class="t-user"><div class="t-avatar">RP</div><div><div class="t-name">Rafael Pereira</div><div class="t-meta">UP Ranked • Ouro→Diamante</div></div></div></div>
+    <div class="testimonial"><div class="stars">★★★★☆</div><p>Sistema de agendamento muito fácil. Escolhi o horário e foi feito certinho. Recomendo!</p><div class="t-user"><div class="t-avatar">AC</div><div><div class="t-name">Ana Carvalho</div><div class="t-meta">UP Troféu • Cliente recorrente</div></div></div></div>
+    <div class="testimonial"><div class="stars">★★★★★</div><p>Comprei uma conta e ficou melhor do que esperava. Atendimento via WhatsApp rápido. Top!</p><div class="t-user"><div class="t-avatar">LF</div><div><div class="t-name">Lucas Ferreira</div><div class="t-meta">Contas • Diamante</div></div></div></div>
+    <div class="testimonial"><div class="stars">★★★★★</div><p>Melhor serviço de elojob que já usei. Entrega no prazo e suporte excelente. 10/10!</p><div class="t-user"><div class="t-avatar">JP</div><div><div class="t-name">João Paulo</div><div class="t-meta">UP Ranked • 5 pedidos</div></div></div></div>
+  </div>
+</section>
+<div class="sep"></div>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq" style="padding:5rem 2rem">
+  <div class="section-header">
+    <div class="section-tag">❓ FAQ</div>
+    <h2 class="section-title">Perguntas <span class="gradient-text">Frequentes</span></h2>
+  </div>
+  <div style="max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:.7rem" id="faq-list"></div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="logo">⚡ ZS UpBrawl</div>
+      <p style="color:var(--text-muted);font-size:.84rem;line-height:1.7;margin-top:.75rem">O melhor serviço de Elojob para Brawl Stars do Brasil. Profissional, seguro e rápido.</p>
+      <div style="display:flex;gap:.6rem;margin-top:1rem"><a href="#" class="social-link">💬</a><a href="#" class="social-link">🎮</a><a href="#" class="social-link">📱</a><a href="#" class="social-link">📸</a></div>
+    </div>
+    <div class="footer-col"><h4>Serviços</h4><ul><li><a href="#" onclick="openTrofeu()">UP Troféu</a></li><li><a href="#" onclick="openRanked()">UP Ranked</a></li><li><a href="#" onclick="openPrestigio()">UP Prestígio</a></li><li><a href="#" onclick="openContas()">Contas</a></li></ul></div>
+    <div class="footer-col"><h4>Suporte</h4><ul><li><a href="#">WhatsApp</a></li><li><a href="#">Discord</a></li><li><a href="#">Email</a></li><li><a href="#">FAQ</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Termos de Uso</a></li><li><a href="#">Privacidade</a></li><li><a href="#">Reembolso</a></li><li><a href="#">Contato</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">© 2025 ZS UpBrawl — Todos os direitos reservados. Não afiliado à Supercell.</div>
+</footer>
+</div><!-- /content -->
+
+<!-- ═══════════════ MODALS ═══════════════ -->
+
+<!-- LOGIN -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal" style="max-width:400px">
+    <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
+    <h2>🔐 Entrar</h2><p class="modal-sub">Acesse sua conta ZS UpBrawl</p>
+    <div style="display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.25rem">
+      <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem" onclick="loginSocial('Google')">🔴 Continuar com Google</button>
+      <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem;border-color:#5865F2;color:#5865F2" onclick="loginSocial('Discord')">🎮 Continuar com Discord</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.7rem;margin:1rem 0"><div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div><span style="color:var(--text-muted);font-size:.78rem">ou email</span><div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div></div>
+    <div class="form-group"><label>Email</label><input type="email" class="form-control" placeholder="seu@email.com"/></div>
+    <div class="form-group"><label>Senha</label><input type="password" class="form-control" placeholder="••••••••"/></div>
+    <button class="btn btn-primary" style="width:100%;padding:.82rem;margin-top:.25rem" onclick="loginEmail()">Entrar</button>
+    <p style="text-align:center;font-size:.8rem;color:var(--text-muted);margin-top:.9rem">Não tem conta? <a href="#" style="color:var(--neon-purple)">Cadastre-se grátis</a></p>
+  </div>
+</div>
+
+<!-- UP TROFÉU -->
+<div class="modal-overlay" id="trofeu-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('trofeu-modal')">✕</button>
+    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
+      <div style="width:54px;height:54px;border-radius:1rem;background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(245,158,11,.12));display:flex;align-items:center;justify-content:center;font-size:1.9rem;flex-shrink:0">🏆</div>
+      <div><h2>UP Troféu</h2><p style="color:var(--text-muted);font-size:.83rem">Cálculo automático de preço</p></div>
+    </div>
+    <div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:.75rem;padding:.9rem 1rem;margin-bottom:1.25rem;font-size:.82rem;color:var(--text-muted)">
+      💡 <strong style="color:var(--neon-purple)">Tabela de preços:</strong> Abaixo de 40k = <strong>R$5,00 / 1.000 troféus</strong> • 40k–100k = R$20 / 1.000 • Acima de 100k = R$30 / 1.000
+    </div>
+    <div class="form-group"><label>Troféus atuais da conta</label><input type="number" class="form-control" id="trofeu-atual" placeholder="Ex: 25000" oninput="calcTrofeu()"/></div>
+    <div class="form-group"><label>Quantos troféus deseja subir?</label><input type="number" class="form-control" id="trofeu-subir" placeholder="Ex: 5000" oninput="calcTrofeu()"/></div>
+    <div class="price-display" id="trofeu-price" style="display:none">
+      <div class="price-amount" id="t-price-val">R$ 0,00</div>
+      <div class="price-note" id="t-price-note"></div>
+      <div style="display:flex;gap:.7rem;justify-content:center;margin-top:.7rem;flex-wrap:wrap">
+        <span class="price-tag" id="t-dif"></span>
+        <span class="price-tag" id="t-time"></span>
+        <span class="price-tag" id="t-rate"></span>
+      </div>
+    </div>
+    <div id="trofeu-progress-wrap" style="display:none">
+      <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text-muted);margin-bottom:.3rem"><span id="t-from">0</span><span id="t-to">0</span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="trofeu-bar"></div></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:.82rem;margin-top:.75rem" onclick="proceedSchedule('trofeu')">🗓 Agendar Serviço</button>
+  </div>
+</div>
+
+<!-- UP RANKED -->
+<div class="modal-overlay" id="ranked-modal">
+  <div class="modal" style="max-width:640px">
+    <button class="modal-close" onclick="closeModal('ranked-modal')">✕</button>
+    <h2>🎯 UP Ranked</h2><p class="modal-sub">Selecione seu elo atual e o elo desejado</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
+      <div><div style="font-size:.78rem;font-weight:700;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.5px;text-transform:uppercase">ELO ATUAL</div><div class="ranks-grid" id="ranked-from-grid"></div></div>
+      <div><div style="font-size:.78rem;font-weight:700;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.5px;text-transform:uppercase">ELO DESEJADO</div><div class="ranks-grid" id="ranked-to-grid"></div></div>
+    </div>
+    <div class="price-display" id="ranked-price" style="display:none;margin-top:1.1rem">
+      <div class="price-amount" id="r-price-val">R$ 0,00</div>
+      <div class="price-note" id="r-price-note"></div>
+      <div style="display:flex;gap:.7rem;justify-content:center;margin-top:.7rem;flex-wrap:wrap">
+        <span class="price-tag" id="r-mult"></span>
+        <span class="price-tag" id="r-time"></span>
+        <span class="price-tag" id="r-dif"></span>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:.82rem;margin-top:1rem" onclick="proceedSchedule('ranked')">🗓 Agendar Serviço</button>
+  </div>
+</div>
+
+<!-- PRESTÍGIO BRAWLER -->
+<div class="modal-overlay" id="prestige-modal">
+  <div class="modal" style="max-width:480px">
+    <button class="modal-close" onclick="closeModal('prestige-modal')">✕</button>
+    <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:1.25rem">
+      <img id="prest-brawler-img" src="" alt="" style="width:72px;height:72px;border-radius:.75rem;object-fit:cover;background:rgba(255,255,255,.05);border:1px solid var(--border-glow)"/>
+      <div><h2 id="prest-brawler-name">Brawler</h2><p style="color:var(--text-muted);font-size:.83rem">UP Prestígio</p></div>
+    </div>
+    <div class="form-group"><label>Troféus atuais do brawler</label><input type="number" class="form-control" id="prest-trofeus" placeholder="Ex: 500" oninput="calcPrestigio()"/></div>
+    <div style="margin:1rem 0">
+      <label style="font-size:.82rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:.7rem;text-transform:uppercase;letter-spacing:.4px">Qual prestígio deseja?</label>
+      <div class="prestige-options">
+        <div class="prestige-opt" onclick="selectPrestigio(1,this)"><img src="https://i.imgur.com/iyytiRU.jpeg" alt="P1"/><span>Prestígio I</span></div>
+        <div class="prestige-opt" onclick="selectPrestigio(2,this)"><img src="https://i.imgur.com/IjCCZY2.jpeg" alt="P2"/><span>Prestígio II</span></div>
+        <div class="prestige-opt" onclick="selectPrestigio(3,this)"><img src="https://i.imgur.com/h7mURSb.jpeg" alt="P3"/><span>Prestígio III</span></div>
+      </div>
+    </div>
+    <div class="price-display" id="prest-price" style="display:none">
+      <div class="price-amount" id="p-price-val">R$ 0,00</div>
+      <div class="price-note" id="p-price-note"></div>
+      <div style="display:flex;gap:.7rem;justify-content:center;margin-top:.7rem"><span class="price-tag" id="p-time"></span></div>
+    </div>
+    <div class="error-msg" id="prest-error" style="display:none">⚠️ Você já possui esse prestígio, escolha outro.</div>
+    <button class="btn btn-primary" style="width:100%;padding:.82rem;margin-top:1rem" onclick="proceedSchedule('prestigio')">🗓 Agendar Agora</button>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div class="modal-overlay" id="schedule-modal">
+  <div class="modal" style="max-width:640px">
+    <button class="modal-close" onclick="closeModal('schedule-modal')">✕</button>
+    <h2>🗓 Agendamento</h2>
+    <p class="modal-sub" id="schedule-service-label">Configurando seu serviço</p>
+    <div class="steps">
+      <div class="step active" id="step1">1</div><div class="step-line" id="line1"></div>
+      <div class="step" id="step2">2</div><div class="step-line" id="line2"></div>
+      <div class="step" id="step3">3</div><div class="step-line" id="line3"></div>
+      <div class="step" id="step4">4</div>
+    </div>
+    <div id="sched-content"></div>
+  </div>
+</div>
+
+<!-- ═══ BRAWLERS PAGE ═══ -->
+<div class="page" id="brawlers-page">
+  <div class="page-header">
+    <button class="back-btn" onclick="closePage('brawlers-page')">← Voltar ao site</button>
+    <h1 style="font-family:'Orbitron',sans-serif;font-size:1.7rem;font-weight:900"><span class="gradient-text">UP Prestígio</span></h1>
+    <p style="color:var(--text-muted);margin-top:.35rem;font-size:.88rem">Selecione o brawler que deseja upar o prestígio</p>
+  </div>
+  <div id="brawlers-content"></div>
+</div>
+
+<!-- ═══ CONTAS PAGE ═══ -->
+<div class="page" id="contas-page">
+  <div class="page-header">
+    <button class="back-btn" onclick="closePage('contas-page')">← Voltar ao site</button>
+    <h1 style="font-family:'Orbitron',sans-serif;font-size:1.7rem;font-weight:900"><span class="gradient-text">Loja de Contas</span></h1>
+    <p style="color:var(--text-muted);margin-top:.35rem;font-size:.88rem">Contas premium com brawlers raros e skins exclusivas</p>
+  </div>
+  <div style="padding:1.25rem 2rem;display:flex;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--border-glow)">
+    <input type="text" class="form-control" placeholder="🔍 Pesquisar contas..." style="max-width:270px"/>
+    <select class="form-control" style="max-width:185px"><option>Todas as categorias</option><option>Lendário</option><option>Diamante</option><option>Ouro</option></select>
+    <select class="form-control" style="max-width:170px"><option>Ordenar por</option><option>Preço ↑</option><option>Troféus ↓</option></select>
+  </div>
+  <div class="contas-grid" id="contas-grid"></div>
+</div>
+
+<!-- ═══ ADMIN PAGE ═══ -->
+<div class="page" id="admin-page">
+  <div class="admin-sidebar">
+    <div class="logo" style="margin-bottom:2rem;font-size:1.1rem">⚡ Admin Panel</div>
+    <div class="admin-nav-item active" onclick="adminNav('dashboard',this)">📊 Dashboard</div>
+    <div class="admin-nav-item" onclick="adminNav('orders',this)">📋 Pedidos</div>
+    <div class="admin-nav-item" onclick="adminNav('schedule',this)">🗓 Agendamentos</div>
+    <div class="admin-nav-item" onclick="adminNav('users',this)">👥 Usuários</div>
+    <div class="admin-nav-item" onclick="adminNav('contas',this)">👑 Contas</div>
+    <div class="admin-nav-item" onclick="adminNav('financeiro',this)">💰 Financeiro</div>
+    <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border-glow)">
+      <div class="admin-nav-item" onclick="closePage('admin-page')">← Voltar ao site</div>
+    </div>
+  </div>
+  <div class="admin-content" id="admin-content"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+//   INTERACTIVE PARTICLE CANVAS BG
+// ═══════════════════════════════════════
+(function(){
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, mouse = {x: -9999, y: -9999};
+  const PARTICLES = [];
+  const COUNT = 130;
+  const CONNECT_DIST = 120;
+  const MOUSE_RADIUS = 100;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+  window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+  for(let i = 0; i < COUNT; i++){
+    PARTICLES.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2.5 + 1,
+      baseAlpha: Math.random() * 0.4 + 0.15,
+      alpha: 0,
+      glowing: false
+    });
+  }
+
+  function dist(a, b){ return Math.hypot(a.x - b.x, a.y - b.y); }
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+
+    // Update + draw particles
+    for(let p of PARTICLES){
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0) p.x = W; if(p.x > W) p.x = 0;
+      if(p.y < 0) p.y = H; if(p.y > H) p.y = 0;
+
+      const d = dist(p, mouse);
+      if(d < MOUSE_RADIUS){
+        const force = (1 - d / MOUSE_RADIUS);
+        p.alpha = Math.min(1, p.baseAlpha + force * 0.7);
+        p.glowing = true;
+      } else {
+        p.alpha += (p.baseAlpha - p.alpha) * 0.05;
+        p.glowing = false;
+      }
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.glowing ? p.r * 2.2 : p.r, 0, Math.PI * 2);
+      if(p.glowing){
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = '#a855f7';
+        ctx.fillStyle = `rgba(200,170,255,${p.alpha})`;
+      } else {
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = `rgba(160,160,180,${p.alpha})`;
+      }
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    // Draw lines
+    for(let i = 0; i < PARTICLES.length; i++){
+      for(let j = i + 1; j < PARTICLES.length; j++){
+        const d = dist(PARTICLES[i], PARTICLES[j]);
+        if(d < CONNECT_DIST){
+          const near = dist(PARTICLES[i], mouse) < MOUSE_RADIUS || dist(PARTICLES[j], mouse) < MOUSE_RADIUS;
+          const alpha = (1 - d / CONNECT_DIST) * (near ? 0.5 : 0.12);
+          ctx.beginPath();
+          ctx.moveTo(PARTICLES[i].x, PARTICLES[i].y);
+          ctx.lineTo(PARTICLES[j].x, PARTICLES[j].y);
+          ctx.strokeStyle = near ? `rgba(168,85,247,${alpha})` : `rgba(100,100,120,${alpha})`;
+          ctx.lineWidth = near ? 1 : 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Mouse ripple
+    if(mouse.x > 0){
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, MOUSE_RADIUS, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(168,85,247,0.06)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ═══════════════════════════════════════
+//   DATA
+// ═══════════════════════════════════════
+const BRAWLERS_DATA = {
+  'Inicial':{color:'#94a3b8',list:[
+    {n:'SHELLY',img:'https://brawlify.com/images/brawlers/160/16000000.webp'}
+  ]},
+  'Raro':{color:'#4ade80',list:[
+    {n:'COLT',img:'https://brawlify.com/images/brawlers/160/16000001.webp'},
+    {n:'BULL',img:'https://brawlify.com/images/brawlers/160/16000002.webp'},
+    {n:'BROCK',img:'https://brawlify.com/images/brawlers/160/16000003.webp'},
+    {n:'BARLEY',img:'https://brawlify.com/images/brawlers/160/16000006.webp'},
+    {n:'NITA',img:'https://brawlify.com/images/brawlers/160/16000008.webp'},
+    {n:'EL PRIMO',img:'https://brawlify.com/images/brawlers/160/16000010.webp'},
+    {n:'POCO',img:'https://brawlify.com/images/brawlers/160/16000013.webp'},
+    {n:'ROSA',img:'https://brawlify.com/images/brawlers/160/16000024.webp'}
+  ]},
+  'Super Raro':{color:'#60a5fa',list:[
+    {n:'RICO',img:'https://brawlify.com/images/brawlers/96/16000004.webp'},
+    {n:'JESSIE',img:'https://brawlify.com/images/brawlers/160/16000007.webp'},
+    {n:'DYNAMIKE',img:'https://brawlify.com/images/brawlers/160/16000009.webp'},
+    {n:'DARRYL',img:'https://brawlify.com/images/brawlers/160/16000018.webp'},
+    {n:'PENNY',img:'https://brawlify.com/images/brawlers/160/16000019.webp'},
+    {n:'TICK',img:'https://brawlify.com/images/brawlers/160/16000022.webp'},
+    {n:'CARL',img:'https://brawlify.com/images/brawlers/160/16000025.webp'},
+    {n:'8-BIT',img:'https://brawlify.com/images/brawlers/160/16000027.webp'},
+    {n:'JACKY',img:'https://brawlify.com/images/brawlers/160/16000034.webp'},
+    {n:'GUS',img:'https://brawlify.com/images/brawlers/160/16000061.webp'}
+  ]},
+  'Épico':{color:'#c084fc',list:[
+    {n:'BO',img:'https://brawlify.com/images/brawlers/160/16000014.webp'},
+    {n:'PIPER',img:'https://brawlify.com/images/brawlers/160/16000015.webp'},
+    {n:'PAM',img:'https://brawlify.com/images/brawlers/160/16000016.webp'},
+    {n:'FRANK',img:'https://brawlify.com/images/brawlers/160/16000020.webp'},
+    {n:'BIBI',img:'https://brawlify.com/images/brawlers/160/16000026.webp'},
+    {n:'BEA',img:'https://brawlify.com/images/brawlers/160/16000029.webp'},
+    {n:'EMZ',img:'https://brawlify.com/images/brawlers/160/16000030.webp'},
+    {n:'GALE',img:'https://brawlify.com/images/brawlers/160/16000035.webp'},
+    {n:'NANI',img:'https://brawlify.com/images/brawlers/160/16000036.webp'},
+    {n:'COLETTE',img:'https://brawlify.com/images/brawlers/160/16000039.webp'},
+    {n:'EDGAR',img:'https://brawlify.com/images/brawlers/160/16000043.webp'},
+    {n:'STU',img:'https://brawlify.com/images/brawlers/160/16000045.webp'},
+    {n:'BELLE',img:'https://brawlify.com/images/brawlers/160/16000046.webp'},
+    {n:'GROM',img:'https://brawlify.com/images/brawlers/160/16000048.webp'},
+    {n:'GRIFF',img:'https://brawlify.com/images/brawlers/160/16000050.webp'},
+    {n:'ASH',img:'https://brawlify.com/images/brawlers/160/16000051.webp'},
+    {n:'LOLA',img:'https://brawlify.com/images/brawlers/160/16000053.webp'},
+    {n:'BONNIE',img:'https://brawlify.com/images/brawlers/160/16000058.webp'},
+    {n:'SAM',img:'https://brawlify.com/images/brawlers/160/16000060.webp'},
+    {n:'MANDY',img:'https://brawlify.com/images/brawlers/160/16000065.webp'},
+    {n:'MAISIE',img:'https://brawlify.com/images/brawlers/160/16000068.webp'},
+    {n:'HANK',img:'https://brawlify.com/images/brawlers/160/16000069.webp'},
+    {n:'PEARL',img:'https://brawlify.com/images/brawlers/160/16000072.webp'},
+    {n:'LARRY E LAWRIE',img:'https://brawlify.com/images/brawlers/160/16000077.webp'},
+    {n:'ANGELO',img:'https://brawlify.com/images/brawlers/160/16000079.webp'},
+    {n:'BERRY',img:'https://brawlify.com/images/brawlers/160/16000082.webp'},
+    {n:'SHADE',img:'https://brawlify.com/images/brawlers/160/16000086.webp'},
+    {n:'MEEPLE',img:'https://brawlify.com/images/brawlers/160/16000089.webp'},
+    {n:'TRUNK',img:'https://brawlify.com/images/brawlers/160/16000096.webp'},
+    {n:'BOLT',img:'https://brawlify.com/images/brawlers/160/16000106.webp'}
+  ]},
+  'Mítico':{color:'#f472b6',list:[
+    {n:'MORTIS',img:'https://brawlify.com/images/brawlers/160/16000011.webp'},
+    {n:'TARA',img:'https://brawlify.com/images/brawlers/160/16000017.webp'},
+    {n:'EUGÊNIO',img:'https://brawlify.com/images/brawlers/160/16000021.webp'},
+    {n:'MISTER P',img:'https://brawlify.com/images/brawlers/160/16000031.webp'},
+    {n:'MAX',img:'https://brawlify.com/images/brawlers/160/16000032.webp'},
+    {n:'SPROUT',img:'https://brawlify.com/images/brawlers/160/16000037.webp'},
+    {n:'LOU',img:'https://brawlify.com/images/brawlers/160/16000041.webp'},
+    {n:'BYRON',img:'https://brawlify.com/images/brawlers/160/16000042.webp'},
+    {n:'RUFFS',img:'https://brawlify.com/images/brawlers/160/16000044.webp'},
+    {n:'SQUEAK',img:'https://brawlify.com/images/brawlers/160/16000047.webp'},
+    {n:'BUZZ',img:'https://brawlify.com/images/brawlers/160/16000049.webp'},
+    {n:'FANG',img:'https://brawlify.com/images/brawlers/160/16000054.webp'},
+    {n:'EVE',img:'https://brawlify.com/images/brawlers/160/16000056.webp'},
+    {n:'JANET',img:'https://brawlify.com/images/brawlers/160/16000057.webp'},
+    {n:'OTIS',img:'https://brawlify.com/images/brawlers/160/16000059.webp'},
+    {n:'BUSTER',img:'https://brawlify.com/images/brawlers/160/16000062.webp'},
+    {n:'GRAY',img:'https://brawlify.com/images/brawlers/160/16000064.webp'},
+    {n:'R-T',img:'https://brawlify.com/images/brawlers/160/16000066.webp'},
+    {n:'WILLOW',img:'https://brawlify.com/images/brawlers/160/16000067.webp'},
+    {n:'DOUG',img:'https://brawlify.com/images/brawlers/160/16000071.webp'},
+    {n:'CHUCK',img:'https://brawlify.com/images/brawlers/160/16000073.webp'},
+    {n:'CHARLIE',img:'https://brawlify.com/images/brawlers/160/16000074.webp'},
+    {n:'MICO',img:'https://brawlify.com/images/brawlers/160/16000075.webp'},
+    {n:'MELODIE',img:'https://brawlify.com/images/brawlers/160/16000078.webp'},
+    {n:'LILY',img:'https://brawlify.com/images/brawlers/160/16000081.webp'},
+    {n:'CLANCY',img:'https://brawlify.com/images/brawlers/160/16000083.webp'},
+    {n:'MOE',img:'https://brawlify.com/images/brawlers/160/16000084.webp'},
+    {n:'JUJU',img:'https://brawlify.com/images/brawlers/160/16000087.webp'},
+    {n:'OLLIE',img:'https://brawlify.com/images/brawlers/160/16000090.webp'},
+    {n:'LUMI',img:'https://brawlify.com/images/brawlers/160/16000091.webp'},
+    {n:'FINX',img:'https://brawlify.com/images/brawlers/160/16000092.webp'},
+    {n:'JAE-YONG',img:'https://brawlify.com/images/brawlers/160/16000093.webp'},
+    {n:'ALLI',img:'https://brawlify.com/images/brawlers/160/16000095.webp'},
+    {n:'MINA',img:'https://brawlify.com/images/brawlers/160/16000097.webp'},
+    {n:'ZIGGY',img:'https://brawlify.com/images/brawlers/160/16000098.webp'},
+    {n:'GIGI',img:'https://brawlify.com/images/brawlers/160/16000100.webp'},
+    {n:'GLOWY',img:'https://brawlify.com/images/brawlers/160/16000101.webp'},
+    {n:'NAJIA',img:'https://brawlify.com/images/brawlers/160/16000103.webp'},
+    {n:'DAMIAN',img:'https://brawlify.com/images/brawlers/160/16000104.webp'},
+    {n:'STARR NOVA',img:'https://brawlify.com/images/brawlers/160/16000105.webp'}
+  ]},
+  'Lendário':{color:'#fbbf24',list:[
+    {n:'SPIKE',img:'https://brawlify.com/images/brawlers/160/16000005.webp'},
+    {n:'CORVO',img:'https://brawlify.com/images/brawlers/160/16000012.webp'},
+    {n:'LEON',img:'https://brawlify.com/images/brawlers/160/16000023.webp'},
+    {n:'SANDY',img:'https://brawlify.com/images/brawlers/160/16000028.webp'},
+    {n:'WATTSON',img:'https://brawlify.com/images/brawlers/160/16000038.webp'},
+    {n:'AMBER',img:'https://brawlify.com/images/brawlers/160/16000040.webp'},
+    {n:'MEG',img:'https://brawlify.com/images/brawlers/160/16000052.webp'},
+    {n:'CHESTER',img:'https://brawlify.com/images/brawlers/160/16000063.webp'},
+    {n:'CORDELIUS',img:'https://brawlify.com/images/brawlers/160/16000070.webp'},
+    {n:'KIT',img:'https://brawlify.com/images/brawlers/160/16000076.webp'},
+    {n:'DRACO',img:'https://brawlify.com/images/brawlers/160/16000080.webp'},
+    {n:'KENJI',img:'https://brawlify.com/images/brawlers/160/16000085.webp'},
+    {n:'PIERCE',img:'https://brawlify.com/images/brawlers/160/16000099.webp'}
+  ]},
+  'Ultra Lendário':{color:'url(#ultra-grad)',colorSolid:'#e879f9',isUltra:true,list:[
+    {n:'KAZE',img:'https://brawlify.com/images/brawlers/160/16000094.webp'},
+    {n:'SIRIUS',img:'https://brawlify.com/images/brawlers/160/16000102.webp'}
+  ]}
+};
+
+const RANKS = [
+  {n:'Bronze I',e:'🥉',v:1},{n:'Bronze II',e:'🥉',v:2},{n:'Bronze III',e:'🥉',v:3},
+  {n:'Prata I',e:'🥈',v:4},{n:'Prata II',e:'🥈',v:5},{n:'Prata III',e:'🥈',v:6},
+  {n:'Ouro I',e:'🥇',v:7},{n:'Ouro II',e:'🥇',v:8},{n:'Ouro III',e:'🥇',v:9},
+  {n:'Diamante I',e:'💎',v:10},{n:'Diamante II',e:'💎',v:11},{n:'Diamante III',e:'💎',v:12},
+  {n:'Mito I',e:'🌟',v:13},{n:'Mito II',e:'🌟',v:14},{n:'Mito III',e:'🌟',v:15},
+  {n:'Lendário I',e:'👑',v:16},{n:'Lendário II',e:'👑',v:17},{n:'Lendário III',e:'👑',v:18},
+  {n:'Mestre',e:'⚡',v:19},{n:'Pro',e:'🔮',v:20}
+];
+
+const CONTAS_FAKE = [
+  {n:'Conta Lendária Suprema',tier:'Lendário',trofeus:'85.000',brawlers:'58',gems:'450',skins:'24',price:'R$ 1.299'},
+  {n:'Conta Diamante Elite',tier:'Diamante',trofeus:'52.000',brawlers:'41',gems:'200',skins:'15',price:'R$ 649'},
+  {n:'Conta Ouro Premium',tier:'Ouro',trofeus:'38.000',brawlers:'32',gems:'120',skins:'9',price:'R$ 349'},
+  {n:'Conta Mito Exclusiva',tier:'Mítico',trofeus:'67.000',brawlers:'50',gems:'350',skins:'19',price:'R$ 899'},
+  {n:'Starter Pack Pro',tier:'Prata',trofeus:'18.000',brawlers:'20',gems:'60',skins:'4',price:'R$ 149'},
+  {n:'Conta Full Cromático',tier:'Ultra Lendário',trofeus:'94.000',brawlers:'65',gems:'800',skins:'38',price:'R$ 2.199'}
+];
+
+const FAQS = [
+  {q:'O serviço é seguro para minha conta?',a:'Sim! Utilizamos VPN e métodos seguros para não levantar suspeitas. Nossa taxa de banimento é 0%.'},
+  {q:'Em quanto tempo meu pedido fica pronto?',a:'Depende do serviço. UP Troféu: 24-72h, Ranked: 2-7 dias, Prestígio: 12-48h.'},
+  {q:'Posso jogar enquanto o serviço é feito?',a:'Recomendamos não entrar na conta durante o serviço para evitar conflitos. Você será notificado quando finalizar.'},
+  {q:'Qual é a política de reembolso?',a:'Se não conseguirmos completar o serviço, reembolsamos 100% do valor pago sem burocracia.'},
+  {q:'Quais formas de pagamento aceitam?',a:'Aceitamos PIX, Mercado Pago, cartão de crédito/débito e Stripe. Pagamento via QR Code gerado automaticamente.'},
+  {q:'Como funciona o sistema de agendamento?',a:'Você escolhe o serviço, configura os detalhes, seleciona data e horário de sua preferência e paga. Simples assim!'}
+];
+
+// ═══ STATE ═══
+let currentService='', currentBrawler=null, selectedPrestigio=0;
+let rankedFrom=-1, rankedTo=-1;
+let schedStep=1, schedDate='', schedTime='', schedPayment='';
+let pixTimer=null;
+
+// ═══ INIT ═══
+window.onload = () => {
+  animateStats(); renderFAQ(); buildBrawlers(); buildRanks(); buildContas();
+};
+
+function animateStats(){
+  const targets = [[5842,'+'],[3201,''],[2400,'k'],[99,'%']];
+  targets.forEach(([t,suf],i) => {
+    const el = document.getElementById('s'+(i+1));
+    let cur = 0; const step = t/80;
+    const iv = setInterval(() => {
+      cur = Math.min(cur+step, t);
+      el.textContent = Math.floor(cur)+suf;
+      if(cur >= t) clearInterval(iv);
+    }, 20);
+  });
+}
+
+function renderFAQ(){
+  document.getElementById('faq-list').innerHTML = FAQS.map((f,i) => `
+    <div style="background:rgba(13,13,31,.85);border:1px solid var(--border-glow);border-radius:.75rem;overflow:hidden;backdrop-filter:blur(8px)">
+      <div onclick="toggleFAQ(${i})" style="padding:1rem 1.2rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.9rem">
+        ${f.q}<span id="faq-arrow-${i}" style="color:var(--neon-purple);transition:.3s;font-size:.8rem">▼</span>
+      </div>
+      <div id="faq-body-${i}" style="display:none;padding:0 1.2rem 1rem;color:var(--text-muted);font-size:.87rem;line-height:1.7">${f.a}</div>
+    </div>`).join('');
+}
+function toggleFAQ(i){
+  const b = document.getElementById('faq-body-'+i);
+  const a = document.getElementById('faq-arrow-'+i);
+  const open = b.style.display==='block';
+  b.style.display = open ? 'none' : 'block';
+  a.style.transform = open ? '' : 'rotate(180deg)';
+}
+
+// ═══ BRAWLERS ═══
+function buildBrawlers(){
+  let html = '';
+  for(const [rarity, data] of Object.entries(BRAWLERS_DATA)){
+    const col = data.colorSolid || data.color;
+    const grad = data.isUltra ? 'background:linear-gradient(135deg,#e879f9,#7c3aed,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent' : `color:${col}`;
+    html += `<div class="rarity-section">
+      <div class="rarity-label" style="border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.5)">
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${col};flex-shrink:0"></span>
+        <span style="${grad}">${rarity}</span>
+        <span style="color:var(--text-muted);font-size:.72rem">(${data.list.length})</span>
+      </div>
+      <div class="brawlers-grid">`;
+    data.list.forEach(b => {
+      html += `<div class="brawler-card" onclick="selectBrawler('${b.n.replace(/'/g,"\\'")}','${b.img}')">
+        <img src="${b.img}" alt="${b.n}" loading="lazy" onerror="this.style.background='rgba(168,85,247,.1)';this.src=''"/>
+        <div class="brawler-name">${b.n}</div>
+        <button class="brawler-btn">Selecionar</button>
+      </div>`;
+    });
+    html += '</div></div>';
+  }
+  document.getElementById('brawlers-content').innerHTML = html;
+}
+
+function buildRanks(){
+  const mkRank = (side, idx) => RANKS.map((r,i) =>
+    `<div class="rank-card" onclick="setRank('${side}',${i},this)" id="r${side}-${i}">
+      <span class="rank-emoji">${r.e}</span><div class="rank-name">${r.n}</div></div>`).join('');
+  document.getElementById('ranked-from-grid').innerHTML = mkRank('from');
+  document.getElementById('ranked-to-grid').innerHTML = mkRank('to');
+}
+
+function buildContas(){
+  document.getElementById('contas-grid').innerHTML = CONTAS_FAKE.map(c => `
+    <div class="conta-card">
+      <span style="font-size:.7rem;font-weight:800;letter-spacing:1px;color:var(--neon-purple);text-transform:uppercase">${c.tier}</span>
+      <div style="font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:700;margin:.4rem 0 .75rem">${c.n}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.1rem">
+        <span style="padding:.28rem .6rem;border-radius:.4rem;background:rgba(255,255,255,.06);font-size:.73rem;color:var(--text-muted)">🏆 ${c.trofeus}</span>
+        <span style="padding:.28rem .6rem;border-radius:.4rem;background:rgba(255,255,255,.06);font-size:.73rem;color:var(--text-muted)">🎮 ${c.brawlers} brawlers</span>
+        <span style="padding:.28rem .6rem;border-radius:.4rem;background:rgba(255,255,255,.06);font-size:.73rem;color:var(--text-muted)">💎 ${c.gems} gemas</span>
+        <span style="padding:.28rem .6rem;border-radius:.4rem;background:rgba(255,255,255,.06);font-size:.73rem;color:var(--text-muted)">👗 ${c.skins} skins</span>
+      </div>
+      <div class="conta-price">${c.price}</div>
+      <button class="btn btn-primary btn-disabled" style="width:100%;padding:.72rem" disabled>🔒 Sem Estoque</button>
+    </div>`).join('');
+}
+
+// ═══ MODALS ═══
+function openModal(id){ document.getElementById(id).classList.add('active'); }
+function closeModal(id){ document.getElementById(id).classList.remove('active'); }
+function openPage(id){ document.getElementById(id).classList.add('active'); document.body.style.overflow='hidden'; }
+function closePage(id){ document.getElementById(id).classList.remove('active'); document.body.style.overflow=''; }
+
+function openLogin(){ openModal('login-modal'); }
+function openTrofeu(){ openModal('trofeu-modal'); }
+function openContas(){ openPage('contas-page'); }
+function openAdmin(){ openPage('admin-page'); renderAdminDashboard(); }
+function openScheduleMain(){ showToast('Escolha um serviço primeiro!','ℹ️'); document.getElementById('services').scrollIntoView({behavior:'smooth'}); }
+function openPrestigio(){ openPage('brawlers-page'); }
+function openRanked(){ openModal('ranked-modal'); }
+
+function selectBrawler(name, img){
+  currentBrawler = {name, img};
+  document.getElementById('prest-brawler-name').textContent = name;
+  document.getElementById('prest-brawler-img').src = img;
+  document.getElementById('prest-trofeus').value = '';
+  selectedPrestigio = 0;
+  document.querySelectorAll('.prestige-opt').forEach(o => o.classList.remove('selected'));
+  document.getElementById('prest-price').style.display = 'none';
+  document.getElementById('prest-error').style.display = 'none';
+  closePage('brawlers-page');
+  openModal('prestige-modal');
+}
+
+function selectPrestigio(n, el){
+  selectedPrestigio = n;
+  document.querySelectorAll('.prestige-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  calcPrestigio();
+}
+
+// ═══ CALCULATIONS ═══
+
+// UP TROFÉU — abaixo de 40k = R$5/1.000, 40k–100k = R$20/1.000, acima de 100k = R$30/1.000
+function calcTrofeu(){
+  const atual = parseInt(document.getElementById('trofeu-atual').value) || 0;
+  const subir = parseInt(document.getElementById('trofeu-subir').value) || 0;
+  if(!subir || !atual){ document.getElementById('trofeu-price').style.display='none'; return; }
+
+  // Calculate price using mixed tiers if crossing boundaries
+  let price = 0;
+  let remaining = subir;
+  let pos = atual;
+
+  while(remaining > 0){
+    let rate, boundary;
+    if(pos < 40000){
+      rate = 5/1000; // R$5 per 1000
+      boundary = 40000;
+    } else if(pos < 100000){
+      rate = 20/1000; // R$20 per 1000
+      boundary = 100000;
+    } else {
+      rate = 30/1000; // R$30 per 1000
+      boundary = Infinity;
+    }
+    const chunk = boundary === Infinity ? remaining : Math.min(remaining, boundary - pos);
+    price += chunk * rate;
+    pos += chunk;
+    remaining -= chunk;
+  }
+
+  const meta = atual + subir;
+  const dif = subir > 20000 ? 'Muito Alta' : subir > 10000 ? 'Alta' : subir > 5000 ? 'Média' : 'Baixa';
+  const days = Math.ceil(subir / 2000);
+  const rateLabel = atual < 40000 ? 'R$5/1k troféus' : atual < 100000 ? 'R$20/1k troféus' : 'R$30/1k troféus';
+  const pct = Math.min((subir / (subir + atual)) * 100, 95);
+
+  document.getElementById('trofeu-price').style.display = 'block';
+  document.getElementById('trofeu-progress-wrap').style.display = 'block';
+  document.getElementById('t-price-val').textContent = 'R$ ' + price.toFixed(2).replace('.',',');
+  document.getElementById('t-price-note').textContent = atual.toLocaleString('pt-BR') + ' → ' + meta.toLocaleString('pt-BR') + ' troféus';
+  document.getElementById('t-dif').textContent = '📊 ' + dif;
+  document.getElementById('t-time').textContent = '⏱ ' + days + (days===1?' dia':' dias');
+  document.getElementById('t-rate').textContent = '💰 ' + rateLabel;
+  document.getElementById('t-from').textContent = atual.toLocaleString('pt-BR');
+  document.getElementById('t-to').textContent = meta.toLocaleString('pt-BR');
+  setTimeout(() => document.getElementById('trofeu-bar').style.width = pct+'%', 100);
+}
+
+function calcPrestigio(){
+  const t = parseInt(document.getElementById('prest-trofeus').value) || 0;
+  if(!selectedPrestigio || !t){ return; }
+  document.getElementById('prest-error').style.display = 'none';
+  document.getElementById('prest-price').style.display = 'none';
+  let price = 0, err = false, time = '';
+  if(t < 1000){
+    if(selectedPrestigio===1){ price=10; time='12-24h'; }
+    else if(selectedPrestigio===2){ price=30; time='24-48h'; }
+    else { price=70; time='48-72h'; }
+  } else if(t < 2000){
+    if(selectedPrestigio===1){ err=true; }
+    else if(selectedPrestigio===2){ price=20; time='18-36h'; }
+    else { price=60; time='48-72h'; }
+  } else {
+    if(selectedPrestigio===1 || selectedPrestigio===2){ err=true; }
+    else { price=50; time='36-60h'; }
+  }
+  if(err){ document.getElementById('prest-error').style.display='block'; return; }
+  document.getElementById('prest-price').style.display = 'block';
+  document.getElementById('p-price-val').textContent = 'R$ ' + price.toFixed(2).replace('.',',');
+  document.getElementById('p-price-note').textContent = 'Prestígio '+['','I','II','III'][selectedPrestigio]+' — '+currentBrawler?.name;
+  document.getElementById('p-time').textContent = '⏱ '+time;
+}
+
+function setRank(type, idx, el){
+  if(type==='from'){ rankedFrom=idx; document.querySelectorAll('#ranked-from-grid .rank-card').forEach(c=>c.classList.remove('selected')); }
+  else { rankedTo=idx; document.querySelectorAll('#ranked-to-grid .rank-card').forEach(c=>c.classList.remove('selected')); }
+  el.classList.add('selected');
+  if(rankedFrom>=0 && rankedTo>=0) calcRanked();
+}
+
+function calcRanked(){
+  if(rankedTo <= rankedFrom){ document.getElementById('ranked-price').style.display='none'; return; }
+  const diff = rankedTo - rankedFrom;
+  const base = diff * 35;
+  const mult = diff>=10 ? 2.5 : diff>=6 ? 1.8 : diff>=3 ? 1.4 : 1.1;
+  const price = base * mult;
+  const days = Math.ceil(diff * 1.5);
+  const dif = diff>=10 ? 'Extrema' : diff>=6 ? 'Muito Alta' : diff>=3 ? 'Alta' : 'Média';
+  document.getElementById('ranked-price').style.display = 'block';
+  document.getElementById('r-price-val').textContent = 'R$ ' + price.toFixed(2).replace('.',',');
+  document.getElementById('r-price-note').textContent = RANKS[rankedFrom].n + ' → ' + RANKS[rankedTo].n;
+  document.getElementById('r-mult').textContent = '🔥 Mult: '+mult+'x';
+  document.getElementById('r-time').textContent = '⏱ '+days+(days===1?' dia':' dias');
+  document.getElementById('r-dif').textContent = '📊 '+dif;
+}
+
+// ═══ SCHEDULE FLOW ═══
+function proceedSchedule(type){
+  currentService = type;
+  const close = {'trofeu':'trofeu-modal','ranked':'ranked-modal','prestigio':'prestige-modal'};
+  closeModal(close[type]);
+  const labels = {trofeu:'UP Troféu',ranked:'UP Ranked',prestigio:'UP Prestígio'};
+  document.getElementById('schedule-service-label').textContent = '✅ Serviço: '+labels[type];
+  schedStep=1; schedDate=''; schedTime=''; schedPayment='';
+  renderScheduleStep();
+  openModal('schedule-modal');
+}
+
+function renderScheduleStep(){
+  [1,2,3,4].forEach(i => {
+    document.getElementById('step'+i).className = 'step'+(i<schedStep?' done':i===schedStep?' active':'');
+    if(i<4) document.getElementById('line'+i).className = 'step-line'+(i<schedStep?' done':'');
+  });
+  const c = document.getElementById('sched-content');
+  if(schedStep===1) c.innerHTML = renderCalendar();
+  else if(schedStep===2) c.innerHTML = renderTimeSlots();
+  else if(schedStep===3) c.innerHTML = renderPayment();
+  else c.innerHTML = renderConfirm();
+}
+
+function renderCalendar(){
+  const now = new Date();
+  const months = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const days = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const first = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
+  const last = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  const today = now.getDate();
+  let grid = '<div class="cal-header">'+days.map(d=>`<span>${d}</span>`).join('')+'</div><div class="calendar-grid">';
+  for(let i=0; i<first; i++) grid += '<div class="cal-day empty"></div>';
+  for(let d=1; d<=last; d++){
+    const past = d < today;
+    grid += `<div class="cal-day${past?' disabled':d===today?' today':''}" onclick="${past?'':'selectDate('+d+',this)'}">${d}</div>`;
+  }
+  grid += '</div>';
+  return `<div style="font-size:.9rem;font-weight:700;text-align:center;margin-bottom:.9rem">${months[now.getMonth()]} ${now.getFullYear()}</div>
+  ${grid}
+  <button class="btn btn-primary" style="width:100%;padding:.78rem;margin-top:.9rem" onclick="goStep(2)" ${schedDate?'':'disabled'} id="cal-next-btn">Próximo →</button>`;
+}
+function selectDate(d, el){
+  schedDate = d;
+  document.querySelectorAll('.cal-day').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  const btn = document.getElementById('cal-next-btn');
+  if(btn) btn.removeAttribute('disabled');
+}
+
+function renderTimeSlots(){
+  const slots=['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
+  const blocked=['10:00','14:00','19:00'];
+  return `<div style="font-weight:600;margin-bottom:.9rem;font-size:.9rem">📅 Dia selecionado: <strong style="color:var(--neon-purple)">${schedDate}</strong></div>
+  <div style="font-size:.83rem;color:var(--text-muted);margin-bottom:.7rem">Selecione um horário disponível:</div>
+  <div class="time-slots">${slots.map(s=>`<div class="time-slot${blocked.includes(s)?' blocked':''}" onclick="${blocked.includes(s)?'':'selectTime(\''+s+'\',this)'}">${blocked.includes(s)?'🔒 ':''}${s}</div>`).join('')}</div>
+  <div style="display:flex;gap:.5rem;align-items:center;margin-top:.5rem">
+    <span style="width:12px;height:12px;border-radius:2px;background:var(--neon-purple);display:inline-block"></span><span style="font-size:.73rem;color:var(--text-muted)">Disponível</span>
+    &nbsp;<span style="width:12px;height:12px;border-radius:2px;background:rgba(239,68,68,.3);display:inline-block"></span><span style="font-size:.73rem;color:var(--text-muted)">Bloqueado</span>
+  </div>
+  <div style="display:flex;gap:.7rem;margin-top:1.1rem">
+    <button class="btn btn-outline" style="flex:1;padding:.78rem" onclick="goStep(1)">← Voltar</button>
+    <button class="btn btn-primary" id="time-next-btn" style="flex:2;padding:.78rem" onclick="goStep(3)" ${schedTime?'':'disabled'}>Próximo →</button>
+  </div>`;
+}
+function selectTime(t, el){
+  schedTime = t;
+  document.querySelectorAll('.time-slot').forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected');
+  const btn = document.getElementById('time-next-btn');
+  if(btn) btn.removeAttribute('disabled');
+}
+
+function renderPayment(){
+  return `<div style="font-weight:600;margin-bottom:.9rem;font-size:.9rem">
+    📅 <strong style="color:var(--neon-purple)">Dia ${schedDate}</strong> às <strong style="color:var(--neon-purple)">${schedTime}</strong>
+  </div>
+  <div style="color:var(--text-muted);font-size:.83rem;margin-bottom:1rem">Escolha a forma de pagamento:</div>
+  <div class="payment-methods">
+    <div class="pay-method" onclick="selectPay('pix',this)"><span class="pay-icon">🟢</span><div class="pay-label">PIX</div><div style="font-size:.7rem;color:var(--text-muted)">Aprovação imediata</div></div>
+    <div class="pay-method" onclick="selectPay('mp',this)"><span class="pay-icon">💳</span><div class="pay-label">Mercado Pago</div><div style="font-size:.7rem;color:var(--text-muted)">Cartão ou saldo</div></div>
+    <div class="pay-method" onclick="selectPay('stripe',this)"><span class="pay-icon">💜</span><div class="pay-label">Stripe</div><div style="font-size:.7rem;color:var(--text-muted)">Internacional</div></div>
+    <div class="pay-method" onclick="selectPay('qr',this)"><span class="pay-icon">📱</span><div class="pay-label">QR Code PIX</div><div style="font-size:.7rem;color:var(--text-muted)">Escaneie e pague</div></div>
+  </div>
+  <div id="pix-box" style="display:none"></div>
+  <div style="display:flex;gap:.7rem;margin-top:1.1rem">
+    <button class="btn btn-outline" style="flex:1;padding:.78rem" onclick="goStep(2)">← Voltar</button>
+    <button class="btn btn-primary" id="confirm-pay-btn" style="flex:2;padding:.78rem" onclick="confirmOrder()" ${schedPayment?'':'disabled'}>✅ Confirmar Pedido</button>
+  </div>`;
+}
+
+function selectPay(type, el){
+  schedPayment = type;
+  document.querySelectorAll('.pay-method').forEach(m=>m.classList.remove('selected'));
+  el.classList.add('selected');
+  const btn = document.getElementById('confirm-pay-btn');
+  if(btn) btn.removeAttribute('disabled');
+  renderPixBox(type);
+}
+
+function renderPixBox(type){
+  const box = document.getElementById('pix-box');
+  if(!box) return;
+  const pixKey = 'zsupbrawl@pagamentos.com.br';
+  if(type==='pix' || type==='qr'){
+    box.style.display='block';
+    box.innerHTML = `<div class="pix-box">
+      <div class="mp-badge" style="margin-bottom:.75rem">⚡ Mercado Pago — PIX</div>
+      <div class="pix-qr" id="qr-visual">
+        <div style="font-size:1.8rem;display:block;letter-spacing:-1px">▓▒░▒▓<br/>░▓▒▓░<br/>▒░▓░▒<br/>▓▒░▒▓</div>
+      </div>
+      <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:.4rem">Chave PIX:</div>
+      <div class="pix-key" id="pix-key-val">${pixKey}</div>
+      <button onclick="copyPix('${pixKey}')" style="background:rgba(6,182,212,.14);border:1px solid rgba(6,182,212,.3);color:var(--neon-cyan);padding:.45rem 1rem;border-radius:.5rem;cursor:pointer;font-size:.78rem;margin-top:.7rem;font-family:'Inter',sans-serif;font-weight:600">📋 Copiar chave</button>
+      <div id="pix-status" style="margin-top:.75rem">
+        <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:.3rem" id="pix-status-txt">⏳ Aguardando pagamento...</div>
+        <div class="pix-progress"><div class="pix-progress-bar" id="pix-bar"></div></div>
+      </div>
+    </div>`;
+    simulatePixPayment();
+  } else if(type==='mp'){
+    box.style.display='block';
+    box.innerHTML = `<div style="background:rgba(0,174,240,.08);border:1px solid rgba(0,174,240,.2);border-radius:.75rem;padding:1.1rem;text-align:center;margin-top:.5rem">
+      <div class="mp-badge" style="margin-bottom:.6rem;display:inline-flex">💳 Mercado Pago</div>
+      <p style="color:var(--text-muted);font-size:.82rem">Você será redirecionado ao Mercado Pago para completar o pagamento com segurança.</p>
+      <button onclick="showToast('Redirecionando ao Mercado Pago...','💳')" style="background:linear-gradient(135deg,#00aef0,#009ee3);border:none;color:#fff;padding:.65rem 1.5rem;border-radius:.5rem;cursor:pointer;font-weight:700;font-size:.85rem;margin-top:.75rem;font-family:'Inter',sans-serif">Pagar com Mercado Pago</button>
+    </div>`;
+  } else if(type==='stripe'){
+    box.style.display='block';
+    box.innerHTML = `<div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:.75rem;padding:1.1rem;margin-top:.5rem">
+      <div class="form-group" style="margin-bottom:.8rem"><label>Número do cartão</label><input type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="19"/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div class="form-group" style="margin-bottom:0"><label>Validade</label><input type="text" class="form-control" placeholder="MM/AA" maxlength="5"/></div>
+        <div class="form-group" style="margin-bottom:0"><label>CVV</label><input type="text" class="form-control" placeholder="000" maxlength="3"/></div>
+      </div>
+    </div>`;
+  } else {
+    box.style.display='none';
+  }
+}
+
+function simulatePixPayment(){
+  if(pixTimer) clearInterval(pixTimer);
+  let pct = 0;
+  pixTimer = setInterval(() => {
+    pct += Math.random() * 8 + 2;
+    if(pct >= 100){ pct = 100; clearInterval(pixTimer); }
+    const bar = document.getElementById('pix-bar');
+    const txt = document.getElementById('pix-status-txt');
+    if(bar) bar.style.width = pct+'%';
+    if(txt){
+      if(pct < 40) txt.textContent = '⏳ Aguardando pagamento...';
+      else if(pct < 80) txt.textContent = '🔄 Processando pagamento...';
+      else if(pct < 100) txt.textContent = '✅ Confirmando...';
+      else txt.textContent = '✅ Pagamento confirmado!';
+    }
+  }, 600);
+}
+
+function copyPix(key){
+  if(navigator.clipboard){ navigator.clipboard.writeText(key).catch(()=>{}); }
+  showToast('Chave PIX copiada!','📋');
+}
+
+function confirmOrder(){
+  if(pixTimer) clearInterval(pixTimer);
+  schedStep=4; renderScheduleStep();
+  showToast('Pedido confirmado com sucesso! 🎉','✅');
+}
+
+function renderConfirm(){
+  const id = 'ZS'+Math.random().toString(36).substr(2,8).toUpperCase();
+  return `<div class="confirm-box">
+    <div style="font-size:3rem;margin-bottom:.5rem">🎉</div>
+    <h3 style="font-family:'Orbitron',sans-serif;font-size:1.15rem;color:#22c55e;margin-bottom:.5rem">Pedido Confirmado!</h3>
+    <p style="color:var(--text-muted);font-size:.87rem;line-height:1.6">Seu serviço foi agendado. Nossa equipe entrará em contato em breve.</p>
+    <div style="font-size:.78rem;color:var(--text-muted);margin-top:.9rem">ID do Pedido: <strong style="color:var(--neon-purple);font-family:monospace">#${id}</strong></div>
+    <div style="margin-top:.75rem"><span class="status-badge status-pending">⏳ Aguardando Processamento</span></div>
+    <div style="margin-top:.6rem;font-size:.8rem;color:var(--text-muted)">📅 Agendado para: Dia ${schedDate} às ${schedTime}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1.1rem">
+    <button class="btn btn-outline" style="padding:.78rem;font-size:.83rem" onclick="closeModal('schedule-modal')">Fechar</button>
+    <a href="https://wa.me/5511999999999?text=Meu+pedido+%23${id}" target="_blank" style="text-decoration:none"><button class="btn btn-primary" style="padding:.78rem;font-size:.83rem;width:100%">💬 WhatsApp</button></a>
+  </div>`;
+}
+
+function goStep(n){ schedStep=n; renderScheduleStep(); }
+
+// ═══ ADMIN ═══
+function renderAdminDashboard(){
+  document.getElementById('admin-content').innerHTML = `
+    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1.5rem;font-size:1.4rem">📊 Dashboard</h2>
+    <div class="admin-stat-grid">
+      <div class="admin-stat-card"><div class="admin-stat-val">R$ 8.420</div><div class="admin-stat-label">💰 Faturamento do mês</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">143</div><div class="admin-stat-label">📋 Pedidos totais</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">12</div><div class="admin-stat-label">⏳ Pendentes</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">97%</div><div class="admin-stat-label">⭐ Satisfação</div></div>
+    </div>
+    <div style="background:rgba(13,13,31,.9);border:1px solid var(--border-glow);border-radius:1rem;padding:1.5rem;margin-bottom:1.5rem">
+      <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">📈 Pedidos — Últimos 7 dias</h4>
+      <div class="chart-wrap" id="admin-chart"></div>
+      <div style="display:flex;justify-content:space-around;font-size:.7rem;color:var(--text-muted);margin-top:.25rem"><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span></div>
+    </div>
+    <div style="background:rgba(13,13,31,.9);border:1px solid var(--border-glow);border-radius:1rem;padding:1.5rem">
+      <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">📋 Últimos Pedidos</h4>
+      <div style="overflow-x:auto"><table class="admin-table">
+        <thead><tr><th>ID</th><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Status</th><th>Ação</th></tr></thead>
+        <tbody>${genFakeOrders()}</tbody>
+      </table></div>
+    </div>`;
+  setTimeout(() => {
+    const bars = [45,70,30,85,60,95,55];
+    const chart = document.getElementById('admin-chart');
+    if(chart) bars.forEach(h => {
+      const b = document.createElement('div'); b.className='chart-bar'; b.style.height='0';
+      chart.appendChild(b); setTimeout(()=>b.style.height=h+'%',100);
+    });
+  }, 100);
+}
+
+function genFakeOrders(){
+  const orders=[
+    ['A1B2C3','Gabriel S.','UP Troféu — 5.000','R$ 25,00','active'],
+    ['D4E5F6','Maria L.','UP Prestígio III — Spike','R$ 70,00','pending'],
+    ['G7H8I9','Rafael P.','UP Ranked — Ouro→Diamante','R$ 245,00','active'],
+    ['J1K2L3','Ana C.','UP Troféu — 2.000','R$ 10,00','done'],
+    ['M4N5O6','Lucas F.','Conta Lendária','R$ 1.299,00','done'],
+  ];
+  const labels={active:'<span class="status-badge status-active">✅ Em andamento</span>',pending:'<span class="status-badge status-pending">⏳ Pendente</span>',done:'<span class="status-badge status-done">✔ Finalizado</span>'};
+  return orders.map(o=>`<tr><td style="font-family:monospace;font-size:.78rem;color:var(--neon-purple)">#ZS${o[0]}</td><td>${o[1]}</td><td>${o[2]}</td><td style="font-weight:700">${o[3]}</td><td>${labels[o[4]]}</td><td><button class="btn btn-outline" style="padding:.25rem .6rem;font-size:.72rem" onclick="showToast('Status atualizado!','✅')">Atualizar</button></td></tr>`).join('');
+}
+
+function adminNav(section, el){
+  document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  if(section==='dashboard') renderAdminDashboard();
+  else document.getElementById('admin-content').innerHTML=`<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">${el.textContent}</h2><div style="background:rgba(13,13,31,.9);border:1px solid var(--border-glow);border-radius:1rem;padding:3rem;text-align:center;color:var(--text-muted)"><div style="font-size:2.5rem;margin-bottom:1rem">🔧</div>Seção em desenvolvimento</div>`;
+}
+
+// ═══ UTILS ═══
+function loginSocial(p){ closeModal('login-modal'); showToast('Conectando com '+p+'...','🔄'); setTimeout(()=>showToast('Login com '+p+' realizado!','✅'),1600); }
+function loginEmail(){ closeModal('login-modal'); showToast('Login realizado com sucesso!','✅'); }
+function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+
+function showToast(msg, icon){
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span style="font-size:1.1rem">${icon}</span><span style="font-size:.87rem;font-weight:500">${msg}</span>`;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(()=>{ t.style.cssText='transform:translateX(110%);opacity:0;transition:.4s'; }, 2800);
+  setTimeout(()=>t.remove(), 3300);
+}
+
+// Close on backdrop click
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('active'); }));
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.modal-overlay.active').forEach(m=>m.classList.remove('active')); });
+window.addEventListener('scroll', () => { document.getElementById('navbar').style.background = window.scrollY>50 ? 'rgba(0,0,0,.96)':'rgba(0,0,0,.88)'; });
+</script>
+</body>
+</html>
