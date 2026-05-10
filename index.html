@@ -65,6 +65,8 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .service-card:hover{transform:translateY(-8px);border-color:var(--neon-purple);box-shadow:0 0 40px rgba(168,85,247,.22),0 20px 60px rgba(0,0,0,.5)}
 .service-card:hover::before{opacity:1}
 .service-icon{width:64px;height:64px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.25rem}
+.service-icon.clean{background:transparent!important;border:none!important}
+.service-icon.clean img{width:62px;height:62px;object-fit:contain;display:block}
 .service-card h3{font-family:'Orbitron',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:.5rem}
 .service-card p{color:var(--text-muted);font-size:.87rem;line-height:1.65;margin-bottom:1.5rem}
 .service-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .7rem;border-radius:50px;font-size:.73rem;font-weight:700}
@@ -110,7 +112,7 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .prestige-options{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:1rem 0}
 .prestige-opt{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);border-radius:.75rem;padding:.75rem;text-align:center;cursor:pointer;transition:.3s}
 .prestige-opt:hover,.prestige-opt.selected{border-color:var(--neon-purple);background:rgba(168,85,247,.12)}
-.prestige-opt img{width:52px;height:52px;border-radius:.5rem;object-fit:cover;margin-bottom:.4rem;display:block;margin-left:auto;margin-right:auto}
+.prestige-opt img{width:52px;height:52px;border-radius:.5rem;object-fit:contain;margin-bottom:.4rem;display:block;margin-left:auto;margin-right:auto;background:transparent}
 .prestige-opt span{display:block;font-size:.78rem;font-weight:700}
 .error-msg{color:#f87171;font-size:.82rem;margin-top:.4rem;padding:.6rem 1rem;background:rgba(248,113,113,.1);border-radius:.5rem;border:1px solid rgba(248,113,113,.25)}
 
@@ -138,6 +140,7 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .rank-card{background:rgba(13,13,31,.9);border:2px solid transparent;border-radius:.7rem;padding:.85rem .6rem;text-align:center;cursor:pointer;transition:.3s}
 .rank-card:hover,.rank-card.selected{border-color:var(--neon-purple);background:rgba(168,85,247,.12);transform:scale(1.05)}
 .rank-emoji{font-size:1.8rem;display:block;margin-bottom:.3rem}
+.rank-icon{width:42px;height:42px;object-fit:contain;display:block;margin:0 auto .35rem;background:transparent}
 .rank-name{font-size:.7rem;font-weight:700;line-height:1.3}
 .rank-sub{font-size:.62rem;color:var(--text-muted)}
 
@@ -233,7 +236,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 .sep{height:1px;background:linear-gradient(90deg,transparent,var(--border-glow),transparent);max-width:1200px;margin:0 auto}
 
 /* ── WHATSAPP FLOAT ── */
-.wa-float{position:fixed;bottom:2rem;left:2rem;z-index:500;width:52px;height:52px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 18px rgba(37,211,102,.5);transition:.3s;text-decoration:none}
+.wa-float{position:fixed;bottom:2rem;left:2rem;z-index:500;width:52px;height:52px;border-radius:50%;background:#fff;color:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 18px rgba(255,255,255,.35);transition:.3s;text-decoration:none}
 .wa-float:hover{transform:scale(1.12);box-shadow:0 0 32px rgba(37,211,102,.7)}
 
 /* ── CHART BAR ── */
@@ -288,8 +291,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   <div class="hero-bg"></div>
   <div style="position:relative;z-index:2;max-width:800px">
     <div class="hero-badge">⚡ O MELHOR ELOJOB DO BRASIL</div>
-    <h1><span class="gradient-text">ZS UpBrawl</span><br/><span style="font-size:60%;opacity:.85">Seu rank. Nossa missão.</span></h1>
-    <p>Serviços profissionais de UP Troféu, UP Ranked, UP Prestígio e Contas para Brawl Stars. Seguro, rápido e garantido.</p>
+    <h1><span class="gradient-text">ZS UpBrawl</span></h1>
     <div class="hero-btns">
       <button class="btn btn-primary btn-lg" onclick="openScheduleMain()">🗓 Agendar Agora</button>
       <button class="btn btn-outline btn-lg" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Ver Serviços</button>
@@ -314,28 +316,28 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   <div class="services-grid">
     <div class="service-card" onclick="openTrofeu()">
       <div class="card-arrow">→</div>
-      <div class="service-icon" style="background:linear-gradient(135deg,rgba(251,191,36,.22),rgba(245,158,11,.1))">🏆</div>
+      <div class="service-icon clean"><img src="https://www.brawlstarsdicas.com.br/wp-content/uploads/2019/01/trofeus-brawl-stars-icone-trophy.png" alt="Troféus"/></div>
       <h3>UP Troféu</h3>
       <p>Suba seus troféus com preço calculado automaticamente. Abaixo de 40k = R$5 por 1.000 troféus.</p>
       <div class="service-badge badge-purple">A partir de R$5/1k troféus</div>
     </div>
     <div class="service-card" onclick="openRanked()">
       <div class="card-arrow">→</div>
-      <div class="service-icon" style="background:linear-gradient(135deg,rgba(59,130,246,.22),rgba(99,102,241,.1))">🎯</div>
+      <div class="service-icon clean"><img src="https://static.wikia.nocookie.net/brawlstars/images/b/be/Ranqueado.png/revision/latest?cb=20250208151915&path-prefix=pt" alt="Ranqueado"/></div>
       <h3>UP Ranked</h3>
       <p>Suba de elo no ranked com nossos profissionais. Do Bronze ao Pro sem preocupações.</p>
       <div class="service-badge badge-blue">Preço por IA automática</div>
     </div>
     <div class="service-card" onclick="openPrestigio()">
       <div class="card-arrow">→</div>
-      <div class="service-icon" style="background:linear-gradient(135deg,rgba(168,85,247,.22),rgba(139,92,246,.1))">💎</div>
+      <div class="service-icon clean"><img src="https://i.imgur.com/de4d1HK.jpeg" alt="Prestígio"/></div>
       <h3>UP Prestígio</h3>
       <p>Alcance o prestígio desejado em qualquer brawler. 7 raridades com imagens reais.</p>
       <div class="service-badge badge-purple">100+ Brawlers disponíveis</div>
     </div>
     <div class="service-card" onclick="openContas()">
       <div class="card-arrow">→</div>
-      <div class="service-icon" style="background:linear-gradient(135deg,rgba(236,72,153,.22),rgba(219,39,119,.1))">👑</div>
+      <div class="service-icon clean"><img src="https://static.wikia.nocookie.net/brawlstars/images/e/e6/Site-logo.png/revision/latest?cb=20210824024831" alt="Conta Brawl Stars"/></div>
       <h3>Contas</h3>
       <p>Contas premium com brawlers raros, gemas e skins exclusivas. Loja completa.</p>
       <div class="service-badge badge-pink">Loja premium</div>
@@ -412,15 +414,29 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
     <h2>🔐 Entrar</h2><p class="modal-sub">Acesse sua conta ZS UpBrawl</p>
     <div style="display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.25rem">
-      <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem" onclick="loginSocial('Google')">🔴 Continuar com Google</button>
-      <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem;border-color:#5865F2;color:#5865F2" onclick="loginSocial('Discord')">🎮 Continuar com Discord</button>
+      <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem" disabled title="Login social ainda não está conectado">Continuar com Google</button>
+      <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem;border-color:#5865F2;color:#5865F2" disabled title="Login social ainda não está conectado">Continuar com Discord</button>
     </div>
     <div style="display:flex;align-items:center;gap:.7rem;margin:1rem 0"><div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div><span style="color:var(--text-muted);font-size:.78rem">ou email</span><div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div></div>
     <div class="form-group"><label>Email</label><input type="email" class="form-control" id="login-email" placeholder="seu@email.com"/></div>
     <div class="form-group"><label>Senha</label><input type="password" class="form-control" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter') loginEmail()"/></div>
     <div class="danger-text" id="login-error"></div>
     <button class="btn btn-primary" style="width:100%;padding:.82rem;margin-top:.25rem" onclick="loginEmail()">Entrar</button>
-    <p style="text-align:center;font-size:.8rem;color:var(--text-muted);margin-top:.9rem">Dono padrão: <strong style="color:var(--neon-purple)">admin@zsupbrawl.com</strong> / <strong>admin123</strong></p>
+    <button class="btn btn-outline" style="width:100%;padding:.72rem;margin-top:.65rem" onclick="openSignup()">Cadastrar conta</button>
+  </div>
+</div>
+
+<!-- CADASTRO -->
+<div class="modal-overlay" id="signup-modal">
+  <div class="modal" style="max-width:420px">
+    <button class="modal-close" onclick="closeModal('signup-modal')">✕</button>
+    <h2>Cadastro</h2><p class="modal-sub">Crie sua conta de cliente</p>
+    <div class="form-group"><label>Nome</label><input class="form-control" id="signup-name" placeholder="Seu nome"/></div>
+    <div class="form-group"><label>Email</label><input type="email" class="form-control" id="signup-email" placeholder="seu@email.com"/></div>
+    <div class="form-group"><label>WhatsApp</label><input class="form-control" id="signup-phone" placeholder="(12) 99999-9999"/></div>
+    <div class="form-group"><label>Senha</label><input type="password" class="form-control" id="signup-password" placeholder="Crie uma senha"/></div>
+    <div class="danger-text" id="signup-error"></div>
+    <button class="btn btn-primary" style="width:100%;padding:.82rem" onclick="signupUser()">Cadastrar</button>
   </div>
 </div>
 
@@ -488,9 +504,9 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <div style="margin:1rem 0">
       <label style="font-size:.82rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:.7rem;text-transform:uppercase;letter-spacing:.4px">Qual prestígio deseja?</label>
       <div class="prestige-options">
-        <div class="prestige-opt" onclick="selectPrestigio(1,this)"><img src="https://i.imgur.com/iyytiRU.jpeg" alt="P1"/><span>Prestígio I</span></div>
-        <div class="prestige-opt" onclick="selectPrestigio(2,this)"><img src="https://i.imgur.com/IjCCZY2.jpeg" alt="P2"/><span>Prestígio II</span></div>
-        <div class="prestige-opt" onclick="selectPrestigio(3,this)"><img src="https://i.imgur.com/h7mURSb.jpeg" alt="P3"/><span>Prestígio III</span></div>
+        <div class="prestige-opt" onclick="selectPrestigio(1,this)"><img src="https://i.imgur.com/de4d1HK.jpeg" alt="P1"/><span>Prestígio I</span></div>
+        <div class="prestige-opt" onclick="selectPrestigio(2,this)"><img src="https://i.imgur.com/de4d1HK.jpeg" alt="P2"/><span>Prestígio II</span></div>
+        <div class="prestige-opt" onclick="selectPrestigio(3,this)"><img src="https://i.imgur.com/de4d1HK.jpeg" alt="P3"/><span>Prestígio III</span></div>
       </div>
     </div>
     <div class="price-display" id="prest-price" style="display:none">
@@ -555,6 +571,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <div class="admin-nav-item" onclick="adminNav('chat',this)">💬 Chat Upador</div>
     <div class="admin-nav-item" onclick="adminNav('products',this)">🛒 Produtos</div>
     <div class="admin-nav-item" onclick="adminNav('users',this)">👥 Usuários</div>
+    <div class="admin-nav-item" onclick="adminNav('logins',this)">🔑 Logins</div>
     <div class="admin-nav-item" onclick="adminNav('contas',this)">👑 Contas</div>
     <div class="admin-nav-item" onclick="adminNav('financeiro',this)">💰 Financeiro</div>
     <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border-glow)">
@@ -793,14 +810,26 @@ const BRAWLERS_DATA = {
   ]}
 };
 
+const RANK_ICONS = {
+  bronze:'https://static.wikia.nocookie.net/brawlstars/images/8/8c/Divis%C3%A3o_ranqueado_bronze_2.png/revision/latest?cb=20250313082201&path-prefix=pt',
+  prata:'https://static.wikia.nocookie.net/brawlstars/images/d/dd/Divis%C3%A3o_ranqueado_prata_2.png/revision/latest/scale-to-width-down/50?cb=20250313082257&path-prefix=pt',
+  ouro:'https://static.wikia.nocookie.net/brawlstars/images/9/9f/Divis%C3%A3o_ranqueado_ouro_2.png/revision/latest/scale-to-width-down/50?cb=20250313082328&path-prefix=pt',
+  diamante:'https://static.wikia.nocookie.net/brawlstars/images/c/c0/Divis%C3%A3o_ranqueado_diamante_2.png/revision/latest/scale-to-width-down/50?cb=20250313082349&path-prefix=pt',
+  mitico:'https://static.wikia.nocookie.net/brawlstars/images/e/ec/Divis%C3%A3o_ranqueado_m%C3%ADtica_2.png/revision/latest/scale-to-width-down/50?cb=20250313082436&path-prefix=pt',
+  lendario:'https://static.wikia.nocookie.net/brawlstars/images/c/c7/Divis%C3%A3o_ranqueado_lend%C3%A1ria_2.png/revision/latest/scale-to-width-down/50?cb=20250313082540&path-prefix=pt',
+  mestre:'https://static.wikia.nocookie.net/brawlstars/images/5/5a/Divis%C3%A3o_ranqueado_mestres_2.png/revision/latest/scale-to-width-down/50?cb=20250313082636&path-prefix=pt',
+  pro:'https://static.wikia.nocookie.net/brawlstars/images/4/40/Divis%C3%A3o_ranqueado_pro.png/revision/latest/scale-to-width-down/50?cb=20250313082700&path-prefix=pt'
+};
+
 const RANKS = [
-  {n:'Bronze I',e:'🥉',v:1},{n:'Bronze II',e:'🥉',v:2},{n:'Bronze III',e:'🥉',v:3},
-  {n:'Prata I',e:'🥈',v:4},{n:'Prata II',e:'🥈',v:5},{n:'Prata III',e:'🥈',v:6},
-  {n:'Ouro I',e:'🥇',v:7},{n:'Ouro II',e:'🥇',v:8},{n:'Ouro III',e:'🥇',v:9},
-  {n:'Diamante I',e:'💎',v:10},{n:'Diamante II',e:'💎',v:11},{n:'Diamante III',e:'💎',v:12},
-  {n:'Mito I',e:'🌟',v:13},{n:'Mito II',e:'🌟',v:14},{n:'Mito III',e:'🌟',v:15},
-  {n:'Lendário I',e:'👑',v:16},{n:'Lendário II',e:'👑',v:17},{n:'Lendário III',e:'👑',v:18},
-  {n:'Mestre',e:'⚡',v:19},{n:'Pro',e:'🔮',v:20}
+  {n:'Bronze I',tier:'Bronze',points:0,icon:RANK_ICONS.bronze},{n:'Bronze II',tier:'Bronze',points:250,icon:RANK_ICONS.bronze},{n:'Bronze III',tier:'Bronze',points:500,icon:RANK_ICONS.bronze},
+  {n:'Prata I',tier:'Prata',points:750,icon:RANK_ICONS.prata},{n:'Prata II',tier:'Prata',points:1000,icon:RANK_ICONS.prata},{n:'Prata III',tier:'Prata',points:1250,icon:RANK_ICONS.prata},
+  {n:'Ouro I',tier:'Ouro',points:1500,icon:RANK_ICONS.ouro},{n:'Ouro II',tier:'Ouro',points:2000,icon:RANK_ICONS.ouro},{n:'Ouro III',tier:'Ouro',points:2500,icon:RANK_ICONS.ouro},
+  {n:'Diamante I',tier:'Diamante',points:3000,icon:RANK_ICONS.diamante},{n:'Diamante II',tier:'Diamante',points:3500,icon:RANK_ICONS.diamante},{n:'Diamante III',tier:'Diamante',points:4000,icon:RANK_ICONS.diamante},
+  {n:'Mítico I',tier:'Mítico',points:4500,icon:RANK_ICONS.mitico},{n:'Mítico II',tier:'Mítico',points:5000,icon:RANK_ICONS.mitico},{n:'Mítico III',tier:'Mítico',points:5500,icon:RANK_ICONS.mitico},
+  {n:'Lendário I',tier:'Lendário',points:6000,icon:RANK_ICONS.lendario},{n:'Lendário II',tier:'Lendário',points:6750,icon:RANK_ICONS.lendario},{n:'Lendário III',tier:'Lendário',points:7500,icon:RANK_ICONS.lendario},
+  {n:'Mestres I',tier:'Mestres',points:8250,icon:RANK_ICONS.mestre},{n:'Mestres II',tier:'Mestres',points:9250,icon:RANK_ICONS.mestre},{n:'Mestres III',tier:'Mestres',points:10250,icon:RANK_ICONS.mestre},
+  {n:'Pro',tier:'Pro',points:11250,icon:RANK_ICONS.pro}
 ];
 
 const CONTAS_FAKE = [
@@ -846,9 +875,23 @@ function moneyFromText(v){ return Number(String(v||'0').replace(/[^\d,.-]/g,'').
 function ensureSeedData(){
   if(!localStorage.getItem(LS_KEYS.users)){
     saveStore(LS_KEYS.users, [
-      {id:'USR-DONO',name:'Dono ZS',email:'admin@zsupbrawl.com',password:'admin123',role:'dono',active:true},
+      {id:'USR-DONO',name:'zszoro',email:'zszoro818@gmail.com',password:'zeman1234',phone:'',role:'dono',active:true},
       {id:'USR-UP1',name:'Upador Alpha',email:'upador@zsupbrawl.com',password:'upador123',role:'upador',active:true}
     ]);
+  } else {
+    const users = loadStore(LS_KEYS.users, []);
+    const cleaned = users.filter(u => u.email !== 'admin@zsupbrawl.com');
+    const owner = cleaned.find(u => u.role === 'dono') || cleaned.find(u => u.email === 'zszoro818@gmail.com');
+    if(owner){
+      owner.name = 'zszoro';
+      owner.email = 'zszoro818@gmail.com';
+      owner.password = 'zeman1234';
+      owner.role = 'dono';
+      owner.active = true;
+    } else {
+      cleaned.unshift({id:'USR-DONO',name:'zszoro',email:'zszoro818@gmail.com',password:'zeman1234',phone:'',role:'dono',active:true});
+    }
+    saveStore(LS_KEYS.users, cleaned);
   }
   if(!localStorage.getItem(LS_KEYS.orders)){
     saveStore(LS_KEYS.orders, [
@@ -973,7 +1016,7 @@ function buildBrawlers(){
 function buildRanks(){
   const mkRank = (side, idx) => RANKS.map((r,i) =>
     `<div class="rank-card" onclick="setRank('${side}',${i},this)" id="r${side}-${i}">
-      <span class="rank-emoji">${r.e}</span><div class="rank-name">${r.n}</div></div>`).join('');
+      <img class="rank-icon" src="${r.icon}" alt="${r.tier}"/><div class="rank-name">${r.n}</div><div class="rank-sub">${r.points.toLocaleString('pt-BR')} pts</div></div>`).join('');
   document.getElementById('ranked-from-grid').innerHTML = mkRank('from');
   document.getElementById('ranked-to-grid').innerHTML = mkRank('to');
 }
@@ -1018,7 +1061,11 @@ function openAdmin(){
     showToast('Entre para acessar o admin.','🔐');
     return;
   }
-  openPage('admin-page'); renderAdminDashboard();
+  if(currentUser.role !== 'dono' && currentUser.role !== 'upador'){
+    showToast('Admin é apenas para dono e upadores.','🔒');
+    return;
+  }
+  openPage('admin-page'); updateAdminMenu(); renderAdminDashboard();
 }
 function openScheduleMain(){ showToast('Escolha um serviço primeiro!','ℹ️'); document.getElementById('services').scrollIntoView({behavior:'smooth'}); }
 function openPrestigio(){ openPage('brawlers-page'); }
@@ -1127,18 +1174,18 @@ function setRank(type, idx, el){
 
 function calcRanked(){
   if(rankedTo <= rankedFrom){ document.getElementById('ranked-price').style.display='none'; return; }
-  const diff = rankedTo - rankedFrom;
-  const base = diff * 35;
-  const mult = diff>=10 ? 2.5 : diff>=6 ? 1.8 : diff>=3 ? 1.4 : 1.1;
-  const price = base * mult;
-  const days = Math.ceil(diff * 1.5);
-  const dif = diff>=10 ? 'Extrema' : diff>=6 ? 'Muito Alta' : diff>=3 ? 'Alta' : 'Média';
+  const pointDiff = RANKS[rankedTo].points - RANKS[rankedFrom].points;
+  const divisionDiff = rankedTo - rankedFrom;
+  const mult = pointDiff>=5000 ? 2.2 : pointDiff>=3000 ? 1.8 : pointDiff>=1500 ? 1.4 : 1.1;
+  const price = Math.max(20, (pointDiff / 250) * 18 * mult);
+  const days = Math.max(1, Math.ceil(pointDiff / 900));
+  const dif = pointDiff>=5000 ? 'Extrema' : pointDiff>=3000 ? 'Muito Alta' : pointDiff>=1500 ? 'Alta' : 'Média';
   document.getElementById('ranked-price').style.display = 'block';
   document.getElementById('r-price-val').textContent = 'R$ ' + price.toFixed(2).replace('.',',');
-  document.getElementById('r-price-note').textContent = RANKS[rankedFrom].n + ' → ' + RANKS[rankedTo].n;
+  document.getElementById('r-price-note').textContent = `${RANKS[rankedFrom].n} (${RANKS[rankedFrom].points} pts) → ${RANKS[rankedTo].n} (${RANKS[rankedTo].points} pts)`;
   document.getElementById('r-mult').textContent = '🔥 Mult: '+mult+'x';
   document.getElementById('r-time').textContent = '⏱ '+days+(days===1?' dia':' dias');
-  document.getElementById('r-dif').textContent = '📊 '+dif;
+  document.getElementById('r-dif').textContent = `📊 ${dif} · ${divisionDiff} divisões`;
 }
 
 // ═══ SCHEDULE FLOW ═══
@@ -1455,12 +1502,16 @@ function updateAuthUI(){
   if(!btn) return;
   btn.textContent = currentUser ? `${currentUser.name} · Sair` : 'Entrar';
 }
+function updateAdminMenu(){
+  const ownerSections = ['uploaders','products','users','logins','contas','financeiro'];
+  document.querySelectorAll('.admin-nav-item').forEach(item => {
+    const attr = item.getAttribute('onclick') || '';
+    const ownerOnly = ownerSections.some(s => attr.includes(`'${s}'`));
+    item.style.display = !isOwner() && ownerOnly ? 'none' : '';
+  });
+}
 function loginSocial(p){
-  const users = loadStore(LS_KEYS.users, []);
-  currentUser = users.find(u => u.role === 'dono');
-  localStorage.setItem(LS_KEYS.currentUser, currentUser.id);
-  closeModal('login-modal'); updateAuthUI();
-  showToast(`Login com ${p} realizado como ${currentUser.name}.`,'✅');
+  showToast(`Login com ${p} ainda não está conectado. Use email e senha.`, '🔒');
 }
 function loginEmail(){
   const email = document.getElementById('login-email')?.value.trim().toLowerCase();
@@ -1477,7 +1528,42 @@ function loginEmail(){
   closeModal('login-modal'); updateAuthUI();
   showToast(`Bem-vindo, ${user.name}!`,'✅');
 }
+function openSignup(){
+  closeModal('login-modal');
+  openModal('signup-modal');
+}
+function signupUser(){
+  const name = document.getElementById('signup-name')?.value.trim();
+  const email = document.getElementById('signup-email')?.value.trim().toLowerCase();
+  const phone = document.getElementById('signup-phone')?.value.trim();
+  const password = document.getElementById('signup-password')?.value;
+  const err = document.getElementById('signup-error');
+  const users = loadStore(LS_KEYS.users, []);
+  if(!name || !email || !phone || !password){
+    if(err){ err.textContent = 'Preencha nome, email, WhatsApp e senha.'; err.style.display='block'; }
+    return;
+  }
+  if(users.some(u => u.email.toLowerCase() === email)){
+    if(err){ err.textContent = 'Esse email já está cadastrado.'; err.style.display='block'; }
+    return;
+  }
+  const user = {id:uid('USR-'),name,email,phone,password,role:'cliente',active:true};
+  users.push(user);
+  saveStore(LS_KEYS.users, users);
+  currentUser = user;
+  localStorage.setItem(LS_KEYS.currentUser, user.id);
+  if(err) err.style.display='none';
+  closeModal('signup-modal'); updateAuthUI();
+  showToast('Cadastro criado com sucesso.','✅');
+}
 function renderAdminDashboard(){
+  if(!isOwner()){
+    document.getElementById('admin-content').innerHTML = `
+      <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem;font-size:1.4rem">Tarefas do upador</h2>
+      <div class="locked-note">Você está como upador. As áreas de dono foram removidas deste painel.</div>
+      <div class="admin-card">${ordersTable(loadStore(LS_KEYS.orders, []).filter(o => !o.uploaderId || o.uploaderId === currentUser?.id))}</div>`;
+    return;
+  }
   const orders = loadStore(LS_KEYS.orders, []);
   const revenue = orders.reduce((sum,o)=>sum + moneyFromText(o.price), 0);
   const pending = orders.filter(o=>o.status==='pendente').length;
@@ -1534,7 +1620,9 @@ function completeTask(id){
   o.status='realizado'; saveStore(LS_KEYS.orders, orders); renderAdminOrders(); showToast('Pedido marcado como realizado.','✅');
 }
 function renderAdminOrders(){
-  document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">📋 Pedidos e agendamentos</h2><div class="admin-card">${ordersTable(loadStore(LS_KEYS.orders, []))}</div>`;
+  const orders = loadStore(LS_KEYS.orders, []);
+  const visible = isOwner() ? orders : orders.filter(o => !o.uploaderId || o.uploaderId === currentUser?.id);
+  document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">📋 Pedidos e agendamentos</h2><div class="admin-card">${ordersTable(visible)}</div>`;
 }
 function renderUploaders(){
   if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">⚡ Upadores</h2><div class="locked-note">Upadores comuns não podem cadastrar ou alterar equipe.</div>`; return; }
@@ -1610,6 +1698,25 @@ function renderUsers(){
   if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="locked-note">Upadores comuns não podem mexer nos usuários do admin.</div>`; return; }
   document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="admin-card">${loadStore(LS_KEYS.users, []).map(u=>`<div style="display:flex;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06)"><span>${u.name}<br/><small style="color:var(--text-muted)">${u.email}</small></span>${roleBadge(u.role)}</div>`).join('')}</div>`;
 }
+function renderLogins(){
+  if(!isOwner()){ document.getElementById('admin-content').innerHTML = ''; return; }
+  const users = loadStore(LS_KEYS.users, []);
+  const orders = loadStore(LS_KEYS.orders, []);
+  document.getElementById('admin-content').innerHTML = `
+    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">🔑 Logins e códigos</h2>
+    <div class="admin-card">
+      <h4 style="margin-bottom:.8rem">Contas cadastradas</h4>
+      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Nome</th><th>Email</th><th>Senha</th><th>Número</th><th>Perfil</th></tr></thead><tbody>
+        ${users.map(u=>`<tr><td>${u.name}</td><td>${u.email}</td><td style="font-family:monospace">${u.password || ''}</td><td>${u.phone || '-'}</td><td>${roleBadge(u.role)}</td></tr>`).join('')}
+      </tbody></table></div>
+    </div>
+    <div class="admin-card">
+      <h4 style="margin-bottom:.8rem">Códigos dos agendamentos</h4>
+      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Código</th><th>Nome</th><th>Número</th><th>Serviço</th><th>Observações</th></tr></thead><tbody>
+        ${orders.map(o=>`<tr><td style="font-family:monospace;color:var(--neon-purple)">${o.id}</td><td>${o.client || o.owner}</td><td>${o.whatsapp || '-'}</td><td>${o.service}<br/><small style="color:var(--text-muted)">${o.details}</small></td><td>${o.notes || '-'}</td></tr>`).join('')}
+      </tbody></table></div>
+    </div>`;
+}
 function renderFinance(){
   if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💰 Financeiro</h2><div class="locked-note">Upadores comuns não podem acessar o financeiro.</div>`; return; }
   const orders = loadStore(LS_KEYS.orders, []);
@@ -1625,6 +1732,7 @@ function adminNav(section, el){
   if(section==='chat') renderChat();
   if(section==='products' || section==='contas') renderProducts();
   if(section==='users') renderUsers();
+  if(section==='logins') renderLogins();
   if(section==='financeiro') renderFinance();
 }
 
