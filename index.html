@@ -911,6 +911,33 @@ function canManageAdmin(){ return ['dono','admin'].includes(currentUser?.role); 
 function canModerate(){ return ['dono','admin','mod'].includes(currentUser?.role); }
 function canUseTeamChat(){ return ['dono','admin','mod','upador'].includes(currentUser?.role); }
 function ownerExists(){ return loadStore(LS_KEYS.users, []).some(u => u.role === 'dono'); }
+async function loginOwnerViaServer(email, password){
+  try{
+    const res = await fetch('/api/owner-login', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,password})
+    });
+    if(res.status === 404) return null;
+    const data = await res.json().catch(()=>({}));
+    if(!res.ok) return {error:data.error || 'Login do dono inválido.'};
+    return data.user;
+  }catch(e){
+    return null;
+  }
+}
+function rememberSessionUser(user){
+  const users = loadStore(LS_KEYS.users, []);
+  const existing = users.find(u => u.id === user.id || u.email?.toLowerCase() === user.email?.toLowerCase());
+  if(existing){
+    Object.assign(existing, {...user, passwordHash:existing.passwordHash});
+  } else {
+    users.push(user);
+  }
+  saveStore(LS_KEYS.users, users);
+  currentUser = user;
+  localStorage.setItem(LS_KEYS.currentUser, user.id);
+}
 function ensureSeedData(){
   if(!localStorage.getItem(LS_KEYS.users)){
     saveStore(LS_KEYS.users, [
@@ -1611,6 +1638,18 @@ async function loginEmail(){
   const email = document.getElementById('login-email')?.value.trim().toLowerCase();
   const pass = document.getElementById('login-password')?.value;
   const err = document.getElementById('login-error');
+  const ownerLogin = await loginOwnerViaServer(email, pass);
+  if(ownerLogin?.error){
+    if(err){ err.textContent = ownerLogin.error; err.style.display='block'; }
+    return;
+  }
+  if(ownerLogin){
+    rememberSessionUser(ownerLogin);
+    if(err) err.style.display='none';
+    closeModal('login-modal'); updateAuthUI();
+    showToast(`Bem-vindo, ${ownerLogin.name}!`,'✅');
+    return;
+  }
   const users = loadStore(LS_KEYS.users, []);
   const user = users.find(u => u.email.toLowerCase() === email && u.active);
   if(user?.needsPasswordReset){
@@ -1648,7 +1687,7 @@ async function signupUser(){
     if(err){ err.textContent = 'Esse email já está cadastrado.'; err.style.display='block'; }
     return;
   }
-  const role = ownerExists() ? 'cliente' : 'dono';
+  const role = 'cliente';
   const user = {id:uid('USR-'),name,email,phone,passwordHash:await sha256(password),role,active:true};
   users.push(user);
   saveStore(LS_KEYS.users, users);
