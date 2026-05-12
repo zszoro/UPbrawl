@@ -242,6 +242,15 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 /* ── CHART BAR ── */
 .chart-wrap{display:flex;align-items:flex-end;gap:.4rem;height:90px;margin:1rem 0}
 .chart-bar{flex:1;border-radius:.25rem .25rem 0 0;background:linear-gradient(180deg,var(--neon-purple),rgba(168,85,247,.25));transition:.8s ease;min-height:4px}
+.insight-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:1rem;margin-bottom:1rem}
+.insight-list{display:flex;flex-direction:column;gap:.75rem}
+.insight-row{display:grid;grid-template-columns:120px 1fr auto;gap:.75rem;align-items:center;font-size:.8rem;color:var(--text-muted)}
+.insight-track{height:10px;border-radius:50px;background:rgba(255,255,255,.07);overflow:hidden}
+.insight-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--neon-purple),var(--neon-cyan))}
+.donut{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;margin:0 auto;position:relative;background:conic-gradient(var(--neon-purple) 0deg,var(--neon-blue) 120deg,var(--neon-cyan) 220deg,rgba(255,255,255,.08) 220deg)}
+.donut::before{content:'';width:94px;height:94px;border-radius:50%;background:#0d0d1f;position:absolute}
+.donut-label{position:relative;text-align:center;font-family:'Orbitron',sans-serif;font-weight:900;color:var(--text-primary)}
+.metric-mini{display:flex;justify-content:space-between;gap:.8rem;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.84rem}
 
 @media(max-width:768px){
   .nav-links{display:none}
@@ -330,14 +339,14 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     </div>
     <div class="service-card" onclick="openPrestigio()">
       <div class="card-arrow">→</div>
-      <div class="service-icon clean"><img src="https://i.imgur.com/de4d1HK.jpeg" alt="Prestígio"/></div>
+      <div class="service-icon clean"><img src="https://static.wikia.nocookie.net/brawlstars/images/1/11/Icon-Starr_Drop.png/revision/latest/scale-to-width-down/28?cb=20231207114652" alt="Prestígio"/></div>
       <h3>UP Prestígio</h3>
       <p>Alcance o prestígio desejado em qualquer brawler. 7 raridades com imagens reais.</p>
       <div class="service-badge badge-purple">100+ Brawlers disponíveis</div>
     </div>
     <div class="service-card" onclick="openContas()">
       <div class="card-arrow">→</div>
-      <div class="service-icon clean"><img src="https://static.wikia.nocookie.net/brawlstars/images/e/e6/Site-logo.png/revision/latest?cb=20210824024831" alt="Conta Brawl Stars"/></div>
+      <div class="service-icon clean"><img src="https://th.bing.com/th/id/OIP.RvyVKMJvDECu6oYiCfucoAHaIU?w=179&h=202&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" alt="Conta Brawl Stars"/></div>
       <h3>Contas</h3>
       <p>Contas premium com brawlers raros, gemas e skins exclusivas. Loja completa.</p>
       <div class="service-badge badge-pink">Loja premium</div>
@@ -1390,13 +1399,25 @@ function confirmOrder(){
   const orders = loadStore(LS_KEYS.orders, []);
   orders.unshift(currentOrder);
   saveStore(LS_KEYS.orders, orders);
+  sendWhatsAppNotification(currentOrder);
   schedStep=4; renderScheduleStep();
   showToast('Agendamento salvo no admin! 🎉','✅');
 }
 
+function orderWhatsAppText(order){
+  return `Novo agendamento ZS UpBrawl\n\nCódigo: ${order.id}\nCliente: ${order.client}\nWhatsApp: ${order.whatsapp}\nServiço: ${order.service}\nDetalhes: ${order.details}\nValor: ${order.price}\nData/Horário: ${order.date} às ${order.time}\nPagamento: ${order.payment}\nObservações: ${order.notes || 'Nenhuma'}\n\nNotificação automática gerada pelo site.`;
+}
+
+function sendWhatsAppNotification(order){
+  const url = `${WHATSAPP_URL}?text=${encodeURIComponent(orderWhatsAppText(order))}`;
+  const win = window.open(url, '_blank', 'noopener,noreferrer');
+  if(win) showToast('WhatsApp aberto automaticamente para notificar a equipe.','💬');
+  else showToast('Seu navegador bloqueou a notificação automática. Use o botão do WhatsApp.','⚠️');
+}
+
 function renderConfirm(){
   if(!currentOrder) currentOrder = {id:uid('ZS-'),service:serviceLabel(),details:'Detalhes a confirmar',price:'A combinar',date:schedDate,time:schedTime,payment:schedPayment.toUpperCase(),client:'Cliente',notes:''};
-  const msg = encodeURIComponent(`Olá! Quero concluir meu agendamento na ZS UpBrawl.\n\nCódigo: ${currentOrder.id}\nCliente: ${currentOrder.client}\nServiço: ${currentOrder.service}\nDetalhes: ${currentOrder.details}\nValor: ${currentOrder.price}\nData/Horário: ${currentOrder.date} às ${currentOrder.time}\nPagamento: ${currentOrder.payment}\nObservações: ${currentOrder.notes || 'Nenhuma'}\n\nEntendi que esse código é muito importante e vou enviar login/código de segurança quando solicitado.`);
+  const msg = encodeURIComponent(orderWhatsAppText(currentOrder));
   return `<div class="confirm-box">
     <div style="font-size:3rem;margin-bottom:.5rem">🎉</div>
     <h3 style="font-family:'Orbitron',sans-serif;font-size:1.15rem;color:#22c55e;margin-bottom:.5rem">Pedido Confirmado!</h3>
@@ -1567,7 +1588,22 @@ function renderAdminDashboard(){
   const orders = loadStore(LS_KEYS.orders, []);
   const revenue = orders.reduce((sum,o)=>sum + moneyFromText(o.price), 0);
   const pending = orders.filter(o=>o.status==='pendente').length;
+  const active = orders.filter(o=>o.status==='andamento').length;
   const done = orders.filter(o=>o.status==='realizado').length;
+  const avgTicket = orders.length ? revenue / orders.length : 0;
+  const serviceStats = Object.entries(orders.reduce((acc,o)=>{ acc[o.service]=(acc[o.service]||0)+1; return acc; }, {})).sort((a,b)=>b[1]-a[1]);
+  const uploaderStats = Object.entries(orders.reduce((acc,o)=>{ if(o.uploaderName) acc[o.uploaderName]=(acc[o.uploaderName]||0)+1; return acc; }, {})).sort((a,b)=>b[1]-a[1]);
+  const maxService = Math.max(1, ...serviceStats.map(([,v])=>v));
+  const maxUploader = Math.max(1, ...uploaderStats.map(([,v])=>v));
+  const donePct = orders.length ? Math.round((done / orders.length) * 100) : 0;
+  const activePct = orders.length ? Math.round((active / orders.length) * 100) : 0;
+  const pendingPct = orders.length ? Math.round((pending / orders.length) * 100) : 0;
+  const recentDays = Array.from({length:7}, (_,i)=>{
+    const d = new Date(); d.setDate(d.getDate() - (6-i));
+    const key = d.toLocaleDateString('pt-BR');
+    return {label:d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.',''), count:orders.filter(o=>(o.createdAt||'').startsWith(key)).length};
+  });
+  const maxDay = Math.max(1, ...recentDays.map(d=>d.count));
   document.getElementById('admin-content').innerHTML = `
     <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem;font-size:1.4rem">📊 Dashboard</h2>
     ${currentUser ? `<div class="locked-note">Logado como <strong>${currentUser.name}</strong> ${roleBadge(currentUser.role)}. Upadores podem pegar e finalizar tarefas, mas não alteram produtos, usuários ou cadastro de equipe.</div>` : ''}
@@ -1575,7 +1611,30 @@ function renderAdminDashboard(){
       <div class="admin-stat-card"><div class="admin-stat-val">R$ ${revenue.toFixed(2).replace('.',',')}</div><div class="admin-stat-label">💰 Faturamento registrado</div></div>
       <div class="admin-stat-card"><div class="admin-stat-val">${orders.length}</div><div class="admin-stat-label">📋 Pedidos totais</div></div>
       <div class="admin-stat-card"><div class="admin-stat-val">${pending}</div><div class="admin-stat-label">⏳ Pendentes</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">${active}</div><div class="admin-stat-label">⚡ Em andamento</div></div>
       <div class="admin-stat-card"><div class="admin-stat-val">${done}</div><div class="admin-stat-label">✔ Realizados</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">R$ ${avgTicket.toFixed(2).replace('.',',')}</div><div class="admin-stat-label">🎯 Ticket médio</div></div>
+    </div>
+    <div class="insight-grid">
+      <div class="admin-card">
+        <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Pedidos por serviço</h4>
+        <div class="insight-list">${(serviceStats.length?serviceStats:[['Sem pedidos',0]]).map(([name,count])=>`<div class="insight-row"><strong>${name}</strong><div class="insight-track"><div class="insight-fill" style="width:${Math.max(6,(count/maxService)*100)}%"></div></div><span>${count}</span></div>`).join('')}</div>
+      </div>
+      <div class="admin-card" style="position:relative">
+        <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Status dos pedidos</h4>
+        <div class="donut" style="background:conic-gradient(#22c55e 0 ${donePct*3.6}deg, var(--neon-blue) ${donePct*3.6}deg ${(donePct+activePct)*3.6}deg, #fbbf24 ${(donePct+activePct)*3.6}deg ${(donePct+activePct+pendingPct)*3.6}deg, rgba(255,255,255,.08) 0deg)"><div class="donut-label">${donePct}%<br/><span style="font-family:'Inter';font-size:.7rem;color:var(--text-muted)">realizados</span></div></div>
+        <div class="metric-mini"><span>Realizados</span><strong>${done}</strong></div><div class="metric-mini"><span>Em andamento</span><strong>${active}</strong></div><div class="metric-mini"><span>Pendentes</span><strong>${pending}</strong></div>
+      </div>
+    </div>
+    <div class="insight-grid">
+      <div class="admin-card">
+        <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Pedidos nos últimos 7 dias</h4>
+        <div class="chart-wrap">${recentDays.map(d=>`<div style="flex:1;text-align:center"><div class="chart-bar" style="height:${Math.max(6,(d.count/maxDay)*100)}%"></div><div style="font-size:.68rem;color:var(--text-muted);margin-top:.35rem">${d.label}</div></div>`).join('')}</div>
+      </div>
+      <div class="admin-card">
+        <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Upadores com tarefas</h4>
+        <div class="insight-list">${(uploaderStats.length?uploaderStats:[['Nenhum upador atribuído',0]]).map(([name,count])=>`<div class="insight-row"><strong>${name}</strong><div class="insight-track"><div class="insight-fill" style="width:${Math.max(6,(count/maxUploader)*100)}%"></div></div><span>${count}</span></div>`).join('')}</div>
+      </div>
     </div>
     <div class="admin-card">
       <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Últimos pedidos</h4>
