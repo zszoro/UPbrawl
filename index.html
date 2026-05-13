@@ -76,6 +76,12 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .badge-pink{background:rgba(236,72,153,.14);color:var(--neon-pink);border:1px solid rgba(236,72,153,.3)}
 .card-arrow{position:absolute;top:1.25rem;right:1.25rem;width:34px;height:34px;border-radius:50%;background:rgba(168,85,247,.14);display:flex;align-items:center;justify-content:center;transition:.35s;font-size:.9rem}
 .service-card:hover .card-arrow{background:var(--neon-purple);transform:rotate(45deg)}
+.service-picker-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}
+.service-picker-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:.75rem;padding:1rem;text-align:left;color:var(--text-primary);cursor:pointer;font-family:'Inter',sans-serif;transition:.25s}
+.service-picker-btn:hover{border-color:var(--neon-purple);background:rgba(168,85,247,.12);transform:translateY(-2px)}
+.service-picker-btn strong{display:block;font-size:.9rem;margin-bottom:.25rem}
+.service-picker-btn span{display:block;color:var(--text-muted);font-size:.76rem;line-height:1.4}
+@media(max-width:540px){.service-picker-grid{grid-template-columns:1fr}}
 
 /* ── TESTIMONIALS ── */
 .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}
@@ -440,8 +446,8 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
     <h2>🔐 Entrar</h2><p class="modal-sub">Acesse sua conta ZS UpBrawl</p>
     <div style="display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.25rem">
-      <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem" disabled title="Login social ainda não está conectado">Continuar com Google</button>
-      <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem;border-color:#5865F2;color:#5865F2" disabled title="Login social ainda não está conectado">Continuar com Discord</button>
+      <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem" onclick="loginSocial('Google')" title="Login social ainda não está conectado">Continuar com Google</button>
+      <button class="btn btn-outline" style="width:100%;padding:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem;border-color:#5865F2;color:#5865F2" onclick="loginSocial('Discord')" title="Login social ainda não está conectado">Continuar com Discord</button>
     </div>
     <div style="display:flex;align-items:center;gap:.7rem;margin:1rem 0"><div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div><span style="color:var(--text-muted);font-size:.78rem">ou email</span><div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div></div>
     <div class="form-group"><label>Email</label><input type="email" class="form-control" id="login-email" placeholder="seu@email.com"/></div>
@@ -463,6 +469,20 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <div class="form-group"><label>Senha</label><input type="password" class="form-control" id="signup-password" placeholder="Crie uma senha"/></div>
     <div class="danger-text" id="signup-error"></div>
     <button class="btn btn-primary" style="width:100%;padding:.82rem" onclick="signupUser()">Cadastrar</button>
+  </div>
+</div>
+
+<!-- ESCOLHA DE SERVICO -->
+<div class="modal-overlay" id="service-picker-modal">
+  <div class="modal" style="max-width:520px">
+    <button class="modal-close" onclick="closeModal('service-picker-modal')">✕</button>
+    <h2>Escolha o serviço</h2><p class="modal-sub">Selecione o tipo de pedido para continuar o agendamento.</p>
+    <div class="service-picker-grid">
+      <button class="service-picker-btn" onclick="chooseScheduleService('trofeu')"><strong>UP Troféu</strong><span>Calcular preço por troféus e marcar horário.</span></button>
+      <button class="service-picker-btn" onclick="chooseScheduleService('ranked')"><strong>UP Ranked</strong><span>Escolher elo atual e desejado antes de agendar.</span></button>
+      <button class="service-picker-btn" onclick="chooseScheduleService('prestigio')"><strong>UP Prestígio</strong><span>Selecionar brawler e prestígio do serviço.</span></button>
+      <button class="service-picker-btn" onclick="chooseScheduleService('contas')"><strong>Contas</strong><span>Ver contas disponíveis e comprar pelo WhatsApp.</span></button>
+    </div>
   </div>
 </div>
 
@@ -1164,7 +1184,14 @@ function openAdmin(){
   }
   openPage('admin-page'); updateAdminMenu(); renderAdminDashboard();
 }
-function openScheduleMain(){ showToast('Escolha um serviço primeiro!','ℹ️'); document.getElementById('services').scrollIntoView({behavior:'smooth'}); }
+function openScheduleMain(){ openModal('service-picker-modal'); }
+function chooseScheduleService(type){
+  closeModal('service-picker-modal');
+  if(type==='trofeu') return openTrofeu();
+  if(type==='ranked') return openRanked();
+  if(type==='prestigio') return openPrestigio();
+  if(type==='contas') return openContas();
+}
 function openPrestigio(){ openPage('brawlers-page'); }
 function openRanked(){ openModal('ranked-modal'); }
 
