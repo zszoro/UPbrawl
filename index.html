@@ -60,13 +60,13 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 
 /* ── SERVICE CARDS ── */
 .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto}
-.service-card{background:rgba(13,13,31,.85);border:1px solid var(--border-glow);border-radius:1.25rem;padding:2rem;cursor:pointer;transition:.35s;position:relative;overflow:hidden;backdrop-filter:blur(10px)}
+.service-card{background:linear-gradient(180deg,rgba(20,20,42,.92),rgba(8,8,20,.9));border:1px solid var(--border-glow);border-radius:1.25rem;padding:2rem;cursor:pointer;transition:.35s;position:relative;overflow:hidden;backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 45px rgba(0,0,0,.34)}
 .service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(168,85,247,.07),rgba(59,130,246,.04));opacity:0;transition:.35s}
 .service-card:hover{transform:translateY(-8px);border-color:var(--neon-purple);box-shadow:0 0 40px rgba(168,85,247,.22),0 20px 60px rgba(0,0,0,.5)}
 .service-card:hover::before{opacity:1}
 .service-icon{width:64px;height:64px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.25rem}
-.service-icon.clean{background:transparent!important;border:none!important}
-.service-icon.clean img{width:62px;height:62px;object-fit:contain;display:block}
+.service-icon.clean{background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 30px rgba(0,0,0,.28)}
+.service-icon.clean img{width:62px;height:62px;object-fit:contain;display:block;filter:drop-shadow(0 8px 16px rgba(0,0,0,.45))}
 .service-card h3{font-family:'Orbitron',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:.5rem}
 .service-card p{color:var(--text-muted);font-size:.87rem;line-height:1.65;margin-bottom:1.5rem}
 .service-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .7rem;border-radius:50px;font-size:.73rem;font-weight:700}
@@ -77,8 +77,9 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .card-arrow{position:absolute;top:1.25rem;right:1.25rem;width:34px;height:34px;border-radius:50%;background:rgba(168,85,247,.14);display:flex;align-items:center;justify-content:center;transition:.35s;font-size:.9rem}
 .service-card:hover .card-arrow{background:var(--neon-purple);transform:rotate(45deg)}
 .service-picker-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}
-.service-picker-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:.75rem;padding:1rem;text-align:left;color:var(--text-primary);cursor:pointer;font-family:'Inter',sans-serif;transition:.25s}
+.service-picker-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:.75rem;padding:1rem;text-align:left;color:var(--text-primary);cursor:pointer;font-family:'Inter',sans-serif;transition:.25s;display:grid;grid-template-columns:42px 1fr;gap:.75rem;align-items:center}
 .service-picker-btn:hover{border-color:var(--neon-purple);background:rgba(168,85,247,.12);transform:translateY(-2px)}
+.service-picker-btn img{width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,.45))}
 .service-picker-btn strong{display:block;font-size:.9rem;margin-bottom:.25rem}
 .service-picker-btn span{display:block;color:var(--text-muted);font-size:.76rem;line-height:1.4}
 @media(max-width:540px){.service-picker-grid{grid-template-columns:1fr}}
@@ -104,6 +105,9 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .modal-close:hover{background:rgba(236,72,153,.3);color:#fff}
 .modal h2{font-family:'Orbitron',sans-serif;font-size:1.35rem;font-weight:900;margin-bottom:.4rem}
 .modal-sub{color:var(--text-muted);font-size:.88rem;margin-bottom:1.75rem}
+.modal-service-head{display:flex;align-items:center;gap:.85rem;margin-bottom:1.35rem}
+.modal-service-img{width:58px;height:58px;border-radius:1rem;object-fit:contain;flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid var(--border-glow);padding:.35rem;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.modal-service-head h2{margin-bottom:.25rem}
 .form-group{margin-bottom:1.2rem}
 .form-group label{display:block;font-size:.82rem;font-weight:600;color:var(--text-muted);margin-bottom:.45rem;letter-spacing:.4px;text-transform:uppercase}
 .form-control{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:.7rem;padding:.72rem 1rem;color:var(--text-primary);font-size:.93rem;transition:.25s;outline:none;font-family:'Inter',sans-serif}
@@ -153,8 +157,14 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 /* ── CONTAS PAGE ── */
 .contas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto;padding:2rem}
 .conta-card{background:rgba(13,13,31,.9);border:1px solid var(--border-glow);border-radius:1.25rem;padding:1.75rem;position:relative;overflow:hidden;backdrop-filter:blur(8px)}
+.conta-card::after{content:'';position:absolute;inset:auto 1.1rem 0;height:1px;background:linear-gradient(90deg,transparent,rgba(6,182,212,.55),transparent)}
 .conta-card.out::before{content:'SEM ESTOQUE';position:absolute;top:1rem;right:-2.2rem;background:#ef4444;color:#fff;font-size:.62rem;font-weight:800;padding:.28rem 2.5rem;transform:rotate(35deg);letter-spacing:1px}
 .conta-price{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;color:var(--neon-purple);margin-bottom:1rem}
+.account-hero{height:92px;border-radius:1rem;background:linear-gradient(135deg,rgba(168,85,247,.18),rgba(6,182,212,.08));border:1px solid rgba(255,255,255,.08);display:grid;place-items:center;margin:.9rem 0 1rem;position:relative;overflow:hidden}
+.account-hero img{width:68px;height:68px;object-fit:contain;filter:drop-shadow(0 12px 18px rgba(0,0,0,.5))}
+.account-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.12),transparent 44%)}
+.account-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .6rem;border-radius:.5rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.07);font-size:.73rem;color:var(--text-muted)}
+.account-chip strong{color:var(--text-primary);font-size:.72rem}
 .btn-disabled{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.08)!important;color:rgba(255,255,255,.25)!important;cursor:not-allowed!important;transform:none!important;box-shadow:none!important}
 .account-carousel{height:58px;overflow:hidden;margin:.9rem 0;border-radius:.7rem;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
 .account-track{display:flex;gap:.45rem;width:max-content;animation:slide-photos 14s linear infinite;padding:.35rem}
@@ -239,6 +249,21 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .toast{background:rgba(13,13,31,.97);border:1px solid var(--border-glow);border-radius:.75rem;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;min-width:260px;animation:toastIn .3s ease;box-shadow:0 8px 32px rgba(0,0,0,.5);backdrop-filter:blur(12px)}
 @keyframes toastIn{from{transform:translateX(110%);opacity:0}to{transform:none;opacity:1}}
 
+/* ── FEEDBACK ── */
+.feedback-panel{position:fixed;right:1.5rem;bottom:1.5rem;z-index:10000;width:min(360px,calc(100vw - 2rem));background:linear-gradient(145deg,rgba(16,16,36,.98),rgba(5,5,14,.98));border:1px solid rgba(148,163,184,.2);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 0 1px rgba(168,85,247,.15);display:none;backdrop-filter:blur(16px)}
+.feedback-panel.active{display:block;animation:toastIn .25s ease}
+.feedback-close{position:absolute;top:.7rem;right:.7rem;width:28px;height:28px;border-radius:50%;border:1px solid rgba(148,163,184,.28);background:rgba(148,163,184,.12);color:#cbd5e1;cursor:pointer;font-size:.95rem;line-height:1;display:grid;place-items:center}
+.feedback-close:hover{background:rgba(148,163,184,.2);color:#fff}
+.feedback-head{display:flex;gap:.75rem;align-items:center;padding-right:2rem;margin-bottom:.9rem}
+.feedback-head img{width:48px;height:48px;object-fit:contain;border-radius:.85rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:.3rem}
+.feedback-title{font-weight:800;font-size:.94rem;margin-bottom:.2rem}
+.feedback-sub{font-size:.78rem;color:var(--text-muted);line-height:1.45}
+.feedback-stars-input{display:flex;gap:.25rem;margin:.7rem 0}
+.feedback-star{width:34px;height:34px;border-radius:.55rem;border:1px solid rgba(251,191,36,.28);background:rgba(251,191,36,.08);color:#fbbf24;cursor:pointer;font-size:1.05rem;transition:.2s}
+.feedback-star:hover,.feedback-star.active{background:rgba(251,191,36,.22);transform:translateY(-1px)}
+.feedback-panel textarea{min-height:82px;resize:vertical}
+.feedback-source{display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;padding:.25rem .55rem;border-radius:50px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.24);color:#86efac;font-size:.7rem;font-weight:800}
+
 /* ── FOOTER ── */
 footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px solid var(--border-glow);padding:3rem 2rem 1.5rem}
 .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:2rem;max-width:1200px;margin:0 auto 2rem}
@@ -276,6 +301,10 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   .payment-methods{grid-template-columns:1fr}
   .ranks-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
 }
+@media(max-width:540px){
+  .wa-float{top:5.2rem;bottom:auto;left:1rem;width:44px;height:44px}
+  .feedback-panel{right:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}
+}
 
 /* ── MP PIX SIMULATION ── */
 .pix-progress{height:6px;background:rgba(255,255,255,.07);border-radius:50px;overflow:hidden;margin:.75rem 0}
@@ -300,6 +329,25 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <div class="photo-lightbox-price" id="photo-lightbox-price"></div>
     <img id="photo-lightbox-img" src="" alt="Imagem da conta"/>
   </div>
+</div>
+<div class="feedback-panel" id="feedback-panel" aria-live="polite">
+  <button class="feedback-close" onclick="hideFeedbackPrompt()" aria-label="Fechar avaliação">×</button>
+  <div class="feedback-head">
+    <img id="feedback-service-img" src="/images/site/icon-ranked.webp" alt="Serviço comprado"/>
+    <div>
+      <div class="feedback-title">Como foi sua compra?</div>
+      <div class="feedback-sub" id="feedback-context">Sua avaliação ajuda novos clientes a escolherem com confiança.</div>
+    </div>
+  </div>
+  <div class="feedback-stars-input" id="feedback-stars-input">
+    <button class="feedback-star" type="button" onclick="selectFeedbackStar(1)">★</button>
+    <button class="feedback-star" type="button" onclick="selectFeedbackStar(2)">★</button>
+    <button class="feedback-star" type="button" onclick="selectFeedbackStar(3)">★</button>
+    <button class="feedback-star" type="button" onclick="selectFeedbackStar(4)">★</button>
+    <button class="feedback-star" type="button" onclick="selectFeedbackStar(5)">★</button>
+  </div>
+  <textarea class="form-control" id="feedback-description" placeholder="Conte como foi a compra. A descrição é obrigatória."></textarea>
+  <button class="btn btn-primary" style="width:100%;padding:.72rem;margin-top:.75rem" onclick="submitFeedback()">Enviar feedback</button>
 </div>
 
 <!-- ═══ NAV ═══ -->
@@ -348,28 +396,28 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   <div class="services-grid">
     <div class="service-card" onclick="openTrofeu()">
       <div class="card-arrow">→</div>
-      <div class="service-icon clean"><img src="https://www.brawlstarsdicas.com.br/wp-content/uploads/2019/01/trofeus-brawl-stars-icone-trophy.png" alt="Troféus"/></div>
+      <div class="service-icon clean"><img id="service-img-trofeu" src="/images/site/icon-trophy.png" alt="Troféus"/></div>
       <h3>UP Troféu</h3>
       <p>Suba seus troféus com preço calculado automaticamente. Abaixo de 40k = R$5 por 1.000 troféus.</p>
       <div class="service-badge badge-purple" id="badge-trofeu">A partir de R$5/1k troféus</div>
     </div>
     <div class="service-card" onclick="openRanked()">
       <div class="card-arrow">→</div>
-      <div class="service-icon clean"><img src="https://static.wikia.nocookie.net/brawlstars/images/b/be/Ranqueado.png/revision/latest?cb=20250208151915&path-prefix=pt" alt="Ranqueado"/></div>
+      <div class="service-icon clean"><img id="service-img-ranked" src="/images/site/icon-ranked.webp" alt="Ranqueado"/></div>
       <h3>UP Ranked</h3>
       <p>Suba de elo no ranked com nossos profissionais. Do Bronze ao Pro sem preocupações.</p>
       <div class="service-badge badge-blue" id="badge-ranked">Preço por pontos</div>
     </div>
     <div class="service-card" onclick="openPrestigio()">
       <div class="card-arrow">→</div>
-      <div class="service-icon clean"><img src="https://static.wikia.nocookie.net/brawlstars/images/9/92/Rank_Prestige_3.png/revision/latest/scale-to-width-down/28?cb=20260224232437"/></div>
+      <div class="service-icon clean"><img id="service-img-prestigio" src="/images/site/icon-prestige-3.webp" alt="Prestígio"/></div>
       <h3>UP Prestígio</h3>
       <p>Alcance o prestígio desejado em qualquer brawler. 7 raridades com imagens reais.</p>
       <div class="service-badge badge-purple" id="badge-prestigio">100+ Brawlers disponíveis</div>
     </div>
     <div class="service-card" onclick="openContas()">
       <div class="card-arrow">→</div>
-      <div class="service-icon clean"><img src="https://th.bing.com/th/id/OIP.RvyVKMJvDECu6oYiCfucoAHaIU?w=179&h=202&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" alt="Conta Brawl Stars"/></div>
+      <div class="service-icon clean"><img id="service-img-contas" src="/images/site/icon-account-red.webp" alt="Conta Brawl Stars"/></div>
       <h3>Contas</h3>
       <p>Contas premium com brawlers raros, gemas e skins exclusivas. Loja completa.</p>
       <div class="service-badge badge-pink" id="badge-contas">Loja premium</div>
@@ -399,14 +447,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <div class="section-tag">⭐ DEPOIMENTOS</div>
     <h2 class="section-title">O que nossos <span class="gradient-text">Clientes</span> dizem</h2>
   </div>
-  <div class="testimonials-grid">
-    <div class="testimonial"><div class="stars">★★★★★</div><p>Serviço incrível! Pedi UP de Troféu e em menos de 24h estava pronto. Atendimento nota 10!</p><div class="t-user"><div class="t-avatar">GS</div><div><div class="t-name">Gabriel Silva</div><div class="t-meta">UP Troféu • 15k troféus</div></div></div></div>
-    <div class="testimonial"><div class="stars">★★★★★</div><p>Fiz prestígio 3 no Spike e ficou perfeito. Preço justo e entrega rápida. Já é a segunda vez!</p><div class="t-user"><div class="t-avatar">ML</div><div><div class="t-name">Maria Luiza</div><div class="t-meta">UP Prestígio 3 • Spike</div></div></div></div>
-    <div class="testimonial"><div class="stars">★★★★★</div><p>Passei do Ouro para o Diamante em 3 dias. Seguro, rápido e profissional. O melhor!</p><div class="t-user"><div class="t-avatar">RP</div><div><div class="t-name">Rafael Pereira</div><div class="t-meta">UP Ranked • Ouro→Diamante</div></div></div></div>
-    <div class="testimonial"><div class="stars">★★★★☆</div><p>Sistema de agendamento muito fácil. Escolhi o horário e foi feito certinho. Recomendo!</p><div class="t-user"><div class="t-avatar">AC</div><div><div class="t-name">Ana Carvalho</div><div class="t-meta">UP Troféu • Cliente recorrente</div></div></div></div>
-    <div class="testimonial"><div class="stars">★★★★★</div><p>Comprei uma conta e ficou melhor do que esperava. Atendimento via WhatsApp rápido. Top!</p><div class="t-user"><div class="t-avatar">LF</div><div><div class="t-name">Lucas Ferreira</div><div class="t-meta">Contas • Diamante</div></div></div></div>
-    <div class="testimonial"><div class="stars">★★★★★</div><p>Melhor serviço de elojob que já usei. Entrega no prazo e suporte excelente. 10/10!</p><div class="t-user"><div class="t-avatar">JP</div><div><div class="t-name">João Paulo</div><div class="t-meta">UP Ranked • 5 pedidos</div></div></div></div>
-  </div>
+  <div class="testimonials-grid" id="testimonials-grid"></div>
 </section>
 <div class="sep"></div>
 
@@ -478,10 +519,10 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <button class="modal-close" onclick="closeModal('service-picker-modal')">✕</button>
     <h2>Escolha o serviço</h2><p class="modal-sub">Selecione o tipo de pedido para continuar o agendamento.</p>
     <div class="service-picker-grid">
-      <button class="service-picker-btn" onclick="chooseScheduleService('trofeu')"><strong>UP Troféu</strong><span>Calcular preço por troféus e marcar horário.</span></button>
-      <button class="service-picker-btn" onclick="chooseScheduleService('ranked')"><strong>UP Ranked</strong><span>Escolher elo atual e desejado antes de agendar.</span></button>
-      <button class="service-picker-btn" onclick="chooseScheduleService('prestigio')"><strong>UP Prestígio</strong><span>Selecionar brawler e prestígio do serviço.</span></button>
-      <button class="service-picker-btn" onclick="chooseScheduleService('contas')"><strong>Contas</strong><span>Ver contas disponíveis e comprar pelo WhatsApp.</span></button>
+      <button class="service-picker-btn" onclick="chooseScheduleService('trofeu')"><img src="/images/site/icon-trophy.png" alt=""/><span><strong>UP Troféu</strong><span>Calcular preço por troféus e marcar horário.</span></span></button>
+      <button class="service-picker-btn" onclick="chooseScheduleService('ranked')"><img src="/images/site/icon-ranked.webp" alt=""/><span><strong>UP Ranked</strong><span>Escolher elo atual e desejado antes de agendar.</span></span></button>
+      <button class="service-picker-btn" onclick="chooseScheduleService('prestigio')"><img src="/images/site/icon-prestige-3.webp" alt=""/><span><strong>UP Prestígio</strong><span>Selecionar brawler e prestígio do serviço.</span></span></button>
+      <button class="service-picker-btn" onclick="chooseScheduleService('contas')"><img src="/images/site/icon-account-red.webp" alt=""/><span><strong>Contas</strong><span>Ver contas disponíveis e comprar pelo WhatsApp.</span></span></button>
     </div>
   </div>
 </div>
@@ -490,15 +531,15 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 <div class="modal-overlay" id="trofeu-modal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('trofeu-modal')">✕</button>
-    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
-      <div style="width:54px;height:54px;border-radius:1rem;background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(245,158,11,.12));display:flex;align-items:center;justify-content:center;font-size:1.9rem;flex-shrink:0">🏆</div>
+    <div class="modal-service-head">
+      <img class="modal-service-img" src="/images/site/icon-trophy.png" alt="Troféus"/>
       <div><h2>UP Troféu</h2><p style="color:var(--text-muted);font-size:.83rem">Cálculo automático de preço</p></div>
     </div>
     <div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:.75rem;padding:.9rem 1rem;margin-bottom:1.25rem;font-size:.82rem;color:var(--text-muted)">
       💡 <strong style="color:var(--neon-purple)">Tabela de preços:</strong> Abaixo de 40k = <strong>R$5,00 / 1.000 troféus</strong> • 40k–100k = R$20 / 1.000 • Acima de 100k = R$30 / 1.000
     </div>
-    <div class="form-group"><label>Troféus atuais da conta</label><input type="number" class="form-control" id="trofeu-atual" placeholder="Ex: 25000" oninput="calcTrofeu()"/></div>
-    <div class="form-group"><label>Quantos troféus deseja subir?</label><input type="number" class="form-control" id="trofeu-subir" placeholder="Ex: 5000" oninput="calcTrofeu()"/></div>
+    <div class="form-group"><label>Troféus atuais da conta</label><input type="text" inputmode="numeric" class="form-control" id="trofeu-atual" placeholder="Ex: 25000" oninput="calcTrofeu()"/></div>
+    <div class="form-group"><label>Quantos troféus deseja subir?</label><input type="text" inputmode="numeric" class="form-control" id="trofeu-subir" placeholder="Ex: 5000" oninput="calcTrofeu()"/></div>
     <div class="price-display" id="trofeu-price" style="display:none">
       <div class="price-amount" id="t-price-val">R$ 0,00</div>
       <div class="price-note" id="t-price-note"></div>
@@ -520,7 +561,10 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 <div class="modal-overlay" id="ranked-modal">
   <div class="modal" style="max-width:640px">
     <button class="modal-close" onclick="closeModal('ranked-modal')">✕</button>
-    <h2>🎯 UP Ranked</h2><p class="modal-sub">Selecione seu elo atual e o elo desejado</p>
+    <div class="modal-service-head">
+      <img class="modal-service-img" src="/images/site/icon-ranked.webp" alt="Ranked"/>
+      <div><h2>UP Ranked</h2><p style="color:var(--text-muted);font-size:.83rem">Selecione seu elo atual e o elo desejado</p></div>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
       <div><div style="font-size:.78rem;font-weight:700;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.5px;text-transform:uppercase">ELO ATUAL</div><div class="ranks-grid" id="ranked-from-grid"></div></div>
       <div><div style="font-size:.78rem;font-weight:700;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.5px;text-transform:uppercase">ELO DESEJADO</div><div class="ranks-grid" id="ranked-to-grid"></div></div>
@@ -546,13 +590,13 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
       <img id="prest-brawler-img" src="" alt="" style="width:72px;height:72px;border-radius:.75rem;object-fit:cover;background:rgba(255,255,255,.05);border:1px solid var(--border-glow)"/>
       <div><h2 id="prest-brawler-name">Brawler</h2><p style="color:var(--text-muted);font-size:.83rem">UP Prestígio</p></div>
     </div>
-    <div class="form-group"><label>Troféus atuais do brawler</label><input type="number" class="form-control" id="prest-trofeus" placeholder="Ex: 500" oninput="calcPrestigio()"/></div>
+    <div class="form-group"><label>Troféus atuais do brawler</label><input type="text" inputmode="numeric" class="form-control" id="prest-trofeus" placeholder="Ex: 500" oninput="calcPrestigio()"/></div>
     <div style="margin:1rem 0">
       <label style="font-size:.82rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:.7rem;text-transform:uppercase;letter-spacing:.4px">Qual prestígio deseja?</label>
       <div class="prestige-options">
-        <div class="prestige-opt" onclick="selectPrestigio(1,this)"><img src="https://static.wikia.nocookie.net/brawlstars/images/d/df/Rank_Prestige_1.png/revision/latest/scale-to-width-down/22?cb=20260224232402" alt="P1"/><span>Prestígio I</span></div>
-        <div class="prestige-opt" onclick="selectPrestigio(2,this)"><img src="https://static.wikia.nocookie.net/brawlstars/images/f/ff/Rank_Prestige_2.png/revision/latest/scale-to-width-down/28?cb=20260224232422" alt="P2"/><span>Prestígio II</span></div>
-        <div class="prestige-opt" onclick="selectPrestigio(3,this)"><img src="https://static.wikia.nocookie.net/brawlstars/images/9/92/Rank_Prestige_3.png/revision/latest/scale-to-width-down/28?cb=20260224232437" alt="P3"/><span>Prestígio III</span></div>
+        <div class="prestige-opt" onclick="selectPrestigio(1,this)"><img src="/images/site/icon-prestige-1.webp" alt="P1"/><span>Prestígio I</span></div>
+        <div class="prestige-opt" onclick="selectPrestigio(2,this)"><img src="/images/site/icon-prestige-2.webp" alt="P2"/><span>Prestígio II</span></div>
+        <div class="prestige-opt" onclick="selectPrestigio(3,this)"><img src="/images/site/icon-prestige-3.webp" alt="P3"/><span>Prestígio III</span></div>
       </div>
     </div>
     <div class="price-display" id="prest-price" style="display:none">
@@ -735,6 +779,33 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 // ═══════════════════════════════════════
 //   DATA
 // ═══════════════════════════════════════
+const SITE_IMAGES = {
+  trophy:'/images/site/icon-trophy.png',
+  ranked:'/images/site/icon-ranked.webp',
+  prestige1:'/images/site/icon-prestige-1.webp',
+  prestige2:'/images/site/icon-prestige-2.webp',
+  prestige3:'/images/site/icon-prestige-3.webp',
+  account:'/images/site/icon-account-red.webp',
+  rankBronze:'/images/site/rank-bronze.webp',
+  rankPrata:'/images/site/rank-prata.webp',
+  rankOuro:'/images/site/rank-ouro.webp',
+  rankDiamante:'/images/site/rank-diamante.webp',
+  rankMitico:'/images/site/rank-mitico.webp',
+  rankLendario:'/images/site/rank-lendario.webp',
+  rankMestres:'/images/site/rank-mestres.webp',
+  rankPro:'/images/site/rank-pro.webp'
+};
+const REMOTE_IMAGE_MAP = {
+  'https://www.brawlstarsdicas.com.br/wp-content/uploads/2019/01/trofeus-brawl-stars-icone-trophy.png':SITE_IMAGES.trophy,
+  'https://static.wikia.nocookie.net/brawlstars/images/b/be/Ranqueado.png/revision/latest?cb=20250208151915&path-prefix=pt':SITE_IMAGES.ranked,
+  'https://static.wikia.nocookie.net/brawlstars/images/d/d8/Campaign_Icon-The_Red.png/revision/latest/scale-to-width-down/33?cb=20200810190101':SITE_IMAGES.account,
+  'https://static.wikia.nocookie.net/brawlstars/images/d/df/Rank_Prestige_1.png/revision/latest/scale-to-width-down/22?cb=20260224232402':SITE_IMAGES.prestige1,
+  'https://static.wikia.nocookie.net/brawlstars/images/f/ff/Rank_Prestige_2.png/revision/latest/scale-to-width-down/28?cb=20260224232422':SITE_IMAGES.prestige2,
+  'https://static.wikia.nocookie.net/brawlstars/images/9/92/Rank_Prestige_3.png/revision/latest/scale-to-width-down/28?cb=20260224232437':SITE_IMAGES.prestige3,
+  'https://th.bing.com/th/id/OIP.RvyVKMJvDECu6oYiCfucoAHaIU?w=179&h=202&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3':SITE_IMAGES.account,
+  'https://static.wikia.nocookie.net/brawlstars/images/e/e6/Site-logo.png/revision/latest?cb=20210824024831':SITE_IMAGES.account
+};
+
 const BRAWLERS_DATA = {
   'Inicial':{color:'#94a3b8',list:[
     {n:'SHELLY',img:'/images/brawlers/16000000.png'}
@@ -857,14 +928,14 @@ const BRAWLERS_DATA = {
 };
 
 const RANK_ICONS = {
-  bronze:'https://static.wikia.nocookie.net/brawlstars/images/8/8c/Divis%C3%A3o_ranqueado_bronze_2.png/revision/latest?cb=20250313082201&path-prefix=pt',
-  prata:'https://static.wikia.nocookie.net/brawlstars/images/d/dd/Divis%C3%A3o_ranqueado_prata_2.png/revision/latest/scale-to-width-down/50?cb=20250313082257&path-prefix=pt',
-  ouro:'https://static.wikia.nocookie.net/brawlstars/images/9/9f/Divis%C3%A3o_ranqueado_ouro_2.png/revision/latest/scale-to-width-down/50?cb=20250313082328&path-prefix=pt',
-  diamante:'https://static.wikia.nocookie.net/brawlstars/images/c/c0/Divis%C3%A3o_ranqueado_diamante_2.png/revision/latest/scale-to-width-down/50?cb=20250313082349&path-prefix=pt',
-  mitico:'https://static.wikia.nocookie.net/brawlstars/images/e/ec/Divis%C3%A3o_ranqueado_m%C3%ADtica_2.png/revision/latest/scale-to-width-down/50?cb=20250313082436&path-prefix=pt',
-  lendario:'https://static.wikia.nocookie.net/brawlstars/images/c/c7/Divis%C3%A3o_ranqueado_lend%C3%A1ria_2.png/revision/latest/scale-to-width-down/50?cb=20250313082540&path-prefix=pt',
-  mestre:'https://static.wikia.nocookie.net/brawlstars/images/5/5a/Divis%C3%A3o_ranqueado_mestres_2.png/revision/latest/scale-to-width-down/50?cb=20250313082636&path-prefix=pt',
-  pro:'https://static.wikia.nocookie.net/brawlstars/images/4/40/Divis%C3%A3o_ranqueado_pro.png/revision/latest/scale-to-width-down/50?cb=20250313082700&path-prefix=pt'
+  bronze:SITE_IMAGES.rankBronze,
+  prata:SITE_IMAGES.rankPrata,
+  ouro:SITE_IMAGES.rankOuro,
+  diamante:SITE_IMAGES.rankDiamante,
+  mitico:SITE_IMAGES.rankMitico,
+  lendario:SITE_IMAGES.rankLendario,
+  mestre:SITE_IMAGES.rankMestres,
+  pro:SITE_IMAGES.rankPro
 };
 
 const RANKS = [
@@ -879,14 +950,13 @@ const RANKS = [
 ];
 
 const DEFAULT_ACCOUNT_PHOTOS = [
-  'https://th.bing.com/th/id/OIP.RvyVKMJvDECu6oYiCfucoAHaIU?w=179&h=202&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3',
-  'https://static.wikia.nocookie.net/brawlstars/images/e/e6/Site-logo.png/revision/latest?cb=20210824024831'
+  SITE_IMAGES.account
 ];
 
 const DEFAULT_PRODUCTS = [
-  {id:'PRD-TROFEU',type:'service',slug:'trofeu',name:'UP Troféu',price:'R$ 5,00 / 1.000 abaixo de 40k',badge:'A partir de R$5/1k troféus',active:true},
-  {id:'PRD-RANKED',type:'service',slug:'ranked',name:'UP Ranked',price:'R$ 35,00 base por divisão',badge:'Preço por pontos',active:true},
-  {id:'PRD-PREST',type:'service',slug:'prestigio',name:'UP Prestígio',price:'R$ 10,00 a R$ 70,00',badge:'100+ Brawlers disponíveis',active:true},
+  {id:'PRD-TROFEU',type:'service',slug:'trofeu',name:'UP Troféu',price:'R$ 5,00 / 1.000 abaixo de 40k',badge:'A partir de R$5/1k troféus',image:SITE_IMAGES.trophy,active:true},
+  {id:'PRD-RANKED',type:'service',slug:'ranked',name:'UP Ranked',price:'R$ 35,00 base por divisão',badge:'Preço por pontos',image:SITE_IMAGES.ranked,active:true},
+  {id:'PRD-PREST',type:'service',slug:'prestigio',name:'UP Prestígio',price:'R$ 10,00 a R$ 70,00',badge:'100+ Brawlers disponíveis',image:SITE_IMAGES.prestige3,active:true},
   {id:'PRD-CONTA1',type:'account',name:'Conta Lendária Suprema',tier:'Lendário',trofeus:'85.000',brawlers:'58',gems:'450',skins:'24',price:'R$ 1.299',active:true,images:DEFAULT_ACCOUNT_PHOTOS},
   {id:'PRD-CONTA2',type:'account',name:'Conta Diamante Elite',tier:'Diamante',trofeus:'52.000',brawlers:'41',gems:'200',skins:'15',price:'R$ 649',active:true,images:DEFAULT_ACCOUNT_PHOTOS}
 ];
@@ -900,18 +970,30 @@ const FAQS = [
   {q:'Como funciona o sistema de agendamento?',a:'Você escolhe o serviço, configura os detalhes, seleciona data e horário de sua preferência e paga. Simples assim!'}
 ];
 
+const DEFAULT_TESTIMONIALS = [
+  {name:'Gabriel Silva',meta:'UP Troféu • 15k troféus',rating:5,description:'Serviço incrível! Pedi UP de Troféu e em menos de 24h estava pronto. Atendimento nota 10!',initials:'GS'},
+  {name:'Maria Luiza',meta:'UP Prestígio 3 • Spike',rating:5,description:'Fiz prestígio 3 no Spike e ficou perfeito. Preço justo e entrega rápida. Já é a segunda vez!',initials:'ML'},
+  {name:'Rafael Pereira',meta:'UP Ranked • Ouro→Diamante',rating:5,description:'Passei do Ouro para o Diamante em 3 dias. Seguro, rápido e profissional. O melhor!',initials:'RP'},
+  {name:'Ana Carvalho',meta:'UP Troféu • Cliente recorrente',rating:4,description:'Sistema de agendamento muito fácil. Escolhi o horário e foi feito certinho. Recomendo!',initials:'AC'},
+  {name:'Lucas Ferreira',meta:'Contas • Diamante',rating:5,description:'Comprei uma conta e ficou melhor do que esperava. Atendimento via WhatsApp rápido. Top!',initials:'LF'},
+  {name:'João Paulo',meta:'UP Ranked • 5 pedidos',rating:5,description:'Melhor serviço de elojob que já usei. Entrega no prazo e suporte excelente. 10/10!',initials:'JP'}
+];
+
 // ═══ STATE ═══
 let currentService='', currentBrawler=null, selectedPrestigio=0;
 let rankedFrom=-1, rankedTo=-1;
 let schedStep=1, schedDate='', schedTime='', schedPayment='';
 let pixTimer=null;
 let currentUser=null, currentOrder=null;
+let selectedFeedbackRating=0;
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const LS_KEYS = {
   users:'zsup_users',
   orders:'zsup_orders',
   chat:'zsup_chat',
   products:'zsup_products',
+  feedbacks:'zsup_feedbacks',
+  pendingFeedback:'zsup_pending_feedback',
   currentUser:'zsup_current_user'
 };
 
@@ -922,6 +1004,13 @@ function saveStore(key, value){ localStorage.setItem(key, JSON.stringify(value))
 function uid(prefix='ZS'){ return prefix + Math.random().toString(36).slice(2,8).toUpperCase(); }
 function todayLabel(){ return new Date().toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'}); }
 function moneyFromText(v){ return Number(String(v||'0').replace(/[^\d,.-]/g,'').replace('.','').replace(',','.')) || 0; }
+function normalizeImageUrl(url){ return REMOTE_IMAGE_MAP[String(url || '').trim()] || String(url || '').trim(); }
+function defaultServiceImage(slug){
+  return slug === 'trofeu' ? SITE_IMAGES.trophy : slug === 'prestigio' ? SITE_IMAGES.prestige3 : slug === 'ranked' ? SITE_IMAGES.ranked : SITE_IMAGES.ranked;
+}
+function escapeHTML(value){
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
 async function sha256(text){
   const data = new TextEncoder().encode(text);
   const hash = await crypto.subtle.digest('SHA-256', data);
@@ -987,10 +1076,14 @@ function ensureSeedData(){
       ...p,
       type: p.type || (p.name?.toLowerCase().includes('conta') ? 'account' : 'service'),
       slug: p.slug || (p.name?.includes('Troféu') ? 'trofeu' : p.name?.includes('Ranked') ? 'ranked' : p.name?.includes('Prestígio') ? 'prestigio' : ''),
-      images: p.images || (p.name?.toLowerCase().includes('conta') ? DEFAULT_ACCOUNT_PHOTOS : [])
+      image: normalizeImageUrl(p.image || defaultServiceImage(p.slug || (p.name?.includes('Troféu') ? 'trofeu' : p.name?.includes('Ranked') ? 'ranked' : p.name?.includes('Prestígio') ? 'prestigio' : 'custom'))),
+      images: (p.images || (p.name?.toLowerCase().includes('conta') ? DEFAULT_ACCOUNT_PHOTOS : [])).map(normalizeImageUrl)
     }));
     DEFAULT_PRODUCTS.filter(p=>p.type==='service').forEach(def => {
       if(!migrated.some(p=>p.slug===def.slug)) migrated.push(def);
+    });
+    migrated.filter(p=>p.type==='account').forEach(p => {
+      if(!p.images?.length || p.images.some(img => String(img).startsWith('http'))) p.images = DEFAULT_ACCOUNT_PHOTOS;
     });
     saveStore(LS_KEYS.products, migrated);
   }
@@ -1042,7 +1135,7 @@ function serviceDetails(){
 
 // ═══ INIT ═══
 window.onload = () => {
-  ensureSeedData(); animateStats(); renderFAQ(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI();
+  ensureSeedData(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); restoreFeedbackPrompt();
 };
 
 function animateStats(){
@@ -1073,6 +1166,43 @@ function toggleFAQ(i){
   const open = b.style.display==='block';
   b.style.display = open ? 'none' : 'block';
   a.style.transform = open ? '' : 'rotate(180deg)';
+}
+
+function starsText(rating){
+  const safe = Math.max(1, Math.min(5, Number(rating) || 5));
+  return '★'.repeat(safe) + '☆'.repeat(5 - safe);
+}
+function initialsFromName(name){
+  return String(name || 'Cliente').split(/\s+/).filter(Boolean).slice(0,2).map(p=>p[0]?.toUpperCase()).join('') || 'CL';
+}
+function feedbacks(){
+  return loadStore(LS_KEYS.feedbacks, []);
+}
+function renderTestimonials(){
+  const grid = document.getElementById('testimonials-grid');
+  if(!grid) return;
+  const saved = feedbacks().map(f => ({
+    name:f.name || 'Cliente verificado',
+    meta:f.service || 'Compra verificada',
+    rating:f.rating,
+    description:f.description,
+    initials:initialsFromName(f.name),
+    verified:true
+  }));
+  const all = [...saved, ...DEFAULT_TESTIMONIALS];
+  grid.innerHTML = all.map(t => `
+    <div class="testimonial">
+      <div class="stars">${starsText(t.rating)}</div>
+      <p>${escapeHTML(t.description)}</p>
+      <div class="t-user">
+        <div class="t-avatar">${escapeHTML(t.initials || initialsFromName(t.name))}</div>
+        <div>
+          <div class="t-name">${escapeHTML(t.name)}</div>
+          <div class="t-meta">${escapeHTML(t.meta)}</div>
+          ${t.verified ? '<div class="feedback-source">Compra verificada</div>' : ''}
+        </div>
+      </div>
+    </div>`).join('');
 }
 
 // ═══ BRAWLERS ═══
@@ -1111,17 +1241,18 @@ function buildRanks(){
 function buildContas(){
   const contas = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS).filter(p => p.type === 'account');
   document.getElementById('contas-grid').innerHTML = contas.map(c => {
-    const photos = (c.images && c.images.length ? c.images : DEFAULT_ACCOUNT_PHOTOS).filter(Boolean);
+    const photos = (c.images && c.images.length ? c.images : DEFAULT_ACCOUNT_PHOTOS).map(normalizeImageUrl).filter(Boolean);
     const loopPhotos = [...photos, ...photos];
     return `
     <div class="conta-card ${c.active ? '' : 'out'}">
       <span style="font-size:.7rem;font-weight:800;letter-spacing:1px;color:var(--neon-purple);text-transform:uppercase">${c.tier || 'Conta'}</span>
       <div style="font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:700;margin:.4rem 0 .75rem">${c.name}</div>
+      <div class="account-hero"><img src="${SITE_IMAGES.account}" alt="Conta premium"/></div>
       <div style="display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.1rem">
-        <span style="padding:.28rem .6rem;border-radius:.4rem;background:rgba(255,255,255,.06);font-size:.73rem;color:var(--text-muted)">🏆 ${c.trofeus}</span>
-        <span style="padding:.28rem .6rem;border-radius:.4rem;background:rgba(255,255,255,.06);font-size:.73rem;color:var(--text-muted)">🎮 ${c.brawlers} brawlers</span>
-        <span style="padding:.28rem .6rem;border-radius:.4rem;background:rgba(255,255,255,.06);font-size:.73rem;color:var(--text-muted)">💎 ${c.gems} gemas</span>
-        <span style="padding:.28rem .6rem;border-radius:.4rem;background:rgba(255,255,255,.06);font-size:.73rem;color:var(--text-muted)">👗 ${c.skins} skins</span>
+        <span class="account-chip"><strong>Troféus</strong> ${c.trofeus}</span>
+        <span class="account-chip"><strong>Brawlers</strong> ${c.brawlers}</span>
+        <span class="account-chip"><strong>Gemas</strong> ${c.gems}</span>
+        <span class="account-chip"><strong>Skins</strong> ${c.skins}</span>
       </div>
       <div class="account-carousel"><div class="account-track">${loopPhotos.map(img=>`<img class="account-photo" src="${img}" alt="${c.name}" onclick="openPhotoLightbox('${img.replace(/'/g,"\\'")}','${String(c.price).replace(/'/g,"\\'")}')"/>`).join('')}</div></div>
       <div class="conta-price">${c.price}</div>
@@ -1140,7 +1271,80 @@ function closePhotoLightbox(e){
 function openContaWhatsApp(id){
   const conta = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS).find(p => p.id === id);
   if(!conta) return;
+  queueFeedbackPrompt({orderId:id, service:'Conta premium', product:conta.name});
   window.open(`${WHATSAPP_URL}?text=${encodeURIComponent(`Olá! Tenho interesse na ${conta.name} por ${conta.price}.`)}`, '_blank');
+}
+
+function serviceImageForName(name=''){
+  const text = String(name).toLowerCase();
+  if(text.includes('troféu') || text.includes('trofeu')) return SITE_IMAGES.trophy;
+  if(text.includes('ranked')) return SITE_IMAGES.ranked;
+  if(text.includes('prestígio') || text.includes('prestigio')) return SITE_IMAGES.prestige3;
+  if(text.includes('conta')) return SITE_IMAGES.account;
+  return SITE_IMAGES.ranked;
+}
+function restoreFeedbackPrompt(){
+  const pending = loadStore(LS_KEYS.pendingFeedback, null);
+  if(pending) setTimeout(() => showFeedbackPrompt(pending), 600);
+}
+function queueFeedbackPrompt(data){
+  const payload = {
+    id:uid('FDB-'),
+    orderId:data.orderId || '',
+    service:data.service || 'Compra',
+    product:data.product || '',
+    createdAt:todayLabel()
+  };
+  saveStore(LS_KEYS.pendingFeedback, payload);
+  showFeedbackPrompt(payload);
+}
+function showFeedbackPrompt(data){
+  selectedFeedbackRating = 0;
+  document.querySelectorAll('.feedback-star').forEach(btn => btn.classList.remove('active'));
+  const desc = document.getElementById('feedback-description');
+  if(desc) desc.value = '';
+  const img = document.getElementById('feedback-service-img');
+  if(img) img.src = serviceImageForName(data.service || data.product);
+  const ctx = document.getElementById('feedback-context');
+  if(ctx) ctx.textContent = data.product ? `${data.service} • ${data.product}` : data.service;
+  const panel = document.getElementById('feedback-panel');
+  if(panel) panel.classList.add('active');
+}
+function hideFeedbackPrompt(){
+  const panel = document.getElementById('feedback-panel');
+  if(panel) panel.classList.remove('active');
+  localStorage.removeItem(LS_KEYS.pendingFeedback);
+}
+function selectFeedbackStar(n){
+  selectedFeedbackRating = n;
+  document.querySelectorAll('.feedback-star').forEach((btn, i) => btn.classList.toggle('active', i < n));
+}
+function submitFeedback(){
+  const pending = loadStore(LS_KEYS.pendingFeedback, null) || {};
+  const description = document.getElementById('feedback-description')?.value.trim();
+  if(!selectedFeedbackRating){
+    showToast('Escolha uma nota de 1 a 5 estrelas.','⭐');
+    return;
+  }
+  if(!description){
+    showToast('A descrição do feedback é obrigatória.','⚠️');
+    return;
+  }
+  const all = feedbacks();
+  all.unshift({
+    id:pending.id || uid('FDB-'),
+    orderId:pending.orderId || '',
+    name:currentUser?.name || pending.client || 'Cliente verificado',
+    service:pending.service || 'Compra verificada',
+    product:pending.product || '',
+    rating:selectedFeedbackRating,
+    description,
+    createdAt:todayLabel()
+  });
+  saveStore(LS_KEYS.feedbacks, all.slice(0, 60));
+  hideFeedbackPrompt();
+  renderTestimonials();
+  showToast('Feedback publicado no site. Obrigado!','✅');
 }
 
 function updateServiceCards(){
@@ -1150,10 +1354,14 @@ function updateServiceCards(){
     const product = products.find(p => p.type === 'service' && p.slug === slug);
     const el = document.getElementById(id);
     if(el && product) el.textContent = product.badge || product.price || product.name;
+    const img = document.getElementById('service-img-' + slug);
+    if(img && product?.image) img.src = normalizeImageUrl(product.image);
   });
   const contas = products.filter(p => p.type === 'account' && p.active).length;
   const contasBadge = document.getElementById('badge-contas');
   if(contasBadge) contasBadge.textContent = contas ? `${contas} contas disponíveis` : 'Sem estoque no momento';
+  const contaImg = document.getElementById('service-img-contas');
+  if(contaImg) contaImg.src = SITE_IMAGES.account;
 }
 
 // ═══ MODALS ═══
@@ -1520,6 +1728,7 @@ function confirmOrder(){
   saveStore(LS_KEYS.orders, orders);
   sendWhatsAppNotification(currentOrder);
   schedStep=4; renderScheduleStep();
+  queueFeedbackPrompt({orderId:currentOrder.id, service:currentOrder.service, product:currentOrder.details, client:currentOrder.client});
   showToast('Agendamento salvo no admin! 🎉','✅');
 }
 
@@ -1615,7 +1824,7 @@ function genFakeOrders(){
   return orders.map(o=>`<tr><td style="font-family:monospace;font-size:.78rem;color:var(--neon-purple)">#ZS${o[0]}</td><td>${o[1]}</td><td>${o[2]}</td><td style="font-weight:700">${o[3]}</td><td>${labels[o[4]]}</td><td><button class="btn btn-outline" style="padding:.25rem .6rem;font-size:.72rem" onclick="showToast('Status atualizado!','✅')">Atualizar</button></td></tr>`).join('');
 }
 
-function adminNav(section, el){
+function legacyAdminNav(section, el){
   document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
   if(section==='dashboard') renderAdminDashboard();
@@ -1921,7 +2130,7 @@ function clearChat(){
   renderChat();
   showToast('Chat limpo pelo dono.','✅');
 }
-function renderProducts(){
+function legacyRenderProducts(){
   if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = ''; return; }
   const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS);
   document.getElementById('admin-content').innerHTML = `
@@ -1947,7 +2156,7 @@ function renderProducts(){
       <td><button class="btn btn-outline mini-btn" onclick="updateProduct('${p.id}')">Salvar</button></td>
     </tr>`).join('')}</tbody></table></div></div>`;
 }
-function saveProduct(){
+function legacySaveProduct(){
   if(!canManageAdmin()) return;
   const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS);
   const type = document.getElementById('prd-type').value;
@@ -1962,7 +2171,7 @@ function saveProduct(){
     : {id:uid('PRD-'),type,name,price,badge:badge||price,slug:'custom',active:true});
   saveStore(LS_KEYS.products, products); renderProducts(); buildContas(); updateServiceCards(); showToast('Produto criado.','✅');
 }
-function updateProduct(id){
+function legacyUpdateProduct(id){
   if(!canManageAdmin()) return;
   const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS);
   const p = products.find(x=>x.id===id);
@@ -1981,6 +2190,115 @@ function updateProduct(id){
     }
   }
   saveStore(LS_KEYS.products, products); renderProducts(); buildContas(); updateServiceCards(); showToast('Produto atualizado no site.','✅');
+}
+function renderProducts(){
+  if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = ''; return; }
+  const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS).filter(p => p.type === 'service');
+  document.getElementById('admin-content').innerHTML = `
+    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">🛒 Produtos</h2>
+    <div class="locked-note">Aqui ficam apenas os serviços e cards principais. As contas da loja são administradas no canal Contas.</div>
+    <div class="admin-card">
+      <div class="admin-grid">
+        <select class="form-control" id="prd-slug"><option value="trofeu">UP Troféu</option><option value="ranked">UP Ranked</option><option value="prestigio">UP Prestígio</option><option value="custom">Outro produto</option></select>
+        <input class="form-control" id="prd-name" placeholder="Nome do produto ou serviço"/>
+        <input class="form-control" id="prd-price" placeholder="Preço"/>
+        <input class="form-control" id="prd-badge" placeholder="Badge do card"/>
+        <input class="form-control" id="prd-image" placeholder="Imagem local. Ex: /images/site/icon-ranked.webp"/>
+        <button class="btn btn-primary" onclick="saveProduct()">Criar produto</button>
+      </div>
+    </div>
+    <div class="admin-card"><div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Produto</th><th>Preço</th><th>Badge</th><th>Card</th><th>Imagem</th><th>Status</th><th>Ação</th></tr></thead><tbody>${products.map(p=>`<tr>
+      <td><input class="form-control" id="name-${p.id}" value="${p.name || ''}"/></td>
+      <td><input class="form-control" id="price-${p.id}" value="${p.price || ''}"/></td>
+      <td><input class="form-control" id="badge-${p.id}" value="${p.badge || ''}"/></td>
+      <td><select class="form-control" id="slug-${p.id}"><option value="trofeu" ${p.slug==='trofeu'?'selected':''}>UP Troféu</option><option value="ranked" ${p.slug==='ranked'?'selected':''}>UP Ranked</option><option value="prestigio" ${p.slug==='prestigio'?'selected':''}>UP Prestígio</option><option value="custom" ${p.slug==='custom'?'selected':''}>Outro</option></select></td>
+      <td><div style="display:flex;align-items:center;gap:.55rem"><img src="${normalizeImageUrl(p.image || SITE_IMAGES.ranked)}" alt="" style="width:34px;height:34px;object-fit:contain"/><input class="form-control" id="image-${p.id}" value="${normalizeImageUrl(p.image || '')}" placeholder="/images/site/..."/></div></td>
+      <td><select class="form-control" id="active-${p.id}"><option value="true" ${p.active?'selected':''}>Ativo</option><option value="false" ${!p.active?'selected':''}>Pausado</option></select></td>
+      <td><button class="btn btn-outline mini-btn" onclick="updateProduct('${p.id}')">Salvar</button></td>
+    </tr>`).join('')}</tbody></table></div></div>`;
+}
+function saveProduct(){
+  if(!canManageAdmin()) return;
+  const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS);
+  const slug = document.getElementById('prd-slug').value;
+  const name = document.getElementById('prd-name').value.trim();
+  const price = document.getElementById('prd-price').value.trim();
+  const badge = document.getElementById('prd-badge').value.trim();
+  const image = normalizeImageUrl(document.getElementById('prd-image').value.trim()) || (slug === 'trofeu' ? SITE_IMAGES.trophy : slug === 'prestigio' ? SITE_IMAGES.prestige3 : SITE_IMAGES.ranked);
+  if(!name || !price) return showToast('Preencha produto e preço.','⚠️');
+  products.push({id:uid('PRD-'),type:'service',name,price,badge:badge||price,slug,image,active:true});
+  saveStore(LS_KEYS.products, products); renderProducts(); buildContas(); updateServiceCards(); showToast('Produto criado.','✅');
+}
+function updateProduct(id){
+  if(!canManageAdmin()) return;
+  const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS);
+  const p = products.find(x=>x.id===id);
+  if(p){
+    p.type='service';
+    p.name=document.getElementById(`name-${id}`).value.trim();
+    p.price=document.getElementById(`price-${id}`).value.trim();
+    p.active=document.getElementById(`active-${id}`).value === 'true';
+    const badge=document.getElementById(`badge-${id}`).value.trim();
+    p.badge=badge||p.price;
+    p.slug=document.getElementById(`slug-${id}`).value || p.slug || 'custom';
+    p.image=normalizeImageUrl(document.getElementById(`image-${id}`).value.trim()) || p.image || SITE_IMAGES.ranked;
+  }
+  saveStore(LS_KEYS.products, products); renderProducts(); buildContas(); updateServiceCards(); showToast('Produto atualizado no site.','✅');
+}
+function renderContasAdmin(){
+  if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = ''; return; }
+  const contas = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS).filter(p => p.type === 'account');
+  document.getElementById('admin-content').innerHTML = `
+    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👑 Contas</h2>
+    <div class="locked-note">Canal exclusivo para administrar as contas da loja: estoque, preço, metas e imagens locais.</div>
+    <div class="admin-card">
+      <div class="admin-grid">
+        <input class="form-control" id="acc-name" placeholder="Nome da conta"/>
+        <input class="form-control" id="acc-price" placeholder="Preço"/>
+        <input class="form-control" id="acc-tier" placeholder="Tier. Ex: Lendário"/>
+        <input class="form-control" id="acc-meta" placeholder="Troféus | Brawlers | Gemas | Skins"/>
+        <input class="form-control" id="acc-images" placeholder="Imagens locais separadas por vírgula"/>
+        <button class="btn btn-primary" onclick="saveAccountProduct()">Criar conta</button>
+      </div>
+    </div>
+    <div class="admin-card"><div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Conta</th><th>Preço</th><th>Tier</th><th>Meta</th><th>Imagens</th><th>Status</th><th>Ação</th></tr></thead><tbody>${contas.map(p=>`<tr>
+      <td><input class="form-control" id="acc-name-${p.id}" value="${p.name || ''}"/></td>
+      <td><input class="form-control" id="acc-price-${p.id}" value="${p.price || ''}"/></td>
+      <td><input class="form-control" id="acc-tier-${p.id}" value="${p.tier || ''}"/></td>
+      <td><input class="form-control" id="acc-meta-${p.id}" value="${[p.trofeus,p.brawlers,p.gems,p.skins].join(' | ')}"/></td>
+      <td><div style="display:flex;align-items:center;gap:.55rem"><img src="${SITE_IMAGES.account}" alt="" style="width:34px;height:34px;object-fit:contain"/><input class="form-control" id="acc-images-${p.id}" value="${(p.images||DEFAULT_ACCOUNT_PHOTOS).map(normalizeImageUrl).join(', ')}"/></div></td>
+      <td><select class="form-control" id="acc-active-${p.id}"><option value="true" ${p.active?'selected':''}>Ativa</option><option value="false" ${!p.active?'selected':''}>Pausada</option></select></td>
+      <td><button class="btn btn-outline mini-btn" onclick="updateAccountProduct('${p.id}')">Salvar</button></td>
+    </tr>`).join('')}</tbody></table></div></div>`;
+}
+function saveAccountProduct(){
+  if(!canManageAdmin()) return;
+  const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS);
+  const name = document.getElementById('acc-name').value.trim();
+  const price = document.getElementById('acc-price').value.trim();
+  const tier = document.getElementById('acc-tier').value.trim() || 'Conta';
+  const meta = document.getElementById('acc-meta').value.split('|').map(x=>x.trim());
+  const images = document.getElementById('acc-images').value.split(',').map(x=>normalizeImageUrl(x.trim())).filter(Boolean);
+  if(!name || !price) return showToast('Preencha conta e preço.','⚠️');
+  products.push({id:uid('PRD-'),type:'account',name,price,tier,trofeus:meta[0]||'0',brawlers:meta[1]||'0',gems:meta[2]||'0',skins:meta[3]||'0',images:images.length?images:DEFAULT_ACCOUNT_PHOTOS,active:true});
+  saveStore(LS_KEYS.products, products); renderContasAdmin(); buildContas(); updateServiceCards(); showToast('Conta criada.','✅');
+}
+function updateAccountProduct(id){
+  if(!canManageAdmin()) return;
+  const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS);
+  const p = products.find(x=>x.id===id);
+  if(p){
+    p.type='account';
+    p.name=document.getElementById(`acc-name-${id}`).value.trim();
+    p.price=document.getElementById(`acc-price-${id}`).value.trim();
+    p.tier=document.getElementById(`acc-tier-${id}`).value.trim() || 'Conta';
+    const meta=document.getElementById(`acc-meta-${id}`).value.split('|').map(x=>x.trim());
+    const images=document.getElementById(`acc-images-${id}`).value.split(',').map(x=>normalizeImageUrl(x.trim())).filter(Boolean);
+    p.trofeus=meta[0]||'0'; p.brawlers=meta[1]||'0'; p.gems=meta[2]||'0'; p.skins=meta[3]||'0';
+    p.images=images.length?images:DEFAULT_ACCOUNT_PHOTOS;
+    p.active=document.getElementById(`acc-active-${id}`).value === 'true';
+  }
+  saveStore(LS_KEYS.products, products); renderContasAdmin(); buildContas(); updateServiceCards(); showToast('Conta atualizada na loja.','✅');
 }
 function renderUsers(){
   if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="locked-note">Upadores comuns não podem mexer nos usuários do admin.</div>`; return; }
@@ -2027,7 +2345,8 @@ function adminNav(section, el){
   if(section==='orders' || section==='schedule') renderAdminOrders();
   if(section==='uploaders') renderUploaders();
   if(section==='chat') renderChat();
-  if(section==='products' || section==='contas') renderProducts();
+  if(section==='products') renderProducts();
+  if(section==='contas') renderContasAdmin();
   if(section==='users') renderUsers();
   if(section==='logins') renderLogins();
   if(section==='financeiro') renderFinance();
