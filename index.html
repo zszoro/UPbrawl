@@ -300,6 +300,15 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 
 /* ── MERCADO PAGO CHECKOUT STATUS ── */
 .mp-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:50px;background:rgba(0,174,240,.14);border:1px solid rgba(0,174,240,.3);color:#00aef0;font-size:.72rem;font-weight:700}
+.mp-checkout-modal{max-width:760px}
+.mp-checkout-summary{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:.75rem;padding:.9rem 1rem;margin-bottom:1rem;font-size:.84rem;line-height:1.55;color:var(--text-muted)}
+.mp-checkout-summary strong{color:var(--text-primary)}
+.mp-checkout-status{border:1px solid rgba(6,182,212,.18);background:rgba(6,182,212,.06);border-radius:.75rem;padding:.7rem .9rem;color:var(--text-muted);font-size:.82rem;margin-bottom:1rem}
+.mp-result-box{display:none;border-radius:.9rem;padding:1rem;margin-top:1rem;border:1px solid rgba(34,197,94,.25);background:rgba(34,197,94,.08);font-size:.86rem;line-height:1.55}
+.mp-result-box.active{display:block}
+.mp-result-box.error{border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.1)}
+.mp-real-qr{display:block;max-width:210px;width:100%;margin:.75rem auto;border-radius:.65rem;background:#fff;padding:.5rem}
+.mp-copy-code{font-family:monospace;word-break:break-all;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:.5rem;padding:.65rem;margin-top:.6rem;color:var(--neon-cyan)}
 </style>
 </head>
 <body>
@@ -615,6 +624,19 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   </div>
 </div>
 
+<!-- MERCADO PAGO CHECKOUT MODAL -->
+<div class="modal-overlay" id="mp-checkout-modal">
+  <div class="modal mp-checkout-modal">
+    <button class="modal-close" onclick="closeEmbeddedCheckout()">✕</button>
+    <h2>Checkout Mercado Pago</h2>
+    <p class="modal-sub">Finalize o pagamento sem sair do site.</p>
+    <div class="mp-checkout-summary" id="mp-order-summary"></div>
+    <div class="mp-checkout-status" id="mp-checkout-status">Preparando checkout seguro...</div>
+    <div id="paymentBrick_container"></div>
+    <div class="mp-result-box" id="mp-payment-result"></div>
+  </div>
+</div>
+
 <!-- ═══ BRAWLERS PAGE ═══ -->
 <div class="page" id="brawlers-page">
   <div class="page-header">
@@ -661,6 +683,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   <div class="admin-content" id="admin-content"></div>
 </div>
 
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 // ═══════════════════════════════════════
 //   INTERACTIVE PARTICLE CANVAS BG
@@ -975,6 +998,7 @@ let rankedFrom=-1, rankedTo=-1;
 let schedStep=1, schedDate='', schedTime='', schedPayment='';
 let currentUser=null, currentOrder=null;
 let paymentInProgress=false;
+let embeddedPaymentService=null, mercadoPagoPublicKey='';
 let selectedFeedbackRating=0;
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const LS_KEYS = {
@@ -1660,7 +1684,7 @@ function renderPayment(){
     Somos uma equipe confiável e organizada. Para realizar o up, você precisará passar o login da conta e depois o código de segurança que chegar para você. Esse acesso é usado apenas para executar o agendamento combinado.
   </div>
   <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:.75rem;padding:.85rem 1rem;margin-bottom:1rem;font-size:.82rem;color:var(--text-muted);line-height:1.55">
-    <strong style="color:#86efac">Pagamento real via Mercado Pago:</strong> você será redirecionado para pagar com PIX, cartão ou saldo com segurança.
+    <strong style="color:#86efac">Pagamento real via Mercado Pago:</strong> o checkout abre em um modal seguro dentro do site.
     <div style="margin-top:.35rem;color:var(--text-primary);font-weight:700">${detail.price}</div>
   </div>
   <div class="admin-grid">
@@ -1672,13 +1696,175 @@ function renderPayment(){
   <div class="pix-box">
     <div class="mp-badge" style="margin-bottom:.75rem">Mercado Pago Checkout</div>
     <p style="color:var(--text-muted);font-size:.82rem;line-height:1.6;margin:0">
-      O pagamento real abre no checkout seguro do Mercado Pago, onde o cliente escolhe PIX, cartão, saldo ou outras opções disponíveis.
+      Ao continuar, o formulário real do Mercado Pago será carregado aqui no site para PIX, cartão e boleto disponíveis.
     </p>
   </div>
   <div style="display:flex;gap:.7rem;margin-top:1.1rem">
     <button class="btn btn-outline" style="flex:1;padding:.78rem" onclick="goStep(2)">← Voltar</button>
     <button class="btn btn-primary" id="confirm-pay-btn" style="flex:2;padding:.78rem" onclick="confirmOrder()">Ir para pagamento real</button>
   </div>`;
+}
+
+function setCheckoutStatus(message, isError=false){
+  const el = document.getElementById('mp-checkout-status');
+  if(!el) return;
+  el.textContent = message;
+  el.style.borderColor = isError ? 'rgba(248,113,113,.35)' : 'rgba(6,182,212,.18)';
+  el.style.background = isError ? 'rgba(248,113,113,.1)' : 'rgba(6,182,212,.06)';
+}
+
+function renderCheckoutSummary(){
+  const el = document.getElementById('mp-order-summary');
+  if(!el || !currentOrder) return;
+  el.innerHTML = `<strong>${currentOrder.service}</strong><br/>
+    ${escapeHTML(currentOrder.details)}<br/>
+    ${escapeHTML(currentOrder.date)} às ${escapeHTML(currentOrder.time)} | <strong>${escapeHTML(currentOrder.paymentAmount || currentOrder.price)}</strong>`;
+}
+
+async function fetchMercadoPagoPublicKey(){
+  if(mercadoPagoPublicKey) return mercadoPagoPublicKey;
+  const res = await fetch('/api/payment-config', {cache:'no-store'});
+  const data = await res.json().catch(() => ({}));
+  if(!res.ok) throw new Error(data.error || 'Public key do Mercado Pago não configurada.');
+  mercadoPagoPublicKey = data.publicKey;
+  return mercadoPagoPublicKey;
+}
+
+function savePaymentOrder(payment){
+  if(!currentOrder) return;
+  const orders = loadStore(LS_KEYS.orders, []);
+  const idx = orders.findIndex(o => o.id === currentOrder.id);
+  const updated = {
+    ...currentOrder,
+    mercadoPagoPaymentId: payment.id || currentOrder.mercadoPagoPaymentId || '',
+    paymentMethodId: payment.payment_method_id || currentOrder.paymentMethodId || '',
+    paymentStatus: payment.status || currentOrder.paymentStatus || 'pendente',
+    paymentStatusDetail: payment.status_detail || '',
+    paidAt: payment.status === 'approved' ? todayLabel() : currentOrder.paidAt,
+    status: payment.status === 'approved' ? 'andamento' : 'pendente'
+  };
+  if(idx >= 0) orders[idx] = updated;
+  else orders.unshift(updated);
+  saveStore(LS_KEYS.orders, orders);
+  currentOrder = updated;
+}
+
+function renderPaymentResult(payment){
+  const box = document.getElementById('mp-payment-result');
+  if(!box) return;
+  const tx = payment.point_of_interaction?.transaction_data || {};
+  const isError = ['rejected','cancelled'].includes(payment.status);
+  box.className = 'mp-result-box active' + (isError ? ' error' : '');
+
+  if(tx.qr_code_base64 || tx.qr_code){
+    box.innerHTML = `
+      <strong>PIX gerado pelo Mercado Pago</strong><br/>
+      Status: ${escapeHTML(payment.status || 'pending')} ${payment.status_detail ? '(' + escapeHTML(payment.status_detail) + ')' : ''}
+      ${tx.qr_code_base64 ? `<img class="mp-real-qr" src="data:image/png;base64,${tx.qr_code_base64}" alt="QR Code PIX Mercado Pago"/>` : ''}
+      ${tx.qr_code ? `<div class="mp-copy-code" id="mp-pix-code">${escapeHTML(tx.qr_code)}</div><button class="btn btn-outline mini-btn" style="margin-top:.7rem" onclick="copyEmbeddedPixCode()">Copiar código PIX</button>` : ''}
+    `;
+    return;
+  }
+
+  if(payment.status === 'approved'){
+    box.innerHTML = `<strong>Pagamento aprovado.</strong><br/>Pedido ${escapeHTML(currentOrder?.id || '')} liberado para a equipe.`;
+    return;
+  }
+
+  if(payment.status === 'pending' || payment.status === 'in_process'){
+    box.innerHTML = `<strong>Pagamento em análise.</strong><br/>Status: ${escapeHTML(payment.status_detail || payment.status || 'pendente')}.`;
+    return;
+  }
+
+  box.innerHTML = `<strong>Pagamento não aprovado.</strong><br/>Status: ${escapeHTML(payment.status_detail || payment.status || 'erro')}.`;
+}
+
+function finishEmbeddedPayment(payment){
+  savePaymentOrder(payment);
+  renderPaymentResult(payment);
+  setCheckoutStatus('Resposta recebida do Mercado Pago.');
+  showToast('Pagamento enviado ao Mercado Pago.','✅');
+  if(payment.status === 'approved'){
+    sendWhatsAppNotification(currentOrder);
+    queueFeedbackPrompt({orderId:currentOrder.id, service:currentOrder.service, product:currentOrder.details, client:currentOrder.client});
+    schedStep=4; renderScheduleStep();
+  }
+}
+
+function copyEmbeddedPixCode(){
+  const code = document.getElementById('mp-pix-code')?.textContent || '';
+  if(navigator.clipboard && code) navigator.clipboard.writeText(code).catch(()=>{});
+  showToast('Código PIX copiado.','📋');
+}
+
+async function openEmbeddedCheckout(){
+  openModal('mp-checkout-modal');
+  renderCheckoutSummary();
+  setCheckoutStatus('Carregando checkout seguro do Mercado Pago...');
+  const result = document.getElementById('mp-payment-result');
+  if(result){ result.className = 'mp-result-box'; result.innerHTML = ''; }
+  const container = document.getElementById('paymentBrick_container');
+  if(container) container.innerHTML = '';
+
+  try{
+    if(window.paymentBrickController) await window.paymentBrickController.unmount();
+    const publicKey = await fetchMercadoPagoPublicKey();
+    if(!window.MercadoPago) throw new Error('SDK do Mercado Pago não carregou.');
+    const mp = new MercadoPago(publicKey, {locale:'pt-BR'});
+    const bricksBuilder = mp.bricks();
+    const settings = {
+      initialization: {amount: embeddedPaymentService.amount},
+      customization: {
+        paymentMethods: {
+          creditCard: 'all',
+          debitCard: 'all',
+          prepaidCard: 'all',
+          ticket: 'bolbradesco',
+          bankTransfer: 'pix'
+        }
+      },
+      callbacks: {
+        onReady: () => setCheckoutStatus('Checkout pronto. Escolha a forma de pagamento.'),
+        onSubmit: ({selectedPaymentMethod, formData}) => new Promise((resolve, reject) => {
+          setCheckoutStatus('Processando pagamento no Mercado Pago...');
+          fetch('/api/process-payment', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({order:currentOrder, service:embeddedPaymentService, selectedPaymentMethod, formData})
+          })
+            .then(async res => {
+              const data = await res.json().catch(() => ({}));
+              if(!res.ok) throw new Error(data.error || 'Pagamento recusado pelo Mercado Pago.');
+              finishEmbeddedPayment(data);
+              resolve(data);
+            })
+            .catch(error => {
+              setCheckoutStatus(error.message || 'Erro ao processar pagamento.', true);
+              const box = document.getElementById('mp-payment-result');
+              if(box){ box.className = 'mp-result-box active error'; box.textContent = error.message || 'Erro ao processar pagamento.'; }
+              reject();
+            });
+        }),
+        onError: error => {
+          console.error(error);
+          setCheckoutStatus('Erro ao carregar o checkout. Verifique as credenciais do Mercado Pago.', true);
+        }
+      }
+    };
+    window.paymentBrickController = await bricksBuilder.create('payment', 'paymentBrick_container', settings);
+  }catch(error){
+    setCheckoutStatus(error.message || 'Erro ao iniciar checkout.', true);
+    paymentInProgress = false;
+  }
+}
+
+async function closeEmbeddedCheckout(){
+  try{
+    if(window.paymentBrickController) await window.paymentBrickController.unmount();
+  }catch(e){}
+  window.paymentBrickController = null;
+  paymentInProgress = false;
+  closeModal('mp-checkout-modal');
 }
 
 async function confirmOrder(){
@@ -1720,35 +1906,11 @@ async function confirmOrder(){
     createdAt:todayLabel()
   };
 
-  const btn = document.getElementById('confirm-pay-btn');
-  const originalText = btn?.textContent || 'Ir para pagamento';
   paymentInProgress = true;
-  if(btn){ btn.disabled = true; btn.textContent = 'Processando...'; }
-
-  try{
-    const res = await fetch('/api/create-payment', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({order:currentOrder, service:servicePayment})
-    });
-    const data = await res.json().catch(() => ({}));
-    if(!res.ok) throw new Error(data.error || 'Não foi possível iniciar o pagamento.');
-    if(!data.init_point) throw new Error('Resposta inválida do Mercado Pago.');
-
-    currentOrder.paymentPreferenceId = data.preference_id || '';
-    currentOrder.checkoutUrl = data.init_point;
-    currentOrder.paymentAmount = formatBRL(data.amount || servicePayment.amount);
-
-    const orders = loadStore(LS_KEYS.orders, []);
-    orders.unshift(currentOrder);
-    saveStore(LS_KEYS.orders, orders);
-    showToast('Redirecionando para o pagamento real...','💳');
-    window.location.href = data.init_point;
-  }catch(error){
-    showToast(error.message || 'Erro ao iniciar pagamento.','⚠️');
-    paymentInProgress = false;
-    if(btn){ btn.disabled = false; btn.textContent = originalText; }
-  }
+  embeddedPaymentService = servicePayment;
+  currentOrder.paymentAmount = formatBRL(servicePayment.amount);
+  currentOrder.paymentStatus = 'checkout_aberto';
+  openEmbeddedCheckout();
 }
 
 function orderWhatsAppText(order){
