@@ -306,7 +306,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   .feedback-panel{right:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}
 }
 
-/* ── MP PIX SIMULATION ── */
+/* ── MERCADO PAGO CHECKOUT STATUS ── */
 .pix-progress{height:6px;background:rgba(255,255,255,.07);border-radius:50px;overflow:hidden;margin:.75rem 0}
 .pix-progress-bar{height:100%;background:linear-gradient(90deg,#25D366,var(--neon-cyan));width:0;transition:width .5s ease;border-radius:50px}
 .mp-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:50px;background:rgba(0,174,240,.14);border:1px solid rgba(0,174,240,.3);color:#00aef0;font-size:.72rem;font-weight:700}
@@ -966,7 +966,7 @@ const FAQS = [
   {q:'Em quanto tempo meu pedido fica pronto?',a:'Depende do serviço. UP Troféu: 24-72h, Ranked: 2-7 dias, Prestígio: 12-48h.'},
   {q:'Posso jogar enquanto o serviço é feito?',a:'Recomendamos não entrar na conta durante o serviço para evitar conflitos. Você será notificado quando finalizar.'},
   {q:'Qual é a política de reembolso?',a:'Se não conseguirmos completar o serviço, reembolsamos 100% do valor pago sem burocracia.'},
-  {q:'Quais formas de pagamento aceitam?',a:'Aceitamos PIX, Mercado Pago, cartão de crédito/débito e Stripe. Pagamento via QR Code gerado automaticamente.'},
+  {q:'Quais formas de pagamento aceitam?',a:'Aceitamos PIX, Mercado Pago e cartão de crédito/débito pelo checkout seguro do Mercado Pago.'},
   {q:'Como funciona o sistema de agendamento?',a:'Você escolhe o serviço, configura os detalhes, seleciona data e horário de sua preferência e paga. Simples assim!'}
 ];
 
@@ -985,6 +985,7 @@ let rankedFrom=-1, rankedTo=-1;
 let schedStep=1, schedDate='', schedTime='', schedPayment='';
 let pixTimer=null;
 let currentUser=null, currentOrder=null;
+let paymentInProgress=false;
 let selectedFeedbackRating=0;
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const LS_KEYS = {
@@ -1004,6 +1005,7 @@ function saveStore(key, value){ localStorage.setItem(key, JSON.stringify(value))
 function uid(prefix='ZS'){ return prefix + Math.random().toString(36).slice(2,8).toUpperCase(); }
 function todayLabel(){ return new Date().toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'}); }
 function moneyFromText(v){ return Number(String(v||'0').replace(/[^\d,.-]/g,'').replace('.','').replace(',','.')) || 0; }
+function formatBRL(value){ return 'R$ ' + Number(value || 0).toFixed(2).replace('.',','); }
 function normalizeImageUrl(url){ return REMOTE_IMAGE_MAP[String(url || '').trim()] || String(url || '').trim(); }
 function defaultServiceImage(slug){
   return slug === 'trofeu' ? SITE_IMAGES.trophy : slug === 'prestigio' ? SITE_IMAGES.prestige3 : slug === 'ranked' ? SITE_IMAGES.ranked : SITE_IMAGES.ranked;
@@ -1133,9 +1135,70 @@ function serviceDetails(){
   return {details:'Detalhes a confirmar', price:'A combinar'};
 }
 
+function servicePaymentSnapshot(){
+  const detail = serviceDetails();
+  if(currentService==='trofeu'){
+    return {
+      type:'trofeu',
+      currentTrophies:document.getElementById('trofeu-atual')?.value || '',
+      trophyAmount:document.getElementById('trofeu-subir')?.value || '',
+      amount:moneyFromText(detail.price)
+    };
+  }
+  if(currentService==='ranked'){
+    return {type:'ranked', fromIndex:rankedFrom, toIndex:rankedTo, amount:moneyFromText(detail.price)};
+  }
+  if(currentService==='prestigio'){
+    return {
+      type:'prestigio',
+      currentTrophies:document.getElementById('prest-trofeus')?.value || '',
+      level:selectedPrestigio,
+      brawler:currentBrawler?.name || '',
+      amount:moneyFromText(detail.price)
+    };
+  }
+  return {type:currentService, amount:moneyFromText(detail.price)};
+}
+
+function paymentMethodLabel(type){
+  return ({pix:'PIX Mercado Pago', mp:'Mercado Pago', stripe:'Cartão Mercado Pago', qr:'QR Code PIX'})[type] || 'Mercado Pago';
+}
+
+function handlePaymentReturn(){
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get('payment_status') || params.get('collection_status') || params.get('status');
+  const ref = params.get('external_reference');
+  if(!status) return;
+
+  const orders = loadStore(LS_KEYS.orders, []);
+  const idx = ref ? orders.findIndex(o => o.id === ref) : -1;
+  if(idx >= 0){
+    orders[idx].paymentStatus = status;
+    orders[idx].paidAt = status === 'approved' ? todayLabel() : orders[idx].paidAt;
+    orders[idx].status = status === 'approved' ? 'andamento' : 'pendente';
+    saveStore(LS_KEYS.orders, orders);
+    currentOrder = orders[idx];
+  }
+
+  if(status === 'approved'){
+    showToast('Pagamento aprovado! Pedido liberado para a equipe.','✅');
+    if(currentOrder){
+      sendWhatsAppNotification(currentOrder);
+      queueFeedbackPrompt({orderId:currentOrder.id, service:currentOrder.service, product:currentOrder.details, client:currentOrder.client});
+    }
+  } else if(status === 'pending'){
+    showToast('Pagamento pendente. Assim que aprovar, a equipe continua.','⏳');
+  } else {
+    showToast('Pagamento não aprovado. Você pode tentar novamente pelo agendamento.','⚠️');
+  }
+
+  const cleanUrl = window.location.origin + window.location.pathname + window.location.hash;
+  window.history.replaceState({}, document.title, cleanUrl);
+}
+
 // ═══ INIT ═══
 window.onload = () => {
-  ensureSeedData(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); restoreFeedbackPrompt();
+  ensureSeedData(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); handlePaymentReturn(); restoreFeedbackPrompt();
 };
 
 function animateStats(){
@@ -1599,14 +1662,20 @@ function selectTime(t, el){
 }
 
 function renderPayment(){
+  const detail = serviceDetails();
   return `<div style="font-weight:600;margin-bottom:.9rem;font-size:.9rem">
     📅 <strong style="color:var(--neon-purple)">Dia ${schedDate}</strong> às <strong style="color:var(--neon-purple)">${schedTime}</strong>
   </div>
   <div class="trust-box">
     Somos uma equipe confiável e organizada. Para realizar o up, você precisará passar o login da conta e depois o código de segurança que chegar para você. Esse acesso é usado apenas para executar o agendamento combinado.
   </div>
-  <div class="admin-grid" style="grid-template-columns:1fr 1fr">
+  <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:.75rem;padding:.85rem 1rem;margin-bottom:1rem;font-size:.82rem;color:var(--text-muted);line-height:1.55">
+    <strong style="color:#86efac">Pagamento real via Mercado Pago:</strong> você será redirecionado para pagar com PIX, cartão ou saldo com segurança.
+    <div style="margin-top:.35rem;color:var(--text-primary);font-weight:700">${detail.price}</div>
+  </div>
+  <div class="admin-grid">
     <div class="form-group"><label>Seu nome</label><input class="form-control" id="sched-client" placeholder="Nome do dono da conta"/></div>
+    <div class="form-group"><label>Email</label><input type="email" class="form-control" id="sched-email" placeholder="seu@email.com"/></div>
     <div class="form-group"><label>WhatsApp</label><input class="form-control" id="sched-whatsapp" placeholder="(12) 99999-9999"/></div>
   </div>
   <div class="form-group"><label>Observações do serviço</label><textarea class="form-control" id="sched-notes" rows="2" placeholder="Login, tag, detalhes do pedido ou horários melhores"></textarea></div>
@@ -1614,13 +1683,13 @@ function renderPayment(){
   <div class="payment-methods">
     <div class="pay-method" onclick="selectPay('pix',this)"><span class="pay-icon">🟢</span><div class="pay-label">PIX</div><div style="font-size:.7rem;color:var(--text-muted)">Aprovação imediata</div></div>
     <div class="pay-method" onclick="selectPay('mp',this)"><span class="pay-icon">💳</span><div class="pay-label">Mercado Pago</div><div style="font-size:.7rem;color:var(--text-muted)">Cartão ou saldo</div></div>
-    <div class="pay-method" onclick="selectPay('stripe',this)"><span class="pay-icon">💜</span><div class="pay-label">Stripe</div><div style="font-size:.7rem;color:var(--text-muted)">Internacional</div></div>
+    <div class="pay-method" onclick="selectPay('stripe',this)"><span class="pay-icon">💳</span><div class="pay-label">Cartão</div><div style="font-size:.7rem;color:var(--text-muted)">Crédito ou débito</div></div>
     <div class="pay-method" onclick="selectPay('qr',this)"><span class="pay-icon">📱</span><div class="pay-label">QR Code PIX</div><div style="font-size:.7rem;color:var(--text-muted)">Escaneie e pague</div></div>
   </div>
   <div id="pix-box" style="display:none"></div>
   <div style="display:flex;gap:.7rem;margin-top:1.1rem">
     <button class="btn btn-outline" style="flex:1;padding:.78rem" onclick="goStep(2)">← Voltar</button>
-    <button class="btn btn-primary" id="confirm-pay-btn" style="flex:2;padding:.78rem" onclick="confirmOrder()" ${schedPayment?'':'disabled'}>✅ Confirmar Pedido</button>
+    <button class="btn btn-primary" id="confirm-pay-btn" style="flex:2;padding:.78rem" onclick="confirmOrder()" ${schedPayment?'':'disabled'}>Ir para pagamento</button>
   </div>`;
 }
 
@@ -1636,104 +1705,98 @@ function selectPay(type, el){
 function renderPixBox(type){
   const box = document.getElementById('pix-box');
   if(!box) return;
-  const pixKey = 'zsupbrawl@pagamentos.com.br';
-  if(type==='pix' || type==='qr'){
-    box.style.display='block';
-    box.innerHTML = `<div class="pix-box">
-      <div class="mp-badge" style="margin-bottom:.75rem">⚡ Mercado Pago — PIX</div>
-      <div class="pix-qr" id="qr-visual">
-        <div style="font-size:1.8rem;display:block;letter-spacing:-1px">▓▒░▒▓<br/>░▓▒▓░<br/>▒░▓░▒<br/>▓▒░▒▓</div>
-      </div>
-      <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:.4rem">Chave PIX:</div>
-      <div class="pix-key" id="pix-key-val">${pixKey}</div>
-      <button onclick="copyPix('${pixKey}')" style="background:rgba(6,182,212,.14);border:1px solid rgba(6,182,212,.3);color:var(--neon-cyan);padding:.45rem 1rem;border-radius:.5rem;cursor:pointer;font-size:.78rem;margin-top:.7rem;font-family:'Inter',sans-serif;font-weight:600">📋 Copiar chave</button>
-      <div id="pix-status" style="margin-top:.75rem">
-        <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:.3rem" id="pix-status-txt">⏳ Aguardando pagamento...</div>
-        <div class="pix-progress"><div class="pix-progress-bar" id="pix-bar"></div></div>
-      </div>
-    </div>`;
-    simulatePixPayment();
-  } else if(type==='mp'){
-    box.style.display='block';
-    box.innerHTML = `<div style="background:rgba(0,174,240,.08);border:1px solid rgba(0,174,240,.2);border-radius:.75rem;padding:1.1rem;text-align:center;margin-top:.5rem">
-      <div class="mp-badge" style="margin-bottom:.6rem;display:inline-flex">💳 Mercado Pago</div>
-      <p style="color:var(--text-muted);font-size:.82rem">Você será redirecionado ao Mercado Pago para completar o pagamento com segurança.</p>
-      <button onclick="showToast('Redirecionando ao Mercado Pago...','💳')" style="background:linear-gradient(135deg,#00aef0,#009ee3);border:none;color:#fff;padding:.65rem 1.5rem;border-radius:.5rem;cursor:pointer;font-weight:700;font-size:.85rem;margin-top:.75rem;font-family:'Inter',sans-serif">Pagar com Mercado Pago</button>
-    </div>`;
-  } else if(type==='stripe'){
-    box.style.display='block';
-    box.innerHTML = `<div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:.75rem;padding:1.1rem;margin-top:.5rem">
-      <div class="form-group" style="margin-bottom:.8rem"><label>Número do cartão</label><input type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="19"/></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-        <div class="form-group" style="margin-bottom:0"><label>Validade</label><input type="text" class="form-control" placeholder="MM/AA" maxlength="5"/></div>
-        <div class="form-group" style="margin-bottom:0"><label>CVV</label><input type="text" class="form-control" placeholder="000" maxlength="3"/></div>
-      </div>
-    </div>`;
-  } else {
-    box.style.display='none';
-  }
-}
-
-function simulatePixPayment(){
   if(pixTimer) clearInterval(pixTimer);
-  let pct = 0;
-  pixTimer = setInterval(() => {
-    pct += Math.random() * 8 + 2;
-    if(pct >= 100){ pct = 100; clearInterval(pixTimer); }
-    const bar = document.getElementById('pix-bar');
-    const txt = document.getElementById('pix-status-txt');
-    if(bar) bar.style.width = pct+'%';
-    if(txt){
-      if(pct < 40) txt.textContent = '⏳ Aguardando pagamento...';
-      else if(pct < 80) txt.textContent = '🔄 Processando pagamento...';
-      else if(pct < 100) txt.textContent = '✅ Confirmando...';
-      else txt.textContent = '✅ Pagamento confirmado!';
-    }
-  }, 600);
+
+  const copy = {
+    pix:['⚡ PIX via Mercado Pago','O QR Code e o copia e cola aparecem na tela segura do Mercado Pago.'],
+    qr:['📱 QR Code PIX','Você será redirecionado para gerar o QR Code real do pedido.'],
+    mp:['💳 Mercado Pago','Pague com cartão, saldo ou outras opções disponíveis na sua conta.'],
+    stripe:['💳 Cartão','O pagamento por cartão será feito no checkout seguro do Mercado Pago.']
+  }[type];
+
+  if(!copy){ box.style.display='none'; return; }
+
+  box.style.display='block';
+  box.innerHTML = `<div class="pix-box">
+    <div class="mp-badge" style="margin-bottom:.75rem">${copy[0]}</div>
+    <p style="color:var(--text-muted);font-size:.82rem;line-height:1.6;margin:0">${copy[1]}</p>
+    <div style="font-size:.76rem;color:var(--text-muted);margin-top:.75rem">Clique em <strong style="color:var(--text-primary)">Ir para pagamento</strong> para abrir o checkout real.</div>
+  </div>`;
 }
 
-function copyPix(key){
-  if(navigator.clipboard){ navigator.clipboard.writeText(key).catch(()=>{}); }
-  showToast('Chave PIX copiada!','📋');
-}
-
-function confirmOrder(){
+async function confirmOrder(){
+  if(paymentInProgress) return;
   const client = document.getElementById('sched-client')?.value.trim();
+  const email = document.getElementById('sched-email')?.value.trim();
   const whatsapp = document.getElementById('sched-whatsapp')?.value.trim();
-  if(!client || !whatsapp){
-    showToast('Preencha nome e WhatsApp para concluir.','⚠️');
+  if(!client || !email || !whatsapp){
+    showToast('Preencha nome, email e WhatsApp para concluir.','⚠️');
+    return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showToast('Informe um email válido para o pagamento.','⚠️');
     return;
   }
   if(pixTimer) clearInterval(pixTimer);
   const detail = serviceDetails();
+  const servicePayment = servicePaymentSnapshot();
+  if(!servicePayment.amount){
+    showToast('Recalcule o serviço antes de pagar.','⚠️');
+    return;
+  }
   currentOrder = {
     id: uid('ZS-'),
     client,
     owner: client,
+    email,
     whatsapp,
     service: serviceLabel(),
     details: detail.details,
     price: detail.price,
     date: schedDate,
     time: schedTime,
-    payment: schedPayment.toUpperCase(),
+    payment: paymentMethodLabel(schedPayment),
+    paymentStatus:'checkout_criado',
     notes: document.getElementById('sched-notes')?.value.trim() || '',
     status:'pendente',
     uploaderId:null,
     uploaderName:null,
     createdAt:todayLabel()
   };
-  const orders = loadStore(LS_KEYS.orders, []);
-  orders.unshift(currentOrder);
-  saveStore(LS_KEYS.orders, orders);
-  sendWhatsAppNotification(currentOrder);
-  schedStep=4; renderScheduleStep();
-  queueFeedbackPrompt({orderId:currentOrder.id, service:currentOrder.service, product:currentOrder.details, client:currentOrder.client});
-  showToast('Agendamento salvo no admin! 🎉','✅');
+
+  const btn = document.getElementById('confirm-pay-btn');
+  const originalText = btn?.textContent || 'Ir para pagamento';
+  paymentInProgress = true;
+  if(btn){ btn.disabled = true; btn.textContent = 'Processando...'; }
+
+  try{
+    const res = await fetch('/api/create-payment', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({order:currentOrder, service:servicePayment})
+    });
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok) throw new Error(data.error || 'Não foi possível iniciar o pagamento.');
+    if(!data.init_point) throw new Error('Resposta inválida do Mercado Pago.');
+
+    currentOrder.paymentPreferenceId = data.preference_id || '';
+    currentOrder.checkoutUrl = data.init_point;
+    currentOrder.paymentAmount = formatBRL(data.amount || servicePayment.amount);
+
+    const orders = loadStore(LS_KEYS.orders, []);
+    orders.unshift(currentOrder);
+    saveStore(LS_KEYS.orders, orders);
+    showToast('Redirecionando para o pagamento real...','💳');
+    window.location.href = data.init_point;
+  }catch(error){
+    showToast(error.message || 'Erro ao iniciar pagamento.','⚠️');
+    paymentInProgress = false;
+    if(btn){ btn.disabled = false; btn.textContent = originalText; }
+  }
 }
 
 function orderWhatsAppText(order){
-  return `Novo agendamento ZS UpBrawl\n\nCódigo: ${order.id}\nCliente: ${order.client}\nWhatsApp: ${order.whatsapp}\nServiço: ${order.service}\nDetalhes: ${order.details}\nValor: ${order.price}\nData/Horário: ${order.date} às ${order.time}\nPagamento: ${order.payment}\nObservações: ${order.notes || 'Nenhuma'}\n\nNotificação automática gerada pelo site.`;
+  return `Novo agendamento ZS UpBrawl\n\nCódigo: ${order.id}\nCliente: ${order.client}\nEmail: ${order.email || '-'}\nWhatsApp: ${order.whatsapp}\nServiço: ${order.service}\nDetalhes: ${order.details}\nValor: ${order.paymentAmount || order.price}\nData/Horário: ${order.date} às ${order.time}\nPagamento: ${order.payment}\nStatus do pagamento: ${order.paymentStatus || 'pendente'}\nObservações: ${order.notes || 'Nenhuma'}\n\nNotificação automática gerada pelo site.`;
 }
 
 function sendWhatsAppNotification(order){
