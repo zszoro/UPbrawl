@@ -198,14 +198,7 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .time-slot:hover:not(.blocked){border-color:var(--neon-purple);color:var(--neon-purple)}
 .time-slot.selected{background:var(--neon-purple);color:#fff;border-color:var(--neon-purple)}
 .time-slot.blocked{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.18);color:rgba(255,255,255,.25);cursor:not-allowed;text-decoration:line-through;font-size:.73rem}
-.payment-methods{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1rem 0}
-.pay-method{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);border-radius:.75rem;padding:1.1rem;text-align:center;cursor:pointer;transition:.3s}
-.pay-method:hover,.pay-method.selected{border-color:var(--neon-purple);background:rgba(168,85,247,.1)}
-.pay-icon{font-size:1.8rem;display:block;margin-bottom:.4rem}
-.pay-label{font-size:.85rem;font-weight:700}
 .pix-box{background:linear-gradient(135deg,rgba(0,180,100,.1),rgba(6,182,212,.08));border:1px solid rgba(0,200,100,.25);border-radius:1rem;padding:1.5rem;text-align:center;margin:1rem 0}
-.pix-qr{background:#fff;border-radius:.75rem;width:130px;height:130px;margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#000;font-weight:700;text-align:center;padding:.5rem}
-.pix-key{font-family:monospace;font-size:.8rem;color:var(--neon-cyan);background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);padding:.5rem 1rem;border-radius:.5rem;margin-top.5rem;word-break:break-all}
 .confirm-box{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(6,182,212,.07));border:1px solid rgba(34,197,94,.3);border-radius:1rem;padding:1.5rem;text-align:center;margin:1rem 0}
 .status-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.28rem .7rem;border-radius:50px;font-size:.73rem;font-weight:700}
 .status-pending{background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
@@ -298,7 +291,6 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   .nav-links{display:none}
   .admin-sidebar{display:none}
   .admin-content{margin-left:0}
-  .payment-methods{grid-template-columns:1fr}
   .ranks-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
 }
 @media(max-width:540px){
@@ -307,8 +299,6 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 }
 
 /* ── MERCADO PAGO CHECKOUT STATUS ── */
-.pix-progress{height:6px;background:rgba(255,255,255,.07);border-radius:50px;overflow:hidden;margin:.75rem 0}
-.pix-progress-bar{height:100%;background:linear-gradient(90deg,#25D366,var(--neon-cyan));width:0;transition:width .5s ease;border-radius:50px}
 .mp-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:50px;background:rgba(0,174,240,.14);border:1px solid rgba(0,174,240,.3);color:#00aef0;font-size:.72rem;font-weight:700}
 </style>
 </head>
@@ -983,7 +973,6 @@ const DEFAULT_TESTIMONIALS = [
 let currentService='', currentBrawler=null, selectedPrestigio=0;
 let rankedFrom=-1, rankedTo=-1;
 let schedStep=1, schedDate='', schedTime='', schedPayment='';
-let pixTimer=null;
 let currentUser=null, currentOrder=null;
 let paymentInProgress=false;
 let selectedFeedbackRating=0;
@@ -1161,7 +1150,7 @@ function servicePaymentSnapshot(){
 }
 
 function paymentMethodLabel(type){
-  return ({pix:'PIX Mercado Pago', mp:'Mercado Pago', stripe:'Cartão Mercado Pago', qr:'QR Code PIX'})[type] || 'Mercado Pago';
+  return 'Mercado Pago Checkout';
 }
 
 function handlePaymentReturn(){
@@ -1662,6 +1651,7 @@ function selectTime(t, el){
 }
 
 function renderPayment(){
+  schedPayment = 'mp';
   const detail = serviceDetails();
   return `<div style="font-weight:600;margin-bottom:.9rem;font-size:.9rem">
     📅 <strong style="color:var(--neon-purple)">Dia ${schedDate}</strong> às <strong style="color:var(--neon-purple)">${schedTime}</strong>
@@ -1679,48 +1669,15 @@ function renderPayment(){
     <div class="form-group"><label>WhatsApp</label><input class="form-control" id="sched-whatsapp" placeholder="(12) 99999-9999"/></div>
   </div>
   <div class="form-group"><label>Observações do serviço</label><textarea class="form-control" id="sched-notes" rows="2" placeholder="Login, tag, detalhes do pedido ou horários melhores"></textarea></div>
-  <div style="color:var(--text-muted);font-size:.83rem;margin-bottom:1rem">Escolha a forma de pagamento:</div>
-  <div class="payment-methods">
-    <div class="pay-method" onclick="selectPay('pix',this)"><span class="pay-icon">🟢</span><div class="pay-label">PIX</div><div style="font-size:.7rem;color:var(--text-muted)">Aprovação imediata</div></div>
-    <div class="pay-method" onclick="selectPay('mp',this)"><span class="pay-icon">💳</span><div class="pay-label">Mercado Pago</div><div style="font-size:.7rem;color:var(--text-muted)">Cartão ou saldo</div></div>
-    <div class="pay-method" onclick="selectPay('stripe',this)"><span class="pay-icon">💳</span><div class="pay-label">Cartão</div><div style="font-size:.7rem;color:var(--text-muted)">Crédito ou débito</div></div>
-    <div class="pay-method" onclick="selectPay('qr',this)"><span class="pay-icon">📱</span><div class="pay-label">QR Code PIX</div><div style="font-size:.7rem;color:var(--text-muted)">Escaneie e pague</div></div>
+  <div class="pix-box">
+    <div class="mp-badge" style="margin-bottom:.75rem">Mercado Pago Checkout</div>
+    <p style="color:var(--text-muted);font-size:.82rem;line-height:1.6;margin:0">
+      O pagamento real abre no checkout seguro do Mercado Pago, onde o cliente escolhe PIX, cartão, saldo ou outras opções disponíveis.
+    </p>
   </div>
-  <div id="pix-box" style="display:none"></div>
   <div style="display:flex;gap:.7rem;margin-top:1.1rem">
     <button class="btn btn-outline" style="flex:1;padding:.78rem" onclick="goStep(2)">← Voltar</button>
-    <button class="btn btn-primary" id="confirm-pay-btn" style="flex:2;padding:.78rem" onclick="confirmOrder()" ${schedPayment?'':'disabled'}>Ir para pagamento</button>
-  </div>`;
-}
-
-function selectPay(type, el){
-  schedPayment = type;
-  document.querySelectorAll('.pay-method').forEach(m=>m.classList.remove('selected'));
-  el.classList.add('selected');
-  const btn = document.getElementById('confirm-pay-btn');
-  if(btn) btn.removeAttribute('disabled');
-  renderPixBox(type);
-}
-
-function renderPixBox(type){
-  const box = document.getElementById('pix-box');
-  if(!box) return;
-  if(pixTimer) clearInterval(pixTimer);
-
-  const copy = {
-    pix:['⚡ PIX via Mercado Pago','O QR Code e o copia e cola aparecem na tela segura do Mercado Pago.'],
-    qr:['📱 QR Code PIX','Você será redirecionado para gerar o QR Code real do pedido.'],
-    mp:['💳 Mercado Pago','Pague com cartão, saldo ou outras opções disponíveis na sua conta.'],
-    stripe:['💳 Cartão','O pagamento por cartão será feito no checkout seguro do Mercado Pago.']
-  }[type];
-
-  if(!copy){ box.style.display='none'; return; }
-
-  box.style.display='block';
-  box.innerHTML = `<div class="pix-box">
-    <div class="mp-badge" style="margin-bottom:.75rem">${copy[0]}</div>
-    <p style="color:var(--text-muted);font-size:.82rem;line-height:1.6;margin:0">${copy[1]}</p>
-    <div style="font-size:.76rem;color:var(--text-muted);margin-top:.75rem">Clique em <strong style="color:var(--text-primary)">Ir para pagamento</strong> para abrir o checkout real.</div>
+    <button class="btn btn-primary" id="confirm-pay-btn" style="flex:2;padding:.78rem" onclick="confirmOrder()">Ir para pagamento real</button>
   </div>`;
 }
 
@@ -1737,7 +1694,6 @@ async function confirmOrder(){
     showToast('Informe um email válido para o pagamento.','⚠️');
     return;
   }
-  if(pixTimer) clearInterval(pixTimer);
   const detail = serviceDetails();
   const servicePayment = servicePaymentSnapshot();
   if(!servicePayment.amount){
@@ -1807,7 +1763,7 @@ function sendWhatsAppNotification(order){
 }
 
 function renderConfirm(){
-  if(!currentOrder) currentOrder = {id:uid('ZS-'),service:serviceLabel(),details:'Detalhes a confirmar',price:'A combinar',date:schedDate,time:schedTime,payment:schedPayment.toUpperCase(),client:'Cliente',notes:''};
+  if(!currentOrder) currentOrder = {id:uid('ZS-'),service:serviceLabel(),details:'Detalhes a confirmar',price:'A combinar',date:schedDate,time:schedTime,payment:paymentMethodLabel(schedPayment),client:'Cliente',notes:''};
   const msg = encodeURIComponent(orderWhatsAppText(currentOrder));
   return `<div class="confirm-box">
     <div style="font-size:3rem;margin-bottom:.5rem">🎉</div>
