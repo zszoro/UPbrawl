@@ -302,11 +302,19 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 
 /* ── MERCADO PAGO CHECKOUT STATUS ── */
 .mp-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:50px;background:rgba(0,174,240,.14);border:1px solid rgba(0,174,240,.3);color:#00aef0;font-size:.72rem;font-weight:700}
-.mp-checkout-modal{max-width:790px;background:linear-gradient(145deg,rgba(18,12,38,.98),rgba(8,10,26,.98));border-color:rgba(168,85,247,.55);box-shadow:0 0 0 1px rgba(255,255,255,.05) inset,0 28px 90px rgba(0,0,0,.72),0 0 70px rgba(168,85,247,.18);overflow:hidden}
+.mp-checkout-modal{max-width:790px;max-height:min(92vh,860px);display:flex;flex-direction:column;background:linear-gradient(145deg,rgba(18,12,38,.98),rgba(8,10,26,.98));border-color:rgba(168,85,247,.55);box-shadow:0 0 0 1px rgba(255,255,255,.05) inset,0 28px 90px rgba(0,0,0,.72),0 0 70px rgba(168,85,247,.18);overflow:hidden;padding:0}
 .mp-checkout-modal::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 0%,rgba(168,85,247,.22),transparent 34%),radial-gradient(circle at 88% 18%,rgba(6,182,212,.16),transparent 30%);pointer-events:none}
 .mp-checkout-modal>*{position:relative;z-index:1}
+.mp-checkout-modal>.modal-close{position:absolute;top:1rem;right:1rem;z-index:3}
 .mp-checkout-modal h2{font-size:1.55rem;background:linear-gradient(135deg,#fff,var(--neon-cyan) 45%,var(--neon-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.mp-checkout-summary{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center;background:linear-gradient(135deg,rgba(168,85,247,.14),rgba(59,130,246,.08));border:1px solid rgba(168,85,247,.3);border-radius:1rem;padding:1rem 1.1rem;margin-bottom:1rem;font-size:.84rem;line-height:1.55;color:var(--text-muted)}
+.mp-checkout-head{padding:2rem 2rem 1rem;flex-shrink:0}
+.mp-checkout-head .modal-sub{margin-bottom:0}
+.mp-checkout-scroll{min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 2rem 2rem;scrollbar-width:thin;scrollbar-color:var(--neon-purple) rgba(255,255,255,.08)}
+.mp-checkout-scroll::-webkit-scrollbar{width:7px}
+.mp-checkout-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.06);border-radius:999px}
+.mp-checkout-scroll::-webkit-scrollbar-thumb{background:linear-gradient(var(--neon-purple),var(--neon-cyan));border-radius:999px}
+.mp-checkout-panel{background:linear-gradient(145deg,rgba(16,11,36,.88),rgba(5,8,24,.88));border:1px solid rgba(168,85,247,.32);border-radius:1.15rem;padding:1rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 18px 55px rgba(0,0,0,.35)}
+.mp-checkout-summary{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center;background:transparent;border:0;border-bottom:1px solid rgba(168,85,247,.24);border-radius:0;padding:0 0 1rem;margin:0 0 1rem;font-size:.84rem;line-height:1.55;color:var(--text-muted)}
 .mp-summary-service{display:block;color:var(--text-primary);font-weight:800;font-size:.96rem;margin-bottom:.25rem}
 .mp-summary-detail{display:block}
 .mp-summary-meta{display:block;color:var(--neon-cyan);font-weight:700;margin-top:.25rem}
@@ -320,7 +328,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 .mp-result-box.error{border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.1)}
 .mp-real-qr{display:block;max-width:240px;width:100%;margin:1rem auto;border-radius:.85rem;background:#fff;padding:.65rem;box-shadow:0 15px 45px rgba(0,0,0,.35)}
 .mp-copy-code{font-family:monospace;word-break:break-all;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:.5rem;padding:.65rem;margin-top:.6rem;color:var(--neon-cyan)}
-@media(max-width:620px){.mp-checkout-summary{grid-template-columns:1fr}.mp-summary-price{text-align:left}}
+@media(max-width:620px){.mp-checkout-head{padding:1.5rem 1.15rem .85rem}.mp-checkout-scroll{padding:0 1.15rem 1.15rem}.mp-checkout-summary{grid-template-columns:1fr}.mp-summary-price{text-align:left}}
 </style>
 </head>
 <body>
@@ -640,13 +648,19 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 <div class="modal-overlay" id="mp-checkout-modal">
   <div class="modal mp-checkout-modal">
     <button class="modal-close" onclick="closeEmbeddedCheckout()">✕</button>
-    <h2>Checkout Mercado Pago</h2>
-    <p class="modal-sub">Finalize sem sair do site. PIX aparece aqui como QR Code e código copia e cola.</p>
-    <div class="mp-checkout-summary" id="mp-order-summary"></div>
-    <div class="mp-checkout-status" id="mp-checkout-status">Preparando checkout seguro...</div>
-    <div class="mp-payment-note">Cartão de crédito, cartão de débito e PIX ficam dentro deste modal. No PIX, o Mercado Pago retorna o QR Code e o Pix copia e cola na tela.</div>
-    <div id="paymentBrick_container"></div>
-    <div class="mp-result-box" id="mp-payment-result"></div>
+    <div class="mp-checkout-head">
+      <h2>Checkout Mercado Pago</h2>
+      <p class="modal-sub">Finalize sem sair do site. PIX aparece aqui como QR Code e código copia e cola.</p>
+    </div>
+    <div class="mp-checkout-scroll">
+      <div class="mp-checkout-panel">
+        <div class="mp-checkout-summary" id="mp-order-summary"></div>
+        <div class="mp-checkout-status" id="mp-checkout-status">Preparando checkout seguro...</div>
+        <div class="mp-payment-note">Cartão de crédito, cartão de débito e PIX ficam dentro deste checkout. No PIX, o Mercado Pago retorna o QR Code e o Pix copia e cola na tela.</div>
+        <div id="paymentBrick_container"></div>
+        <div class="mp-result-box" id="mp-payment-result"></div>
+      </div>
+    </div>
   </div>
 </div>
 
