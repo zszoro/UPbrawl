@@ -192,6 +192,7 @@ function buildPaymentPayload({ order, calculated, formData }) {
   if (data.token) payment.token = data.token;
   if (data.installments) payment.installments = data.installments;
   if (data.issuer_id) payment.issuer_id = String(data.issuer_id);
+  if (process.env.MERCADO_PAGO_NOTIFICATION_URL) payment.notification_url = process.env.MERCADO_PAGO_NOTIFICATION_URL;
 
   return payment;
 }

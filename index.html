@@ -322,13 +322,28 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 .mp-summary-price small{display:block;font-family:'Inter',sans-serif;font-size:.68rem;letter-spacing:.9px;text-transform:uppercase;color:var(--text-muted);-webkit-text-fill-color:var(--text-muted);margin-bottom:.3rem}
 .mp-checkout-status{border:1px solid rgba(6,182,212,.24);background:rgba(6,182,212,.08);border-radius:.8rem;padding:.75rem .9rem;color:var(--text-muted);font-size:.82rem;margin-bottom:.75rem}
 .mp-payment-note{border:1px solid rgba(168,85,247,.22);background:rgba(168,85,247,.08);border-radius:.8rem;padding:.75rem .9rem;margin-bottom:1rem;color:var(--text-muted);font-size:.8rem;line-height:1.5}
+.mp-method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin-bottom:1rem}
+.mp-method-btn{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:.85rem;padding:1rem .8rem;color:var(--text-primary);font-family:'Inter',sans-serif;cursor:pointer;transition:.25s;text-align:left;min-height:92px}
+.mp-method-btn:hover,.mp-method-btn.active{border-color:var(--neon-cyan);background:rgba(6,182,212,.1);box-shadow:0 0 24px rgba(6,182,212,.12);transform:translateY(-2px)}
+.mp-method-icon{display:block;font-size:1.35rem;margin-bottom:.45rem}
+.mp-method-title{display:block;font-weight:800;font-size:.86rem}
+.mp-method-sub{display:block;color:var(--text-muted);font-size:.72rem;line-height:1.35;margin-top:.25rem}
 #paymentBrick_container{background:rgba(5,6,18,.55);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:1rem}
+.mp-brick-placeholder{text-align:center;color:var(--text-muted);font-size:.82rem;line-height:1.5;padding:1.2rem}
 .mp-result-box{display:none;border-radius:1rem;padding:1rem;margin-top:1rem;border:1px solid rgba(34,197,94,.25);background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(6,182,212,.06));font-size:.86rem;line-height:1.55}
 .mp-result-box.active{display:block}
 .mp-result-box.error{border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.1)}
 .mp-real-qr{display:block;max-width:240px;width:100%;margin:1rem auto;border-radius:.85rem;background:#fff;padding:.65rem;box-shadow:0 15px 45px rgba(0,0,0,.35)}
 .mp-copy-code{font-family:monospace;word-break:break-all;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:.5rem;padding:.65rem;margin-top:.6rem;color:var(--neon-cyan)}
-@media(max-width:620px){.mp-checkout-head{padding:1.5rem 1.15rem .85rem}.mp-checkout-scroll{padding:0 1.15rem 1.15rem}.mp-checkout-summary{grid-template-columns:1fr}.mp-summary-price{text-align:left}}
+.mp-pix-modal{max-width:560px;background:linear-gradient(145deg,rgba(10,18,28,.98),rgba(16,9,32,.98));border-color:rgba(6,182,212,.45);box-shadow:0 28px 85px rgba(0,0,0,.72),0 0 70px rgba(6,182,212,.16)}
+.mp-pix-value{font-family:'Orbitron',sans-serif;font-size:clamp(2.1rem,8vw,3.5rem);font-weight:900;text-align:center;margin:.6rem 0 1rem;background:linear-gradient(135deg,var(--neon-cyan),#fff,var(--neon-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mp-pix-status{border:1px solid rgba(6,182,212,.24);background:rgba(6,182,212,.08);border-radius:.8rem;padding:.75rem .9rem;color:var(--text-muted);font-size:.82rem;margin-bottom:1rem;text-align:center}
+.mp-pix-status.error{border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.1);color:#fecaca}
+.mp-pix-status.approved{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.1);color:#bbf7d0}
+.mp-pix-box{background:rgba(5,6,18,.58);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:1rem}
+.mp-pix-actions{display:flex;gap:.7rem;margin-top:1rem;flex-wrap:wrap}
+.mp-pix-actions .btn{flex:1;min-width:150px}
+@media(max-width:620px){.mp-checkout-head{padding:1.5rem 1.15rem .85rem}.mp-checkout-scroll{padding:0 1.15rem 1.15rem}.mp-checkout-summary{grid-template-columns:1fr}.mp-summary-price{text-align:left}.mp-method-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -656,10 +671,45 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
       <div class="mp-checkout-panel">
         <div class="mp-checkout-summary" id="mp-order-summary"></div>
         <div class="mp-checkout-status" id="mp-checkout-status">Preparando checkout seguro...</div>
-        <div class="mp-payment-note">Cartão de crédito, cartão de débito e PIX ficam dentro deste checkout. No PIX, o Mercado Pago retorna o QR Code e o Pix copia e cola na tela.</div>
+        <div class="mp-method-grid">
+          <button class="mp-method-btn" type="button" data-method="pix" onclick="selectCheckoutMethod('pix')">
+            <span class="mp-method-icon">◇</span>
+            <span class="mp-method-title">PIX QR Code</span>
+            <span class="mp-method-sub">Abre um modal só do PIX com copia e cola.</span>
+          </button>
+          <button class="mp-method-btn" type="button" data-method="credit" onclick="selectCheckoutMethod('credit')">
+            <span class="mp-method-icon">▣</span>
+            <span class="mp-method-title">Cartão de crédito</span>
+            <span class="mp-method-sub">Formulário seguro do Mercado Pago.</span>
+          </button>
+          <button class="mp-method-btn" type="button" data-method="debit" onclick="selectCheckoutMethod('debit')">
+            <span class="mp-method-icon">▤</span>
+            <span class="mp-method-title">Cartão de débito</span>
+            <span class="mp-method-sub">Opção dedicada para débito.</span>
+          </button>
+        </div>
+        <div class="mp-payment-note">Escolha uma forma de pagamento. O PIX gera QR Code real pelo Mercado Pago; cartões carregam o formulário somente depois da escolha.</div>
         <div id="paymentBrick_container"></div>
         <div class="mp-result-box" id="mp-payment-result"></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- MERCADO PAGO PIX MODAL -->
+<div class="modal-overlay" id="mp-pix-modal">
+  <div class="modal mp-pix-modal">
+    <button class="modal-close" onclick="closePixCheckout()">✕</button>
+    <h2>PIX Mercado Pago</h2>
+    <p class="modal-sub">Escaneie o QR Code ou copie o Pix copia e cola.</p>
+    <div class="mp-pix-value" id="mp-pix-value">R$ 0,00</div>
+    <div class="mp-pix-status" id="mp-pix-status">Gerando PIX seguro...</div>
+    <div class="mp-pix-box" id="mp-pix-box">
+      <div class="mp-brick-placeholder">Aguarde enquanto o Mercado Pago gera o QR Code.</div>
+    </div>
+    <div class="mp-pix-actions">
+      <button class="btn btn-primary" id="mp-pix-copy-btn" type="button" onclick="copyPixCheckoutCode()">Copiar PIX</button>
+      <button class="btn btn-outline" id="mp-pix-paid-btn" type="button" onclick="checkPixPaymentStatus(true)">Já paguei</button>
     </div>
   </div>
 </div>
@@ -1025,7 +1075,7 @@ let rankedFrom=-1, rankedTo=-1;
 let schedStep=1, schedDate='', schedTime='', schedPayment='';
 let currentUser=null, currentOrder=null;
 let paymentInProgress=false;
-let embeddedPaymentService=null, mercadoPagoPublicKey='';
+let embeddedPaymentService=null, mercadoPagoPublicKey='', mpSelectedMethod='', currentPixPayment=null, pixStatusTimer=null, pixGenerating=false;
 let selectedFeedbackRating=0;
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const LS_KEYS = {
@@ -1824,6 +1874,19 @@ function renderCheckoutSummary(){
   `;
 }
 
+function setCheckoutMethod(method){
+  mpSelectedMethod = method || '';
+  document.querySelectorAll('.mp-method-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.method === mpSelectedMethod));
+}
+
+function resetCheckoutSurface(){
+  setCheckoutMethod('');
+  const container = document.getElementById('paymentBrick_container');
+  if(container) container.innerHTML = '<div class="mp-brick-placeholder">Escolha PIX, cartão de crédito ou cartão de débito acima.</div>';
+  const result = document.getElementById('mp-payment-result');
+  if(result){ result.className = 'mp-result-box'; result.innerHTML = ''; }
+}
+
 async function fetchMercadoPagoPublicKey(){
   if(mercadoPagoPublicKey) return mercadoPagoPublicKey;
   const res = await fetch('/api/payment-config', {cache:'no-store'});
@@ -1886,12 +1949,17 @@ function finishEmbeddedPayment(payment){
   savePaymentOrder(payment);
   renderPaymentResult(payment);
   setCheckoutStatus('Resposta recebida do Mercado Pago.');
-  showToast('Pagamento enviado ao Mercado Pago.','✅');
   if(payment.status === 'approved'){
+    paymentInProgress = false;
+    stopPixStatusPolling();
+    setPixStatus('Pagamento aprovado. Pedido liberado para a equipe.', 'approved');
     sendWhatsAppNotification(currentOrder);
     queueFeedbackPrompt({orderId:currentOrder.id, service:currentOrder.service, product:currentOrder.details, client:currentOrder.client});
     schedStep=4; renderScheduleStep();
+    showToast('Pagamento aprovado. Pedido liberado.','✅');
+    return;
   }
+  showToast('Pagamento enviado ao Mercado Pago.','✅');
 }
 
 function copyEmbeddedPixCode(){
@@ -1900,14 +1968,141 @@ function copyEmbeddedPixCode(){
   showToast('Código PIX copiado.','📋');
 }
 
-async function openEmbeddedCheckout(){
-  openModal('mp-checkout-modal');
-  renderCheckoutSummary();
-  setCheckoutStatus('Carregando checkout seguro do Mercado Pago...');
+function setPixStatus(message, state=''){
+  const el = document.getElementById('mp-pix-status');
+  if(!el) return;
+  el.textContent = message;
+  el.className = 'mp-pix-status' + (state ? ' ' + state : '');
+  const paidBtn = document.getElementById('mp-pix-paid-btn');
+  if(paidBtn && state === 'approved'){
+    paidBtn.textContent = 'Pagamento aprovado';
+    paidBtn.disabled = true;
+  }
+}
+
+function renderPixCheckout(payment){
+  currentPixPayment = payment;
+  const tx = payment.point_of_interaction?.transaction_data || {};
+  const box = document.getElementById('mp-pix-box');
+  const value = document.getElementById('mp-pix-value');
+  if(value) value.textContent = formatBRL(payment.transaction_amount || embeddedPaymentService?.amount || 0);
+  if(!box) return;
+
+  if(!tx.qr_code_base64 && !tx.qr_code){
+    box.innerHTML = '<div class="mp-brick-placeholder">O Mercado Pago não retornou QR Code para este PIX. Tente gerar novamente.</div>';
+    setPixStatus('PIX criado sem QR Code. Tente novamente.', 'error');
+    return;
+  }
+
+  box.innerHTML = `
+    ${tx.qr_code_base64 ? `<img class="mp-real-qr" src="data:image/png;base64,${tx.qr_code_base64}" alt="QR Code PIX Mercado Pago"/>` : ''}
+    ${tx.qr_code ? `<div class="mp-copy-code" id="mp-pix-modal-code">${escapeHTML(tx.qr_code)}</div>` : ''}
+  `;
+  setPixStatus('PIX gerado. Aguardando aprovação do pagamento...');
+}
+
+function copyPixCheckoutCode(){
+  const code = document.getElementById('mp-pix-modal-code')?.textContent || document.getElementById('mp-pix-code')?.textContent || '';
+  if(!code){
+    showToast('PIX ainda não foi gerado.','⚠️');
+    return;
+  }
+  if(navigator.clipboard) navigator.clipboard.writeText(code).catch(()=>{});
+  showToast('Código PIX copiado.','📋');
+}
+
+function stopPixStatusPolling(){
+  if(pixStatusTimer) clearInterval(pixStatusTimer);
+  pixStatusTimer = null;
+}
+
+function startPixStatusPolling(paymentId){
+  stopPixStatusPolling();
+  if(!paymentId) return;
+  pixStatusTimer = setInterval(() => checkPixPaymentStatus(false), 7000);
+}
+
+async function checkPixPaymentStatus(manual=false){
+  if(!currentPixPayment?.id){
+    if(manual) showToast('PIX ainda não foi gerado.','⚠️');
+    return;
+  }
+  try{
+    if(manual) setPixStatus('Consultando pagamento no Mercado Pago...');
+    const res = await fetch(`/api/payment-status?id=${encodeURIComponent(currentPixPayment.id)}`, {cache:'no-store'});
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok) throw new Error(data.error || 'Não foi possível consultar o pagamento.');
+    currentPixPayment = {...currentPixPayment, ...data};
+    savePaymentOrder(currentPixPayment);
+
+    if(data.status === 'approved'){
+      finishEmbeddedPayment(currentPixPayment);
+      return;
+    }
+
+    if(['rejected','cancelled'].includes(data.status)){
+      stopPixStatusPolling();
+      paymentInProgress = false;
+      setPixStatus('Pagamento não aprovado. Gere outro PIX ou tente cartão.', 'error');
+      showToast('Pagamento não aprovado.','⚠️');
+      return;
+    }
+
+    setPixStatus(manual ? 'Ainda não aprovado. Se acabou de pagar, aguarde alguns segundos.' : 'Aguardando aprovação do PIX...');
+  }catch(error){
+    if(manual) showToast(error.message || 'Erro ao consultar pagamento.','⚠️');
+  }
+}
+
+async function startPixCheckout(){
+  if(pixGenerating) return;
+  pixGenerating = true;
+  stopPixStatusPolling();
+  setCheckoutMethod('pix');
+  setCheckoutStatus('Gerando PIX real no Mercado Pago...');
+  closeModal('mp-checkout-modal');
+  openModal('mp-pix-modal');
+  setPixStatus('Gerando PIX seguro...');
+  const paidBtn = document.getElementById('mp-pix-paid-btn');
+  if(paidBtn){ paidBtn.textContent = 'Já paguei'; paidBtn.disabled = false; }
+  const value = document.getElementById('mp-pix-value');
+  if(value) value.textContent = formatBRL(embeddedPaymentService?.amount || 0);
+  const box = document.getElementById('mp-pix-box');
+  if(box) box.innerHTML = '<div class="mp-brick-placeholder">Aguarde enquanto o Mercado Pago gera o QR Code.</div>';
+
+  try{
+    if(window.paymentBrickController) await window.paymentBrickController.unmount();
+    window.paymentBrickController = null;
+    const res = await fetch('/api/process-payment', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        order:currentOrder,
+        service:embeddedPaymentService,
+        selectedPaymentMethod:'pix',
+        formData:{payment_method_id:'pix', payer:{email:currentOrder.email}}
+      })
+    });
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok) throw new Error(data.error || 'Não foi possível gerar o PIX.');
+    savePaymentOrder(data);
+    renderPixCheckout(data);
+    startPixStatusPolling(data.id);
+  }catch(error){
+    setPixStatus(error.message || 'Erro ao gerar PIX.', 'error');
+    paymentInProgress = false;
+  }finally{
+    pixGenerating = false;
+  }
+}
+
+async function renderCardCheckout(method){
+  setCheckoutMethod(method);
+  setCheckoutStatus(method === 'debit' ? 'Carregando cartão de débito...' : 'Carregando cartão de crédito...');
   const result = document.getElementById('mp-payment-result');
   if(result){ result.className = 'mp-result-box'; result.innerHTML = ''; }
   const container = document.getElementById('paymentBrick_container');
-  if(container) container.innerHTML = '';
+  if(container) container.innerHTML = '<div class="mp-brick-placeholder">Carregando formulário seguro do Mercado Pago...</div>';
 
   try{
     if(window.paymentBrickController) await window.paymentBrickController.unmount();
@@ -1915,19 +2110,12 @@ async function openEmbeddedCheckout(){
     if(!window.MercadoPago) throw new Error('SDK do Mercado Pago não carregou.');
     const mp = new MercadoPago(publicKey, {locale:'pt-BR'});
     const bricksBuilder = mp.bricks();
+    const paymentMethods = method === 'debit' ? {debitCard:'all'} : {creditCard:'all'};
     const settings = {
       initialization: {amount: embeddedPaymentService.amount, payer:{email:currentOrder.email}},
-      customization: {
-        paymentMethods: {
-          creditCard: 'all',
-          debitCard: 'all',
-          prepaidCard: 'all',
-          ticket: 'bolbradesco',
-          bankTransfer: 'pix'
-        }
-      },
+      customization: {paymentMethods},
       callbacks: {
-        onReady: () => setCheckoutStatus('Checkout pronto. Escolha a forma de pagamento.'),
+        onReady: () => setCheckoutStatus(method === 'debit' ? 'Débito pronto. Preencha o cartão.' : 'Crédito pronto. Preencha o cartão.'),
         onSubmit: ({selectedPaymentMethod, formData}) => new Promise((resolve, reject) => {
           setCheckoutStatus('Processando pagamento no Mercado Pago...');
           fetch('/api/process-payment', {
@@ -1950,15 +2138,31 @@ async function openEmbeddedCheckout(){
         }),
         onError: error => {
           console.error(error);
-          setCheckoutStatus('Erro ao carregar o checkout. Verifique as credenciais do Mercado Pago.', true);
+          setCheckoutStatus('Erro ao carregar cartão. Verifique as credenciais do Mercado Pago.', true);
         }
       }
     };
     window.paymentBrickController = await bricksBuilder.create('payment', 'paymentBrick_container', settings);
   }catch(error){
-    setCheckoutStatus(error.message || 'Erro ao iniciar checkout.', true);
-    paymentInProgress = false;
+    setCheckoutStatus(error.message || 'Erro ao iniciar cartão.', true);
+    if(container) container.innerHTML = `<div class="mp-brick-placeholder">${escapeHTML(error.message || 'Erro ao carregar cartão.')}</div>`;
   }
+}
+
+function selectCheckoutMethod(method){
+  if(method === 'pix') return startPixCheckout();
+  if(method === 'credit' || method === 'debit') return renderCardCheckout(method);
+}
+
+async function openEmbeddedCheckout(){
+  openModal('mp-checkout-modal');
+  renderCheckoutSummary();
+  resetCheckoutSurface();
+  setCheckoutStatus('Escolha PIX, crédito ou débito para continuar.');
+  try{
+    if(window.paymentBrickController) await window.paymentBrickController.unmount();
+  }catch(e){}
+  window.paymentBrickController = null;
 }
 
 async function closeEmbeddedCheckout(){
@@ -1968,6 +2172,14 @@ async function closeEmbeddedCheckout(){
   window.paymentBrickController = null;
   paymentInProgress = false;
   closeModal('mp-checkout-modal');
+}
+
+function closePixCheckout(){
+  stopPixStatusPolling();
+  currentPixPayment = null;
+  pixGenerating = false;
+  paymentInProgress = false;
+  closeModal('mp-pix-modal');
 }
 
 async function confirmOrder(){
