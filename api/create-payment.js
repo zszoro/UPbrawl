@@ -169,9 +169,9 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN || process.env.MP_ACCESS_TOKEN;
+  const accessToken = process.env.MP_PROD_ACCESS_TOKEN || process.env.MERCADO_PAGO_ACCESS_TOKEN || process.env.MP_ACCESS_TOKEN;
   if (!accessToken) {
-    res.status(503).json({ error: 'Pagamento real ainda nao foi configurado. Defina MERCADO_PAGO_ACCESS_TOKEN no Vercel.' });
+    res.status(503).json({ error: 'Pagamento real ainda nao foi configurado. Defina MP_PROD_ACCESS_TOKEN no Vercel.' });
     return;
   }
 
