@@ -221,6 +221,9 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .time-slot:hover:not(.blocked){border-color:var(--neon-purple);color:var(--neon-purple)}
 .time-slot.selected{background:var(--neon-purple);color:#fff;border-color:var(--neon-purple)}
 .time-slot.blocked{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.18);color:rgba(255,255,255,.25);cursor:not-allowed;text-decoration:line-through;font-size:.73rem}
+.cal-day.available{border-color:rgba(34,197,94,.35);color:#86efac;background:rgba(34,197,94,.08)}
+.cal-day.locked{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22);color:rgba(255,255,255,.28);cursor:not-allowed}
+.cal-day small{display:block;font-size:.55rem;line-height:1;margin-top:.12rem}
 .pix-box{background:linear-gradient(135deg,rgba(0,180,100,.1),rgba(6,182,212,.08));border:1px solid rgba(0,200,100,.25);border-radius:1rem;padding:1.5rem;text-align:center;margin:1rem 0}
 .confirm-box{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(6,182,212,.07));border:1px solid rgba(34,197,94,.3);border-radius:1rem;padding:1.5rem;text-align:center;margin:1rem 0}
 .status-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.28rem .7rem;border-radius:50px;font-size:.73rem;font-weight:700}
@@ -352,6 +355,13 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 .admin-live-list{display:flex;flex-direction:column;gap:.65rem}
 .admin-live-item{display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:.75rem;padding:.75rem}
 .admin-live-item small{display:block;color:var(--text-muted);font-size:.72rem;margin-top:.22rem;line-height:1.45}
+.availability-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.85rem}
+.availability-day{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:.85rem;padding:.9rem}
+.availability-day h4{margin:0 0 .55rem;font-size:.9rem}
+.availability-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem}
+.availability-slot{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--text-muted);border-radius:.55rem;padding:.48rem .35rem;font-size:.72rem;font-weight:800;cursor:pointer;transition:.2s}
+.availability-slot.active{border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.12);color:#86efac}
+.availability-slot.full{border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.1);color:#fde68a}
 .admin-owner-hero{position:relative;overflow:hidden;border:1px solid rgba(251,191,36,.34);background:linear-gradient(135deg,rgba(251,191,36,.13),rgba(168,85,247,.12));border-radius:1rem;padding:1.15rem;margin-bottom:1rem;box-shadow:0 18px 50px rgba(0,0,0,.34)}
 .admin-owner-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 0%,rgba(255,255,255,.16) 45%,transparent 62%);transform:translateX(-120%);animation:ownerSweep 3.1s ease-in-out infinite}
 .admin-owner-hero>*{position:relative;z-index:1}
@@ -971,6 +981,7 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
     <div class="admin-nav-item active" onclick="adminNav('dashboard',this)">📊 Dashboard</div>
     <div class="admin-nav-item" onclick="adminNav('orders',this)">📋 Pedidos</div>
     <div class="admin-nav-item" onclick="adminNav('schedule',this)">🗓 Agendamentos</div>
+    <div class="admin-nav-item" onclick="adminNav('availability',this)">📅 Disponibilidade</div>
     <div class="admin-nav-item" onclick="adminNav('performance',this)">📣 Meu desempenho</div>
     <div class="admin-nav-item" onclick="adminNav('uploaders',this)">⚡ Upadores</div>
     <div class="admin-nav-item" onclick="adminNav('chat',this)">💬 Chat Upador</div>
@@ -1313,6 +1324,7 @@ let selectedFeedbackRating=0;
 let currentAdminSection='dashboard', pendingTaskId='', taskFlowStep=1, currentTaskFlowOrderId='', orderNotificationTimer=null;
 let globalSyncTimer=null, globalStateUpdatedAt=0, applyingRemoteState=false, remoteStateHasData=false, syncWarned=false, applyingTaskNotices=false, ownerKnownApprovedOrders=new Set();
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
+const TIME_SLOTS = ['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
 const LS_KEYS = {
   users:'zsup_users',
   orders:'zsup_orders',
@@ -1324,9 +1336,10 @@ const LS_KEYS = {
   lastOrder:'zsup_last_order_id',
   ownerDismissed:'zsup_owner_dismissed_notices',
   ownerLastSeen:'zsup_owner_last_seen',
-  cart:'zsup_cart'
+  cart:'zsup_cart',
+  availability:'zsup_availability'
 };
-const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks','zsup_owner_dismissed_notices'];
+const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks','zsup_owner_dismissed_notices','zsup_availability'];
 
 function loadStore(key, fallback){
   try{ return JSON.parse(localStorage.getItem(key)) || fallback; }catch(e){ return fallback; }
@@ -1560,6 +1573,7 @@ function ensureSeedData(){
       {id:uid('MSG'),author:'Sistema',role:'dono',text:'Canal da equipe iniciado. Donos e upadores podem combinar entregas por aqui.',createdAt:todayLabel()}
     ]);
   }
+  ensureAvailabilitySeed();
   syncCurrentUserFromStore();
 }
 function isOwner(){ return currentUser?.role === 'dono'; }
@@ -1575,6 +1589,61 @@ function statusLabel(status){
     realizado:'<span class="status-badge status-done">✔ Finalizado</span>'
   };
   return labels[status] || labels.pendente;
+}
+function dateLabelFromDate(date){
+  return date.toLocaleDateString('pt-BR');
+}
+function dateKeyFromParts(year, monthIndex, day){
+  return dateLabelFromDate(new Date(year, monthIndex, day));
+}
+function availabilityStore(){
+  return loadStore(LS_KEYS.availability, {});
+}
+function availabilityPeople(dateText, time){
+  const list = availabilityStore()?.[dateText]?.[time] || [];
+  return Array.isArray(list) ? list : [];
+}
+function bookedSlotCount(dateText, time){
+  return loadStore(LS_KEYS.orders, []).filter(o =>
+    o.date === dateText &&
+    o.time === time &&
+    o.status !== 'cancelado' &&
+    o.paymentStatus !== 'rejected' &&
+    o.paymentStatus !== 'cancelled'
+  ).length;
+}
+function availableSlotCapacity(dateText, time){
+  return availabilityPeople(dateText, time).length;
+}
+function isSlotAvailable(dateText, time){
+  return availableSlotCapacity(dateText, time) > bookedSlotCount(dateText, time);
+}
+function availableTimesForDate(dateText){
+  return TIME_SLOTS.filter(time => isSlotAvailable(dateText, time));
+}
+function dayAvailabilityState(dateText){
+  const capacity = TIME_SLOTS.reduce((sum,time)=>sum + availableSlotCapacity(dateText, time), 0);
+  const free = availableTimesForDate(dateText).length;
+  return {capacity, free, locked: capacity === 0 || free === 0};
+}
+function ensureAvailabilitySeed(){
+  if(localStorage.getItem(LS_KEYS.availability)) return;
+  const state = {};
+  const base = new Date();
+  for(let i=0; i<14; i++){
+    const date = new Date(base.getFullYear(), base.getMonth(), base.getDate() + i);
+    const key = dateLabelFromDate(date);
+    state[key] = {};
+    TIME_SLOTS.forEach(time => {
+      if(!['10:00','14:00','19:00'].includes(time)) state[key][time] = ['SYS'];
+    });
+  }
+  saveStore(LS_KEYS.availability, state);
+}
+function availabilityName(id){
+  if(id === 'SYS') return 'Equipe';
+  const user = loadStore(LS_KEYS.users, []).find(u => u.id === id);
+  return user?.name || 'Upador';
 }
 function serviceLabel(){
   const labels = {trofeu:'UP Troféu',ranked:'UP Ranked',prestigio:'UP Prestígio'};
@@ -2597,11 +2666,16 @@ function renderCalendar(){
   for(let i=0; i<first; i++) grid += '<div class="cal-day empty"></div>';
   for(let d=1; d<=last; d++){
     const past = d < today;
-    const fullDate = new Date(now.getFullYear(), now.getMonth(), d).toLocaleDateString('pt-BR');
-    grid += `<div class="cal-day${past?' disabled':d===today?' today':''}" onclick="${past ? '' : "selectDate('"+fullDate+"',this)"}">${d}</div>`;
+    const fullDate = dateKeyFromParts(now.getFullYear(), now.getMonth(), d);
+    const state = dayAvailabilityState(fullDate);
+    const locked = !past && state.locked;
+    const cls = past ? ' disabled' : locked ? ' locked' : ' available';
+    const label = past ? '' : locked ? '<small>🔒</small>' : `<small>${state.free}</small>`;
+    grid += `<div class="cal-day${cls}${d===today?' today':''}" onclick="${past || locked ? '' : "selectDate('"+fullDate+"',this)"}">${d}${label}</div>`;
   }
   grid += '</div>';
   return `<div style="font-size:.9rem;font-weight:700;text-align:center;margin-bottom:.9rem">${months[now.getMonth()]} ${now.getFullYear()}</div>
+  <div class="locked-note" style="margin-bottom:.75rem">Datas com cadeado não têm upador livre nesse dia. O calendário atualiza ao vivo.</div>
   ${grid}
   <button class="btn btn-primary" style="width:100%;padding:.78rem;margin-top:.9rem" onclick="goStep(2)" ${schedDate?'':'disabled'} id="cal-next-btn">Próximo →</button>`;
 }
@@ -2614,8 +2688,8 @@ function selectDate(dateText, el){
 }
 
 function renderTimeSlots(){
-  const slots=['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
-  const blocked=['10:00','14:00','19:00'];
+  const slots=TIME_SLOTS;
+  const blocked=slots.filter(s => !isSlotAvailable(schedDate, s));
   return `<div style="font-weight:600;margin-bottom:.9rem;font-size:.9rem">📅 Dia selecionado: <strong style="color:var(--neon-purple)">${schedDate}</strong></div>
   <div style="font-size:.83rem;color:var(--text-muted);margin-bottom:.7rem">Selecione um horário disponível:</div>
   <div class="time-slots">${slots.map(s=>`<div class="time-slot${blocked.includes(s)?' blocked':''}" onclick="${blocked.includes(s)?'':'selectTime(\''+s+'\',this)'}">${blocked.includes(s)?'🔒 ':''}${s}</div>`).join('')}</div>
@@ -2629,6 +2703,12 @@ function renderTimeSlots(){
   </div>`;
 }
 function selectTime(t, el){
+  if(!isSlotAvailable(schedDate, t)){
+    schedTime = '';
+    showToast('Esse horário acabou de ficar indisponível. Escolha outro.','🔒');
+    renderScheduleStep();
+    return;
+  }
   schedTime = t;
   document.querySelectorAll('.time-slot').forEach(s=>s.classList.remove('selected'));
   el.classList.add('selected');
@@ -2946,10 +3026,8 @@ async function renderCardCheckout(method){
     const mp = new MercadoPago(publicKey, {locale:'pt-BR'});
     const bricksBuilder = mp.bricks();
     const paymentMethods = method === 'debit' ? {debitCard:'all'} : {creditCard:'all'};
-    const initialization = {amount: embeddedPaymentService.amount, payer:{email:currentOrder.email}};
-    if(currentOrder.mercadoPagoPreferenceId) initialization.preferenceId = currentOrder.mercadoPagoPreferenceId;
     const settings = {
-      initialization,
+      initialization: {amount: embeddedPaymentService.amount, payer:{email:currentOrder.email}},
       customization: {paymentMethods},
       callbacks: {
         onReady: () => setCheckoutStatus(method === 'debit' ? 'Débito pronto. Preencha o cartão.' : 'Crédito pronto. Preencha o cartão.'),
@@ -2974,7 +3052,9 @@ async function renderCardCheckout(method){
             });
         }),
         onError: error => {
-          console.error(error);
+          console.error('[mercado-pago-card-brick]', error);
+          const detail = error?.message || error?.cause?.[0]?.description || error?.error || '';
+          if(detail) return setCheckoutStatus(`Erro ao carregar cartão: ${detail}`, true);
           setCheckoutStatus('Erro ao carregar cartão. Verifique as credenciais do Mercado Pago.', true);
         }
       }
@@ -3043,6 +3123,13 @@ async function confirmOrder(){
   if(!validateServiceBeforeSchedule(currentService)) return;
   if(!schedDate || !schedTime){
     showToast('Selecione data e horário antes de pagar.','⚠️');
+    return;
+  }
+  if(!isSlotAvailable(schedDate, schedTime)){
+    showToast('Esse dia e horário não têm upador livre agora. Escolha outro.','🔒');
+    schedTime = '';
+    schedStep = 2;
+    renderScheduleStep();
     return;
   }
   const client = document.getElementById('sched-client')?.value.trim();
@@ -3242,14 +3329,14 @@ function updateAuthUI(){
 function updateAdminMenu(){
   const ownerOnly = ['users','logins','financeiro'];
   const managerOnly = ['uploaders','products','contas'];
-  const modAllowed = ['dashboard','orders','schedule','performance','chat'];
+  const modAllowed = ['dashboard','orders','schedule','availability','performance','chat'];
   document.querySelectorAll('.admin-nav-item').forEach(item => {
     const attr = item.getAttribute('onclick') || '';
     const getSection = (attr.match(/adminNav\('([^']+)'/) || [])[1];
     if(!getSection){ item.style.display=''; return; }
     const hidden = (!isOwner() && ownerOnly.includes(getSection)) ||
       (!canManageAdmin() && managerOnly.includes(getSection)) ||
-      (currentUser?.role === 'upador' && !['dashboard','orders','schedule','performance','chat'].includes(getSection)) ||
+      (currentUser?.role === 'upador' && !['dashboard','orders','schedule','availability','performance','chat'].includes(getSection)) ||
       (currentUser?.role === 'mod' && !modAllowed.includes(getSection));
     item.style.display = hidden ? 'none' : '';
   });
@@ -3946,6 +4033,63 @@ function removeAccountProduct(id){
   const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS).filter(p => p.id !== id);
   saveStore(LS_KEYS.products, products); renderContasAdmin(); buildContas(); updateServiceCards(); showToast('Conta removida da página.','✅');
 }
+function adminAvailabilityDays(){
+  const days = [];
+  const base = new Date();
+  for(let i=0; i<21; i++){
+    const date = new Date(base.getFullYear(), base.getMonth(), base.getDate() + i);
+    days.push({label:dateLabelFromDate(date), weekday:date.toLocaleDateString('pt-BR', {weekday:'short'})});
+  }
+  return days;
+}
+function renderAvailability(){
+  if(!canUseTeamChat()){ document.getElementById('admin-content').innerHTML = ''; return; }
+  const availability = availabilityStore();
+  const userId = currentUser?.id || 'SYS';
+  document.getElementById('admin-content').innerHTML = `
+    <div class="admin-title-row"><h2>Disponibilidade</h2><div class="admin-actions">${canManageAdmin()?'<button class="btn btn-outline mini-btn" onclick="clearAvailabilityCalendar()">Limpar calendário</button>':''}<span class="admin-live-chip"><i class="admin-live-dot"></i>Live</span></div></div>
+    <div class="locked-note">Clique nos horários em que você pode pegar tarefa. Se todos os upadores livres de um horário forem ocupados por compras, o cliente verá cadeado automaticamente.</div>
+    <div class="admin-card"><div class="availability-grid">
+      ${adminAvailabilityDays().map(day => `
+        <div class="availability-day">
+          <h4>${escapeHTML(day.weekday)} · ${escapeHTML(day.label)}</h4>
+          <div class="availability-slots">
+            ${TIME_SLOTS.map(time => {
+              const people = availability?.[day.label]?.[time] || [];
+              const active = people.includes(userId) || (userId !== 'SYS' && people.includes('SYS'));
+              const capacity = people.length;
+              const booked = bookedSlotCount(day.label, time);
+              const full = capacity > 0 && booked >= capacity;
+              return `<button class="availability-slot${active?' active':''}${full?' full':''}" onclick="toggleAvailabilitySlot('${day.label}','${time}')">${time}<br/><small>${booked}/${capacity}</small></button>`;
+            }).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div></div>`;
+}
+function toggleAvailabilitySlot(dateText, time){
+  if(!canUseTeamChat()) return;
+  const availability = availabilityStore();
+  const userId = currentUser?.id || 'SYS';
+  if(!availability[dateText]) availability[dateText] = {};
+  if(!Array.isArray(availability[dateText][time])) availability[dateText][time] = [];
+  const list = availability[dateText][time];
+  const idx = list.indexOf(userId);
+  if(idx >= 0) list.splice(idx, 1);
+  else list.push(userId);
+  if(!list.length) delete availability[dateText][time];
+  if(!Object.keys(availability[dateText]).length) delete availability[dateText];
+  saveStore(LS_KEYS.availability, availability);
+  renderAvailability();
+  if(document.getElementById('schedule-modal')?.classList.contains('active')) renderScheduleStep();
+}
+function clearAvailabilityCalendar(){
+  if(!canManageAdmin()) return;
+  if(!confirm('Limpar todos os dias e horários disponíveis?')) return;
+  saveStore(LS_KEYS.availability, {});
+  renderAvailability();
+  showToast('Calendário de disponibilidade limpo.','✅');
+}
 function renderUsers(){
   if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="locked-note">Upadores comuns não podem mexer nos usuários do admin.</div>`; return; }
   document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="admin-card">${loadStore(LS_KEYS.users, []).map(u=>`<div style="display:grid;grid-template-columns:1fr 180px 110px;gap:.8rem;align-items:center;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06)"><span>${u.name}<br/><small style="color:var(--text-muted)">${u.email}</small></span><select class="form-control" id="role-user-${u.id}"><option value="cliente" ${u.role==='cliente'?'selected':''}>Cliente</option><option value="upador" ${u.role==='upador'?'selected':''}>Upador</option><option value="mod" ${u.role==='mod'?'selected':''}>Mod</option><option value="admin" ${u.role==='admin'?'selected':''}>Admin</option><option value="dono" ${u.role==='dono'?'selected':''}>Dono</option></select><button class="btn btn-outline mini-btn" onclick="changeUserRole('${u.id}')">Salvar</button></div>`).join('')}</div>`;
@@ -4013,6 +4157,7 @@ function adminNav(section, el){
   document.body.classList.toggle('owner-mode', currentUser?.role === 'dono');
   if(section==='dashboard') renderAdminDashboard();
   if(section==='orders' || section==='schedule') renderAdminOrders();
+  if(section==='availability') renderAvailability();
   if(section==='performance') renderMyPerformance();
   if(section==='uploaders') renderUploaders();
   if(section==='chat') renderChat();
@@ -4043,6 +4188,7 @@ function handleLiveStoreUpdate(key){
     renderAccountPanel();
     renderOrderNotification();
     notifyOwnerApprovedPurchases();
+    if(key === LS_KEYS.orders && document.getElementById('schedule-modal')?.classList.contains('active')) renderScheduleStep();
     refreshAdminSection();
   }
   if(key === LS_KEYS.cart){
@@ -4051,6 +4197,10 @@ function handleLiveStoreUpdate(key){
   }
   if(key === LS_KEYS.chat && currentAdminSection === 'chat') refreshAdminSection();
   if(key === LS_KEYS.ownerDismissed) renderAccountPanel();
+  if(key === LS_KEYS.availability){
+    if(document.getElementById('schedule-modal')?.classList.contains('active')) renderScheduleStep();
+    refreshAdminSection();
+  }
   if(key === LS_KEYS.products){
     buildContas();
     updateServiceCards();
