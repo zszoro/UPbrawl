@@ -333,6 +333,27 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 .donut::before{content:'';width:94px;height:94px;border-radius:50%;background:#0d0d1f;position:absolute}
 .donut-label{position:relative;text-align:center;font-family:'Orbitron',sans-serif;font-weight:900;color:var(--text-primary)}
 .metric-mini{display:flex;justify-content:space-between;gap:.8rem;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.84rem}
+.admin-title-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.admin-title-row h2{font-family:'Orbitron',sans-serif;font-size:1.35rem;margin:0}
+.admin-live-chip{display:inline-flex;align-items:center;gap:.45rem;border:1px solid rgba(34,197,94,.28);background:rgba(34,197,94,.09);color:#86efac;border-radius:999px;padding:.38rem .7rem;font-size:.72rem;font-weight:900}
+.admin-live-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 16px rgba(34,197,94,.85);animation:livePulse 1.2s ease-in-out infinite}
+@keyframes livePulse{0%,100%{transform:scale(.82);opacity:.7}50%{transform:scale(1.25);opacity:1}}
+.admin-lite-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.85rem;margin-bottom:1rem}
+.admin-lite-card{background:rgba(13,13,31,.78);border:1px solid rgba(148,163,184,.18);border-radius:.85rem;padding:1rem}
+.admin-lite-card strong{display:block;font-family:'Orbitron',sans-serif;font-size:1.35rem;margin-bottom:.25rem;color:#fff}
+.admin-lite-card span{display:block;color:var(--text-muted);font-size:.78rem;line-height:1.45}
+.admin-live-list{display:flex;flex-direction:column;gap:.65rem}
+.admin-live-item{display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:.75rem;padding:.75rem}
+.admin-live-item small{display:block;color:var(--text-muted);font-size:.72rem;margin-top:.22rem;line-height:1.45}
+.admin-owner-hero{position:relative;overflow:hidden;border:1px solid rgba(251,191,36,.34);background:linear-gradient(135deg,rgba(251,191,36,.13),rgba(168,85,247,.12));border-radius:1rem;padding:1.15rem;margin-bottom:1rem;box-shadow:0 18px 50px rgba(0,0,0,.34)}
+.admin-owner-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 0%,rgba(255,255,255,.16) 45%,transparent 62%);transform:translateX(-120%);animation:ownerSweep 3.1s ease-in-out infinite}
+.admin-owner-hero>*{position:relative;z-index:1}
+.admin-owner-mark{display:inline-flex;align-items:center;gap:.45rem;border:1px solid rgba(251,191,36,.42);background:rgba(251,191,36,.14);color:#fde68a;border-radius:999px;padding:.3rem .65rem;font-size:.72rem;font-weight:900;margin-bottom:.6rem;animation:ownerGlow 1.9s ease-in-out infinite}
+.admin-owner-actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.9rem}
+body.owner-mode #admin-page .admin-sidebar{border-right-color:rgba(251,191,36,.42);box-shadow:10px 0 40px rgba(251,191,36,.08)}
+body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.13);color:#fde68a}
+@keyframes ownerSweep{0%,35%{transform:translateX(-120%)}70%,100%{transform:translateX(120%)}}
+@keyframes ownerGlow{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.28)}50%{box-shadow:0 0 0 8px rgba(251,191,36,0)}}
 
 @media(max-width:768px){
   .nav-links{display:none}
@@ -342,6 +363,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   .account-panel{right:-3.2rem}
   .admin-sidebar{display:none}
   .admin-content{margin-left:0}
+  .admin-live-item{grid-template-columns:1fr}
   .ranks-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
 }
 @media(max-width:540px){
@@ -1260,7 +1282,7 @@ let paymentInProgress=false;
 let embeddedPaymentService=null, mercadoPagoPublicKey='', mpSelectedMethod='', currentPixPayment=null, pixStatusTimer=null, pixGenerating=false;
 let selectedFeedbackRating=0;
 let currentAdminSection='dashboard', pendingTaskId='', taskFlowStep=1, currentTaskFlowOrderId='', orderNotificationTimer=null;
-let globalSyncTimer=null, globalStateUpdatedAt=0, applyingRemoteState=false, ownerKnownApprovedOrders=new Set();
+let globalSyncTimer=null, globalStateUpdatedAt=0, applyingRemoteState=false, remoteStateHasData=false, syncWarned=false, ownerKnownApprovedOrders=new Set();
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const LS_KEYS = {
   users:'zsup_users',
@@ -1270,6 +1292,7 @@ const LS_KEYS = {
   feedbacks:'zsup_feedbacks',
   pendingFeedback:'zsup_pending_feedback',
   currentUser:'zsup_current_user',
+  lastOrder:'zsup_last_order_id',
   cart:'zsup_cart'
 };
 const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks'];
@@ -1289,6 +1312,7 @@ async function pullGlobalState({initial=false}={}){
     if(!res.ok) throw new Error('sync unavailable');
     const data = await res.json().catch(()=>({}));
     const state = data.state || {};
+    remoteStateHasData = Object.keys(state).some(key => GLOBAL_SYNC_KEYS.includes(key));
     if(data.updatedAt && data.updatedAt <= globalStateUpdatedAt) return true;
     globalStateUpdatedAt = data.updatedAt || globalStateUpdatedAt;
     applyingRemoteState = true;
@@ -1302,10 +1326,14 @@ async function pullGlobalState({initial=false}={}){
       }
     });
     applyingRemoteState = false;
+    syncWarned = false;
     return true;
   }catch(error){
     applyingRemoteState = false;
-    if(!initial) console.warn('Global sync paused:', error.message || error);
+    if(!initial && !syncWarned){
+      syncWarned = true;
+      console.warn('Global sync paused:', error.message || error);
+    }
     return false;
   }
 }
@@ -1330,10 +1358,10 @@ function pushAllGlobalState(){
   });
 }
 function startGlobalSync(){
-  pushAllGlobalState();
+  if(!remoteStateHasData) pushAllGlobalState();
   pullGlobalState();
   if(globalSyncTimer) clearInterval(globalSyncTimer);
-  globalSyncTimer = setInterval(() => pullGlobalState(), 2500);
+  globalSyncTimer = setInterval(() => pullGlobalState(), 1000);
 }
 function uid(prefix='ZS'){ return prefix + Math.random().toString(36).slice(2,8).toUpperCase(); }
 function todayLabel(){ return new Date().toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'}); }
@@ -1360,9 +1388,42 @@ function ensureCustomerCode(user){
   if(user && !user.customerCode) user.customerCode = generateCustomerCode();
   return user?.customerCode || '';
 }
+function sessionSnapshot(user){
+  if(!user) return null;
+  return {
+    id:user.id,
+    name:user.name,
+    email:user.email,
+    phone:user.phone || '',
+    role:user.role,
+    active:user.active !== false,
+    source:user.source || '',
+    customerCode:user.customerCode || '',
+    passwordHash:user.passwordHash || ''
+  };
+}
+function readSessionSnapshot(){
+  const raw = localStorage.getItem(LS_KEYS.currentUser);
+  if(!raw) return null;
+  try{
+    const parsed = JSON.parse(raw);
+    if(parsed && typeof parsed === 'object') return parsed;
+  }catch(error){}
+  return {id:raw};
+}
+function saveCurrentSession(user){
+  const snapshot = sessionSnapshot(user);
+  if(snapshot) localStorage.setItem(LS_KEYS.currentUser, JSON.stringify(snapshot));
+  notifyStoreChange(LS_KEYS.currentUser);
+}
+function clearCurrentSession(){
+  localStorage.removeItem(LS_KEYS.currentUser);
+  notifyStoreChange(LS_KEYS.currentUser);
+}
 function getCurrentStoredUser(){
   if(!currentUser?.id) return null;
-  return loadStore(LS_KEYS.users, []).find(u => u.id === currentUser.id) || currentUser;
+  const stored = loadStore(LS_KEYS.users, []).find(u => u.id === currentUser.id);
+  return stored ? {...currentUser, ...stored, passwordHash:stored.passwordHash || currentUser.passwordHash || ''} : currentUser;
 }
 function userMatchesOrder(user, order){
   if(!user || !order) return false;
@@ -1398,13 +1459,14 @@ function rememberSessionUser(user){
   const existing = users.find(u => u.id === user.id || u.email?.toLowerCase() === user.email?.toLowerCase());
   if(existing){
     ensureCustomerCode(existing);
-    Object.assign(existing, {...user, passwordHash:existing.passwordHash});
+    Object.assign(existing, {...existing, ...user, passwordHash:user.passwordHash || existing.passwordHash});
+    user = existing;
   } else {
     users.push(user);
   }
   saveStore(LS_KEYS.users, users);
   currentUser = user;
-  localStorage.setItem(LS_KEYS.currentUser, user.id);
+  saveCurrentSession(user);
 }
 function ensureSeedData(){
   if(!localStorage.getItem(LS_KEYS.users)){
@@ -1467,8 +1529,7 @@ function ensureSeedData(){
       {id:uid('MSG'),author:'Sistema',role:'dono',text:'Canal da equipe iniciado. Donos e upadores podem combinar entregas por aqui.',createdAt:todayLabel()}
     ]);
   }
-  const savedUser = localStorage.getItem(LS_KEYS.currentUser);
-  if(savedUser) currentUser = loadStore(LS_KEYS.users, []).find(u => u.id === savedUser) || null;
+  syncCurrentUserFromStore();
 }
 function isOwner(){ return currentUser?.role === 'dono'; }
 function requireOwner(){
@@ -1910,9 +1971,25 @@ function getUploaderStats(userId){
   };
 }
 function syncCurrentUserFromStore(){
-  const id = localStorage.getItem(LS_KEYS.currentUser);
-  currentUser = id ? loadStore(LS_KEYS.users, []).find(u => u.id === id) || null : null;
+  const session = readSessionSnapshot();
+  if(!session?.id && !session?.email){
+    currentUser = null;
+    document.body.classList.remove('owner-mode');
+    return;
+  }
+  const users = loadStore(LS_KEYS.users, []);
+  const byId = session.id ? users.find(u => u.id === session.id) : null;
+  const byEmail = session.email ? users.find(u => String(u.email || '').toLowerCase() === String(session.email || '').toLowerCase()) : null;
+  const stored = byId || byEmail;
+  currentUser = stored ? {...session, ...stored, passwordHash:stored.passwordHash || session.passwordHash || ''} : {...session};
+  if(currentUser?.active === false){
+    clearCurrentSession();
+    currentUser = null;
+    document.body.classList.remove('owner-mode');
+    return;
+  }
   if(currentUser) ensureCustomerCode(currentUser);
+  document.body.classList.toggle('owner-mode', currentUser?.role === 'dono');
 }
 function renderAccountPanel(){
   const panel = document.getElementById('account-panel');
@@ -1963,8 +2040,8 @@ function toggleAccountPanel(){
 function logoutCurrentUser(){
   if(currentUser) showToast(`${currentUser.name} saiu da conta.`, '👋');
   currentUser = null;
-  localStorage.removeItem(LS_KEYS.currentUser);
-  notifyStoreChange(LS_KEYS.currentUser);
+  clearCurrentSession();
+  document.body.classList.remove('owner-mode');
   updateAuthUI();
 }
 function rerollCustomerCode(){
@@ -1982,6 +2059,7 @@ function rerollCustomerCode(){
   if(currentOrder && (userMatchesOrder(currentUser, currentOrder) || currentOrder.customerCode === oldCode)) currentOrder.customerCode = newCode;
   saveStore(LS_KEYS.users, users);
   saveStore(LS_KEYS.orders, orders);
+  saveCurrentSession(currentUser);
   renderAccountPanel();
   renderOrderNotification();
   showToast('Código atualizado em tempo real no admin.','✅');
@@ -2000,7 +2078,18 @@ async function confirmCodePassword(){
   const err = document.getElementById('code-password-error');
   const stored = getCurrentStoredUser();
   if(!stored?.passwordHash){
-    if(err){ err.textContent = 'Esta conta não possui senha local para validar.'; err.style.display='block'; }
+    if(currentUser.role === 'dono' && currentUser.email){
+      const ownerLogin = await loginOwnerViaServer(currentUser.email, password);
+      if(ownerLogin && !ownerLogin.error){
+        currentUser.passwordHash = await sha256(password);
+        rememberSessionUser(currentUser);
+        closeModal('code-password-modal');
+        renderCustomerCodeModal();
+        openModal('customer-code-modal');
+        return;
+      }
+    }
+    if(err){ err.textContent = 'Senha não encontrada nesta sessão. Saia e entre novamente para validar o código.'; err.style.display='block'; }
     return;
   }
   const valid = await sha256(password) === stored.passwordHash;
@@ -2030,6 +2119,7 @@ function cartItems(){ return loadStore(LS_KEYS.cart, []); }
 function saveCart(items){ saveStore(LS_KEYS.cart, items.slice(0, 20)); updateCartCount(); }
 function upsertCartItem(order){
   if(!order?.id) return;
+  localStorage.setItem(LS_KEYS.lastOrder, order.id);
   const items = cartItems().filter(i => i.id !== order.id);
   items.unshift({
     id: order.id,
@@ -2043,6 +2133,7 @@ function upsertCartItem(order){
   saveCart(items);
 }
 function updateCartItemFromOrder(order){
+  if(order?.id) localStorage.setItem(LS_KEYS.lastOrder, order.id);
   const items = cartItems();
   const item = items.find(i => i.id === order?.id);
   if(item){
@@ -2095,7 +2186,10 @@ function isOrderPaid(order){
 }
 function latestOrderForNotification(){
   const user = currentUser?.role === 'cliente' ? currentUser : null;
-  const orders = user ? ordersForUser(user) : (currentOrder ? [currentOrder] : []);
+  const lastOrderId = localStorage.getItem(LS_KEYS.lastOrder);
+  const storedOrders = loadStore(LS_KEYS.orders, []);
+  const fallbackOrder = lastOrderId ? storedOrders.find(o => o.id === lastOrderId) : currentOrder;
+  const orders = user ? ordersForUser(user) : (fallbackOrder ? [fallbackOrder] : []);
   const paid = orders.filter(isOrderPaid).sort((a,b)=>(b.createdAtMs || 0) - (a.createdAtMs || 0));
   return paid.find(o => o.status !== 'realizado') || paid[0] || null;
 }
@@ -2195,6 +2289,7 @@ function openLogin(){
 function openTrofeu(){ openModal('trofeu-modal'); updateServiceGate('trofeu'); }
 function openContas(){ openPage('contas-page'); }
 function openAdmin(){
+  syncCurrentUserFromStore();
   if(!currentUser){
     openLogin();
     showToast('Entre para acessar o admin.','🔐');
@@ -2205,6 +2300,7 @@ function openAdmin(){
     return;
   }
   currentAdminSection='dashboard';
+  document.body.classList.toggle('owner-mode', currentUser.role === 'dono');
   openPage('admin-page'); updateAdminMenu(); renderAdminDashboard();
 }
 function openScheduleMain(){ openModal('service-picker-modal'); }
@@ -3046,6 +3142,7 @@ function showToast(msg, icon){
 // Overrides funcionais para login, admin, upadores, chat e produtos
 function updateAuthUI(){
   syncCurrentUserFromStore();
+  document.body.classList.toggle('owner-mode', currentUser?.role === 'dono');
   const btn = document.getElementById('login-nav-btn');
   if(btn) btn.textContent = currentUser ? `👤 ${currentUser.name}` : 'Entrar';
   const adminLink = document.getElementById('admin-nav-link');
@@ -3082,10 +3179,11 @@ async function loginEmail(){
     return;
   }
   if(ownerLogin){
+    ownerLogin.passwordHash = await sha256(pass || '');
     rememberSessionUser(ownerLogin);
     if(err) err.style.display='none';
     closeModal('login-modal'); updateAuthUI();
-    showToast(`Bem-vindo, ${ownerLogin.name}!`,'✅');
+    showToast(`Modo dono ativado para ${ownerLogin.name}.`,'👑');
     return;
   }
   const users = loadStore(LS_KEYS.users, []);
@@ -3101,7 +3199,7 @@ async function loginEmail(){
     return;
   }
   currentUser = user;
-  localStorage.setItem(LS_KEYS.currentUser, user.id);
+  saveCurrentSession(user);
   if(err) err.style.display='none';
   closeModal('login-modal'); updateAuthUI();
   showToast(`Bem-vindo, ${user.name}!`,'✅');
@@ -3130,7 +3228,7 @@ async function signupUser(){
   users.push(user);
   saveStore(LS_KEYS.users, users);
   currentUser = user;
-  localStorage.setItem(LS_KEYS.currentUser, user.id);
+  saveCurrentSession(user);
   if(err) err.style.display='none';
   closeModal('signup-modal'); updateAuthUI();
   showToast('Cadastro criado com sucesso.','✅');
@@ -3139,18 +3237,19 @@ function renderAdminDashboard(){
   if(currentUser?.role === 'upador'){
     const orders = loadStore(LS_KEYS.orders, []);
     const visible = orders.filter(o => !o.uploaderId || o.uploaderId === currentUser.id);
+    const minePending = orders.filter(o => o.uploaderId === currentUser.id && o.status !== 'realizado');
     const stats = getUploaderStats(currentUser.id);
     document.getElementById('admin-content').innerHTML = `
-      <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem;font-size:1.4rem">Painel do upador</h2>
-      <div class="locked-note">Você está como upador. Pegue tarefas disponíveis, finalize as suas entregas e use o Chat Upador para falar com a equipe.</div>
-      <div class="admin-stat-grid">
-        <div class="admin-stat-card"><div class="admin-stat-val">${visible.filter(o=>!o.uploaderId).length}</div><div class="admin-stat-label">Tarefas disponíveis</div></div>
-        <div class="admin-stat-card"><div class="admin-stat-val">${stats.taken}</div><div class="admin-stat-label">Tarefas pegas</div></div>
-        <div class="admin-stat-card"><div class="admin-stat-val">${stats.done}</div><div class="admin-stat-label">Finalizadas</div></div>
-        <div class="admin-stat-card"><div class="admin-stat-val">${stats.trophies.toLocaleString('pt-BR')}</div><div class="admin-stat-label">Troféus subidos</div></div>
+      <div class="admin-title-row"><h2>Painel do upador</h2><span class="admin-live-chip"><i class="admin-live-dot"></i>Live</span></div>
+      <div class="locked-note">Pegue tarefas disponíveis, finalize suas entregas e use o Chat Upador para falar com a equipe.</div>
+      <div class="admin-lite-grid">
+        <div class="admin-lite-card"><strong>${visible.filter(o=>!o.uploaderId).length}</strong><span>Tarefas disponíveis</span></div>
+        <div class="admin-lite-card"><strong>${minePending.length}</strong><span>Suas tarefas pendentes</span></div>
+        <div class="admin-lite-card"><strong>${stats.done}</strong><span>Finalizadas</span></div>
+        <div class="admin-lite-card"><strong>${stats.trophies.toLocaleString('pt-BR')}</strong><span>Troféus subidos</span></div>
       </div>
-      <div class="admin-card"><h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Tarefas</h4>${ordersTable(visible)}</div>
-      <div class="admin-card"><button class="btn btn-primary" onclick="renderChat()">Abrir Chat Upador</button></div>`;
+      <div class="admin-card"><h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Tarefas em tempo real</h4>${ordersTable(visible)}</div>
+      <div class="admin-card"><button class="btn btn-primary" onclick="quickAdminNav('chat')">Abrir Chat Upador</button></div>`;
     return;
   }
   const orders = loadStore(LS_KEYS.orders, []);
@@ -3158,61 +3257,48 @@ function renderAdminDashboard(){
   const pending = orders.filter(o=>o.status==='pendente').length;
   const active = orders.filter(o=>o.status==='andamento').length;
   const done = orders.filter(o=>o.status==='realizado').length;
-  const avgTicket = orders.length ? revenue / orders.length : 0;
-  const serviceStats = Object.entries(orders.reduce((acc,o)=>{ acc[o.service]=(acc[o.service]||0)+1; return acc; }, {})).sort((a,b)=>b[1]-a[1]);
-  const uploaderStats = Object.entries(orders.reduce((acc,o)=>{ if(o.uploaderName) acc[o.uploaderName]=(acc[o.uploaderName]||0)+1; return acc; }, {})).sort((a,b)=>b[1]-a[1]);
-  const maxService = Math.max(1, ...serviceStats.map(([,v])=>v));
-  const maxUploader = Math.max(1, ...uploaderStats.map(([,v])=>v));
-  const donePct = orders.length ? Math.round((done / orders.length) * 100) : 0;
-  const activePct = orders.length ? Math.round((active / orders.length) * 100) : 0;
-  const pendingPct = orders.length ? Math.round((pending / orders.length) * 100) : 0;
   const trophyTotal = orders.filter(o=>/trof/i.test(o.service || o.details)).reduce((sum,o)=>sum + (Number(String(o.details||'').match(/Subir:\s*(\d+)/)?.[1] || String(o.details||'').match(/([\d.]+)\s*trof/i)?.[1]?.replace('.','') || 0)),0);
-  const rankedTotal = orders.filter(o=>/ranked/i.test(o.service || o.details)).reduce((sum,o)=>sum + Math.max(0,...(String(o.details||'').match(/\d+/g)||[0]).map(Number)),0);
-  const recentDays = Array.from({length:7}, (_,i)=>{
-    const d = new Date(); d.setDate(d.getDate() - (6-i));
-    const key = d.toLocaleDateString('pt-BR');
-    return {label:d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.',''), count:orders.filter(o=>(o.createdAt||'').startsWith(key)).length};
-  });
-  const maxDay = Math.max(1, ...recentDays.map(d=>d.count));
+  const approved = orders.filter(isOrderPaid).length;
+  const soldAccounts = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS).filter(p => p.type === 'account' && p.sold).length;
+  const liveOrders = orders
+    .filter(o => o.status !== 'realizado' || isOrderPaid(o))
+    .slice(0, 7);
   document.getElementById('admin-content').innerHTML = `
-    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem;font-size:1.4rem">📊 Dashboard</h2>
-    ${currentUser ? `<div class="locked-note">Logado como <strong>${currentUser.name}</strong> ${roleBadge(currentUser.role)}. Upadores podem pegar e finalizar tarefas, mas não alteram produtos, usuários ou cadastro de equipe.</div>` : ''}
-    <div class="admin-stat-grid">
-      <div class="admin-stat-card"><div class="admin-stat-val">R$ ${revenue.toFixed(2).replace('.',',')}</div><div class="admin-stat-label">💰 Faturamento registrado</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-val">${orders.length}</div><div class="admin-stat-label">📋 Pedidos totais</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-val">${pending}</div><div class="admin-stat-label">⏳ Pendentes</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-val">${active}</div><div class="admin-stat-label">⚡ Em andamento</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-val">${done}</div><div class="admin-stat-label">✔ Finalizados</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-val">R$ ${avgTicket.toFixed(2).replace('.',',')}</div><div class="admin-stat-label">🎯 Ticket médio</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-val">${trophyTotal.toLocaleString('pt-BR')}</div><div class="admin-stat-label">🏆 Troféus upados</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-val">${rankedTotal.toLocaleString('pt-BR')}</div><div class="admin-stat-label">📈 Pontos ranked</div></div>
-    </div>
-    ${isOwner() ? `<div class="admin-card"><div class="security-note">Atenção: isso zera pedidos, faturamento, troféus e pontos ranked salvos neste navegador.</div><button class="btn btn-outline" onclick="resetFinanceAndOrders()">Zerar financeiro e pedidos</button></div>` : ''}
-    <div class="insight-grid">
-      <div class="admin-card">
-        <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Pedidos por serviço</h4>
-        <div class="insight-list">${(serviceStats.length?serviceStats:[['Sem pedidos',0]]).map(([name,count])=>`<div class="insight-row"><strong>${name}</strong><div class="insight-track"><div class="insight-fill" style="width:${Math.max(6,(count/maxService)*100)}%"></div></div><span>${count}</span></div>`).join('')}</div>
+    <div class="admin-title-row"><h2>Dashboard</h2><span class="admin-live-chip"><i class="admin-live-dot"></i>Atualizando agora</span></div>
+    ${isOwner() ? `
+      <div class="admin-owner-hero">
+        <div class="admin-owner-mark">👑 Somente dono</div>
+        <h3 style="font-family:'Orbitron',sans-serif;margin-bottom:.35rem">Área de comando do dono</h3>
+        <p style="color:var(--text-muted);font-size:.86rem;line-height:1.6">Você está vendo atalhos sensíveis: logins, usuários, financeiro, produtos e contas. A equipe comum não recebe este painel.</p>
+        <div class="admin-owner-actions">
+          <button class="btn btn-primary mini-btn" onclick="quickAdminNav('logins')">Logins e códigos</button>
+          <button class="btn btn-outline mini-btn" onclick="quickAdminNav('users')">Usuários</button>
+          <button class="btn btn-outline mini-btn" onclick="quickAdminNav('financeiro')">Financeiro</button>
+          <button class="btn btn-outline mini-btn" onclick="resetFinanceAndOrders()">Zerar pedidos</button>
+        </div>
       </div>
-      <div class="admin-card" style="position:relative">
-        <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Status dos pedidos</h4>
-        <div class="donut" style="background:conic-gradient(#22c55e 0 ${donePct*3.6}deg, var(--neon-blue) ${donePct*3.6}deg ${(donePct+activePct)*3.6}deg, #fbbf24 ${(donePct+activePct)*3.6}deg ${(donePct+activePct+pendingPct)*3.6}deg, rgba(255,255,255,.08) 0deg)"><div class="donut-label">${donePct}%<br/><span style="font-family:'Inter';font-size:.7rem;color:var(--text-muted)">finalizados</span></div></div>
-        <div class="metric-mini"><span>Finalizados</span><strong>${done}</strong></div><div class="metric-mini"><span>Em andamento</span><strong>${active}</strong></div><div class="metric-mini"><span>Pendentes</span><strong>${pending}</strong></div>
-      </div>
-    </div>
-    <div class="insight-grid">
-      <div class="admin-card">
-        <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Pedidos nos últimos 7 dias</h4>
-        <div class="chart-wrap">${recentDays.map(d=>`<div style="flex:1;text-align:center"><div class="chart-bar" style="height:${Math.max(6,(d.count/maxDay)*100)}%"></div><div style="font-size:.68rem;color:var(--text-muted);margin-top:.35rem">${d.label}</div></div>`).join('')}</div>
-      </div>
-      <div class="admin-card">
-        <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Upadores com tarefas</h4>
-        <div class="insight-list">${(uploaderStats.length?uploaderStats:[['Nenhum upador atribuído',0]]).map(([name,count])=>`<div class="insight-row"><strong>${name}</strong><div class="insight-track"><div class="insight-fill" style="width:${Math.max(6,(count/maxUploader)*100)}%"></div></div><span>${count}</span></div>`).join('')}</div>
-      </div>
+    ` : `<div class="locked-note">Logado como <strong>${currentUser?.name || 'Equipe'}</strong> ${roleBadge(currentUser?.role)}. Este painel é leve e atualiza sozinho.</div>`}
+    <div class="admin-lite-grid">
+      <div class="admin-lite-card"><strong>R$ ${revenue.toFixed(2).replace('.',',')}</strong><span>Faturamento registrado</span></div>
+      <div class="admin-lite-card"><strong>${approved}</strong><span>Compras aprovadas</span></div>
+      <div class="admin-lite-card"><strong>${pending}</strong><span>Sem upador ainda</span></div>
+      <div class="admin-lite-card"><strong>${active}</strong><span>Em andamento</span></div>
+      <div class="admin-lite-card"><strong>${done}</strong><span>Finalizados</span></div>
+      <div class="admin-lite-card"><strong>${trophyTotal.toLocaleString('pt-BR')}</strong><span>Troféus upados</span></div>
+      <div class="admin-lite-card"><strong>${soldAccounts}</strong><span>Contas vendidas</span></div>
     </div>
     <div class="admin-card">
-      <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Últimos pedidos</h4>
-      ${ordersTable(orders.slice(0,6))}
+      <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Atividade ao vivo</h4>
+      ${liveOrders.length ? `<div class="admin-live-list">${liveOrders.map(o=>`
+        <div class="admin-live-item">
+          <div><strong>${escapeHTML(o.client || o.owner || 'Cliente')}</strong><small>${escapeHTML(o.service || 'Pedido')} · ${escapeHTML(o.details || '')}<br/>${escapeHTML(o.id)} · ${escapeHTML(o.uploaderName || 'Aguardando upador')}</small></div>
+          <div>${statusLabel(o.status)}</div>
+        </div>`).join('')}</div>` : '<div style="color:var(--text-muted);font-size:.86rem">Nenhum pedido ainda.</div>'}
     </div>`;
+}
+function quickAdminNav(section){
+  const item = [...document.querySelectorAll('.admin-nav-item')].find(nav => (nav.getAttribute('onclick') || '').includes(`'${section}'`));
+  adminNav(section, item);
 }
 function roleBadge(role){
   const label = role === 'dono' ? 'Dono' : role === 'admin' ? 'Admin' : role === 'mod' ? 'Mod' : role === 'upador' ? 'Upador' : 'Cliente';
@@ -3235,7 +3321,7 @@ function orderActions(o){
   if(o.status==='realizado') return '<span style="color:var(--text-muted);font-size:.78rem">Finalizado</span>';
   if(o.uploaderId && o.uploaderId !== currentUser?.id && !isOwner()) return `<button class="btn btn-outline mini-btn" disabled>Pego por ${o.uploaderName}</button>`;
   if(!o.uploaderId) return `<button class="btn btn-primary mini-btn" onclick="takeTask('${o.id}')">Realizar tarefa</button>`;
-  return `<div class="admin-actions"><button class="btn btn-outline mini-btn" disabled>${o.uploaderName} pegou</button><button class="btn btn-primary mini-btn" onclick="completeTask('${o.id}')">Marcar finalizada</button></div>`;
+  return `<div class="admin-actions"><button class="btn btn-outline mini-btn" disabled>${o.uploaderName} pegou</button><button class="btn btn-primary mini-btn" onclick="completeTask('${o.id}')">Marcar finalizado</button></div>`;
 }
 function parseBRDate(dateText='', timeText='23:59'){
   const [day, month, year] = String(dateText).split('/').map(Number);
@@ -3352,7 +3438,7 @@ function renderTaskFlowStep(){
       <a href="https://wa.me/${waPhone}?text=${waMsg}" target="_blank" style="text-decoration:none"><button class="btn btn-primary" style="width:100%;padding:.78rem">Abrir WhatsApp</button></a>
       <button class="btn btn-outline" style="padding:.78rem" onclick="copyTaskClientPhone()">Copiar número</button>
     </div>
-    <button class="btn btn-outline" style="width:100%;padding:.78rem;margin-top:.75rem" onclick="closeModal('task-flow-modal');renderAdminOrders()">Voltar para agendamentos</button>
+    <button class="btn btn-outline" style="width:100%;padding:.78rem;margin-top:.75rem" onclick="closeModal('task-flow-modal');quickAdminNav('schedule')">Voltar para agendamentos</button>
   `;
 }
 function copyTaskMessage(){
@@ -3714,6 +3800,10 @@ function adminGenerateUserCode(userId){
   });
   saveStore(LS_KEYS.users, users);
   saveStore(LS_KEYS.orders, orders);
+  if(currentUser?.id === user.id){
+    currentUser.customerCode = user.customerCode;
+    saveCurrentSession(currentUser);
+  }
   renderLogins();
   showToast('Código do cliente atualizado.','✅');
 }
@@ -3727,6 +3817,7 @@ function adminNav(section, el){
   currentAdminSection = section;
   document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
   if(el) el.classList.add('active');
+  document.body.classList.toggle('owner-mode', currentUser?.role === 'dono');
   if(section==='dashboard') renderAdminDashboard();
   if(section==='orders' || section==='schedule') renderAdminOrders();
   if(section==='performance') renderMyPerformance();
@@ -3738,9 +3829,14 @@ function adminNav(section, el){
   if(section==='logins') renderLogins();
   if(section==='financeiro') renderFinance();
 }
-function refreshAdminSection(){
+function isEditingAdmin(){
+  const active = document.activeElement;
+  return Boolean(active && active.closest?.('#admin-content') && ['INPUT','TEXTAREA','SELECT'].includes(active.tagName));
+}
+function refreshAdminSection({force=false}={}){
   const adminPage = document.getElementById('admin-page');
   if(!adminPage?.classList.contains('active')) return;
+  if(!force && isEditingAdmin()) return;
   const activeItem = [...document.querySelectorAll('.admin-nav-item')].find(item => (item.getAttribute('onclick') || '').includes(`'${currentAdminSection}'`));
   adminNav(currentAdminSection || 'dashboard', activeItem);
 }
@@ -3768,6 +3864,8 @@ function handleLiveStoreUpdate(key){
 }
 window.addEventListener('storage', e => handleLiveStoreUpdate(e.key));
 window.addEventListener('zsup:store', e => handleLiveStoreUpdate(e.detail?.key));
+window.addEventListener('focus', () => pullGlobalState());
+document.addEventListener('visibilitychange', () => { if(!document.hidden) pullGlobalState(); });
 
 // Close on backdrop click
 document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('active'); }));
