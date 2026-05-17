@@ -300,6 +300,13 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .order-actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.85rem}
 .tip-heart{font-size:4rem;text-align:center;margin:.6rem 0;color:#fb7185;text-shadow:0 0 25px rgba(251,113,133,.45)}
 .copy-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:.85rem;padding:.9rem;color:var(--text-primary);font-family:monospace;word-break:break-word}
+.owner-notice-list{display:flex;flex-direction:column;gap:.55rem;margin:.85rem 0}
+.owner-notice{position:relative;background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(34,197,94,.07));border:1px solid rgba(251,191,36,.28);border-radius:.8rem;padding:.75rem 2.15rem .75rem .75rem}
+.owner-notice strong{display:block;font-size:.82rem;margin-bottom:.24rem}
+.owner-notice span{display:block;color:var(--text-muted);font-size:.72rem;line-height:1.45}
+.owner-notice-close{position:absolute;top:.5rem;right:.5rem;width:24px;height:24px;border-radius:50%;border:1px solid rgba(251,191,36,.26);background:rgba(0,0,0,.22);color:#fde68a;cursor:pointer;display:grid;place-items:center;font-weight:900}
+.chat-task-card{margin-top:.6rem;border:1px solid rgba(251,191,36,.2);background:rgba(251,191,36,.07);border-radius:.7rem;padding:.65rem}
+.chat-task-card.locked{border-color:rgba(148,163,184,.22);background:rgba(148,163,184,.07)}
 .performance-list{display:flex;flex-direction:column;gap:.75rem}
 .performance-item{display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:center;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:.8rem;padding:.85rem}
 .sold-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .65rem;border-radius:50px;background:rgba(100,116,139,.16);border:1px solid rgba(148,163,184,.28);color:#cbd5e1;font-size:.72rem;font-weight:900}
@@ -354,6 +361,19 @@ body.owner-mode #admin-page .admin-sidebar{border-right-color:rgba(251,191,36,.4
 body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.13);color:#fde68a}
 @keyframes ownerSweep{0%,35%{transform:translateX(-120%)}70%,100%{transform:translateX(120%)}}
 @keyframes ownerGlow{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.28)}50%{box-shadow:0 0 0 8px rgba(251,191,36,0)}}
+.owner-welcome-overlay{position:fixed;inset:0;z-index:15000;display:none;align-items:center;justify-content:center;padding:1rem;background:radial-gradient(circle at 50% 20%,rgba(251,191,36,.34),rgba(0,0,0,.94) 58%),linear-gradient(135deg,rgba(120,53,15,.72),rgba(0,0,0,.96));backdrop-filter:blur(18px)}
+.owner-welcome-overlay.active{display:flex;animation:fadeIn .25s ease}
+.owner-welcome-card{width:min(620px,calc(100vw - 2rem));text-align:center;border:1px solid rgba(251,191,36,.5);background:linear-gradient(145deg,rgba(24,18,5,.96),rgba(7,5,2,.96));border-radius:1.3rem;padding:2rem;position:relative;overflow:hidden;box-shadow:0 30px 110px rgba(0,0,0,.75),0 0 80px rgba(251,191,36,.2)}
+.owner-welcome-card::before{content:'';position:absolute;inset:-40%;background:conic-gradient(from 90deg,transparent,rgba(251,191,36,.24),transparent 22%);animation:ownerSpin 5s linear infinite}
+.owner-welcome-card>*{position:relative;z-index:1}
+.owner-welcome-gif{width:min(240px,56vw);height:min(240px,56vw);object-fit:contain;margin:0 auto .7rem;display:block;filter:drop-shadow(0 20px 35px rgba(0,0,0,.45))}
+.owner-welcome-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,5vw,2.45rem);font-weight:900;color:#fde68a;margin-bottom:.55rem}
+.owner-welcome-sub{color:#fef3c7;font-size:.92rem;line-height:1.65;max-width:480px;margin:0 auto 1.15rem}
+.owner-welcome-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+.owner-welcome-stat{border:1px solid rgba(251,191,36,.24);background:rgba(251,191,36,.08);border-radius:.85rem;padding:.85rem}
+.owner-welcome-stat strong{display:block;font-family:'Orbitron',sans-serif;color:#fff;font-size:1.25rem;margin-bottom:.2rem}
+.owner-welcome-stat span{display:block;color:#fef3c7;font-size:.72rem}
+@keyframes ownerSpin{to{transform:rotate(360deg)}}
 
 @media(max-width:768px){
   .nav-links{display:none}
@@ -473,6 +493,14 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
   <button class="btn btn-primary" style="width:100%;padding:.72rem;margin-top:.75rem" onclick="submitFeedback()">Enviar feedback</button>
 </div>
 <div class="order-notification" id="order-notification" aria-live="polite"></div>
+<div class="owner-welcome-overlay" id="owner-welcome-overlay" aria-live="polite">
+  <div class="owner-welcome-card">
+    <img class="owner-welcome-gif" src="/images/site/dinheiro.gif" alt="Dinheiro"/>
+    <div class="owner-welcome-title" id="owner-welcome-title">Bem-vindo</div>
+    <div class="owner-welcome-sub" id="owner-welcome-sub"></div>
+    <div class="owner-welcome-stats" id="owner-welcome-stats"></div>
+  </div>
+</div>
 
 <!-- ═══ NAV ═══ -->
 <div class="content">
@@ -1084,7 +1112,8 @@ const SITE_IMAGES = {
   rankPro:'/images/site/rank-pro.webp',
   pix:'/images/site/icon-pix.png',
   cards:'/images/site/icon-cards.png',
-  orderNotification:'/images/site/icon-order-notification.png'
+  orderNotification:'/images/site/icon-order-notification.png',
+  money:'/images/site/dinheiro.gif'
 };
 const REMOTE_IMAGE_MAP = {
   'https://www.brawlstarsdicas.com.br/wp-content/uploads/2019/01/trofeus-brawl-stars-icone-trophy.png':SITE_IMAGES.trophy,
@@ -1282,7 +1311,7 @@ let paymentInProgress=false;
 let embeddedPaymentService=null, mercadoPagoPublicKey='', mpSelectedMethod='', currentPixPayment=null, pixStatusTimer=null, pixGenerating=false;
 let selectedFeedbackRating=0;
 let currentAdminSection='dashboard', pendingTaskId='', taskFlowStep=1, currentTaskFlowOrderId='', orderNotificationTimer=null;
-let globalSyncTimer=null, globalStateUpdatedAt=0, applyingRemoteState=false, remoteStateHasData=false, syncWarned=false, ownerKnownApprovedOrders=new Set();
+let globalSyncTimer=null, globalStateUpdatedAt=0, applyingRemoteState=false, remoteStateHasData=false, syncWarned=false, applyingTaskNotices=false, ownerKnownApprovedOrders=new Set();
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const LS_KEYS = {
   users:'zsup_users',
@@ -1293,9 +1322,11 @@ const LS_KEYS = {
   pendingFeedback:'zsup_pending_feedback',
   currentUser:'zsup_current_user',
   lastOrder:'zsup_last_order_id',
+  ownerDismissed:'zsup_owner_dismissed_notices',
+  ownerLastSeen:'zsup_owner_last_seen',
   cart:'zsup_cart'
 };
-const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks'];
+const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks','zsup_owner_dismissed_notices'];
 
 function loadStore(key, fallback){
   try{ return JSON.parse(localStorage.getItem(key)) || fallback; }catch(e){ return fallback; }
@@ -1612,6 +1643,7 @@ function handlePaymentReturn(){
     orders[idx].approvedAtMs = status === 'approved' ? Date.now() : orders[idx].approvedAtMs;
     orders[idx].status = status === 'approved' ? (orders[idx].accountProductId ? 'realizado' : orders[idx].uploaderId ? 'andamento' : 'pendente') : 'pendente';
     saveStore(LS_KEYS.orders, orders);
+    if(status === 'approved') ensureTeamTaskNotices();
     currentOrder = orders[idx];
     updateCartItemFromOrder(currentOrder);
   }
@@ -1639,7 +1671,7 @@ function handlePaymentReturn(){
 // ═══ INIT ═══
 window.onload = async () => {
   await pullGlobalState({initial:true});
-  ensureSeedData(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications();
+  ensureSeedData(); ensureTeamTaskNotices(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications();
 };
 
 function animateStats(){
@@ -1991,6 +2023,33 @@ function syncCurrentUserFromStore(){
   if(currentUser) ensureCustomerCode(currentUser);
   document.body.classList.toggle('owner-mode', currentUser?.role === 'dono');
 }
+function ownerDismissedNotices(){
+  return loadStore(LS_KEYS.ownerDismissed, []);
+}
+function ownerApprovedNotices(){
+  if(currentUser?.role !== 'dono') return [];
+  const dismissed = new Set(ownerDismissedNotices());
+  return loadStore(LS_KEYS.orders, [])
+    .filter(order => isOrderPaid(order) && !dismissed.has(order.id))
+    .sort((a,b)=>(b.approvedAtMs || b.createdAtMs || 0) - (a.approvedAtMs || a.createdAtMs || 0))
+    .slice(0, 6);
+}
+function ownerNoticesHTML(){
+  const notices = ownerApprovedNotices();
+  if(!notices.length) return '';
+  return `<div class="owner-notice-list">${notices.map(order=>`
+    <div class="owner-notice">
+      <button class="owner-notice-close" onclick="dismissOwnerNotice('${escapeHTML(order.id)}')" aria-label="Fechar aviso">×</button>
+      <strong>Compra aprovada: ${escapeHTML(order.paymentAmount || order.price || 'R$ 0,00')}</strong>
+      <span>${escapeHTML(order.client || order.owner || 'Cliente')} · ${escapeHTML(order.service || 'Pedido')} · ${escapeHTML(order.details || '')}</span>
+    </div>`).join('')}</div>`;
+}
+function dismissOwnerNotice(orderId){
+  const dismissed = ownerDismissedNotices();
+  if(!dismissed.includes(orderId)) dismissed.push(orderId);
+  saveStore(LS_KEYS.ownerDismissed, dismissed.slice(-200));
+  renderAccountPanel();
+}
 function renderAccountPanel(){
   const panel = document.getElementById('account-panel');
   if(!panel) return;
@@ -2019,6 +2078,7 @@ function renderAccountPanel(){
       <div class="account-code-value">••••••</div>
       <button class="btn btn-outline mini-btn" style="margin-top:.6rem" onclick="openCodePasswordModal()">Ver código</button>
     </div>
+    ${ownerNoticesHTML()}
     <div class="account-stat-grid">
       <div class="account-stat"><strong>${stats.total}</strong><span>pedidos</span></div>
       <div class="account-stat"><strong>${stats.trophies.toLocaleString('pt-BR')}</strong><span>troféus upados</span></div>
@@ -2185,11 +2245,10 @@ function isOrderPaid(order){
   return order?.paymentStatus === 'approved' || order?.paidAt || order?.status === 'realizado' || order?.uploaderId;
 }
 function latestOrderForNotification(){
-  const user = currentUser?.role === 'cliente' ? currentUser : null;
   const lastOrderId = localStorage.getItem(LS_KEYS.lastOrder);
   const storedOrders = loadStore(LS_KEYS.orders, []);
   const fallbackOrder = lastOrderId ? storedOrders.find(o => o.id === lastOrderId) : currentOrder;
-  const orders = user ? ordersForUser(user) : (fallbackOrder ? [fallbackOrder] : []);
+  const orders = currentUser ? ordersForUser(currentUser) : (fallbackOrder ? [fallbackOrder] : []);
   const paid = orders.filter(isOrderPaid).sort((a,b)=>(b.createdAtMs || 0) - (a.createdAtMs || 0));
   return paid.find(o => o.status !== 'realizado') || paid[0] || null;
 }
@@ -2253,7 +2312,7 @@ function notifyOwnerApprovedPurchases(){
   approved.forEach(order => {
     if(!ownerKnownApprovedOrders.has(order.id)){
       ownerKnownApprovedOrders.add(order.id);
-      showToast(`Compra aprovada: ${order.client || order.owner || 'Cliente'} - ${order.service}`, '💰');
+      renderAccountPanel();
     }
   });
 }
@@ -2673,6 +2732,7 @@ function savePaymentOrder(payment){
   if(idx >= 0) orders[idx] = updated;
   else orders.unshift(updated);
   saveStore(LS_KEYS.orders, orders);
+  if(approved) ensureTeamTaskNotices();
   currentOrder = updated;
   updateCartItemFromOrder(updated);
 }
@@ -2922,11 +2982,30 @@ function selectCheckoutMethod(method){
   if(method === 'credit' || method === 'debit') return renderCardCheckout(method);
 }
 
+async function prepareMercadoPagoPreference(){
+  if(!currentOrder || !embeddedPaymentService || currentOrder.mercadoPagoPreferenceId) return;
+  try{
+    const res = await fetch('/api/create-preference', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({order:currentOrder, service:embeddedPaymentService})
+    });
+    const data = await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error || 'Preferência Mercado Pago não criada.');
+    currentOrder.mercadoPagoPreferenceId = data.id || '';
+    currentOrder.mercadoPagoPreferenceUrl = data.init_point || data.sandbox_init_point || '';
+    setCheckoutStatus('Checkout seguro pronto. Escolha PIX, crédito ou débito.');
+  }catch(error){
+    console.warn('Preferencia Mercado Pago indisponivel:', error.message || error);
+  }
+}
+
 async function openEmbeddedCheckout(){
   openModal('mp-checkout-modal');
   renderCheckoutSummary();
   resetCheckoutSurface();
   setCheckoutStatus('Escolha PIX, crédito ou débito para continuar.');
+  prepareMercadoPagoPreference();
   try{
     if(window.paymentBrickController) await window.paymentBrickController.unmount();
   }catch(e){}
@@ -3169,6 +3248,51 @@ function updateAdminMenu(){
 function loginSocial(p){
   showToast(`Login com ${p} ainda não está conectado. Use email e senha.`, '🔒');
 }
+function formatOfflineDuration(ms){
+  if(!ms || ms < 60000) return 'menos de 1 minuto';
+  const minutes = Math.floor(ms / 60000);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  if(days) return `${days} ${days === 1 ? 'dia' : 'dias'} e ${hours % 24}h`;
+  if(hours) return `${hours}h e ${minutes % 60}min`;
+  return `${minutes}min`;
+}
+function ownerLastSeenKey(user=currentUser){
+  return `${LS_KEYS.ownerLastSeen}_${user?.id || 'owner'}`;
+}
+function ownerOfflineStats(lastSeen){
+  const since = Number(lastSeen || 0);
+  const approved = loadStore(LS_KEYS.orders, [])
+    .filter(order => isOrderPaid(order) && (!since || (order.approvedAtMs || order.createdAtMs || 0) > since));
+  const revenue = approved.reduce((sum, order) => sum + moneyFromText(order.paymentAmount || order.price), 0);
+  return {orders:approved.length, revenue};
+}
+function markOwnerSeen(user=currentUser){
+  if(user?.role === 'dono') localStorage.setItem(ownerLastSeenKey(user), String(Date.now()));
+}
+function showOwnerWelcome(user){
+  if(user?.role !== 'dono') return;
+  const overlay = document.getElementById('owner-welcome-overlay');
+  const title = document.getElementById('owner-welcome-title');
+  const sub = document.getElementById('owner-welcome-sub');
+  const statsEl = document.getElementById('owner-welcome-stats');
+  if(!overlay || !title || !sub || !statsEl) return;
+  const lastSeen = Number(localStorage.getItem(ownerLastSeenKey(user)) || 0);
+  const stats = ownerOfflineStats(lastSeen);
+  title.textContent = `Bem-vindo, ${user.name || 'dono'}`;
+  sub.textContent = lastSeen
+    ? `Você ficou off por ${formatOfflineDuration(Date.now() - lastSeen)}. Enquanto isso, o site continuou vendendo e atualizando tudo ao vivo.`
+    : 'Primeiro acesso do dono neste dispositivo. O painel está pronto para acompanhar tudo ao vivo.';
+  statsEl.innerHTML = `
+    <div class="owner-welcome-stat"><strong>${stats.orders}</strong><span>pedidos aprovados enquanto você estava off</span></div>
+    <div class="owner-welcome-stat"><strong>${formatBRL(stats.revenue)}</strong><span>rendimento nesse período</span></div>
+  `;
+  overlay.classList.add('active');
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    markOwnerSeen(user);
+  }, 5200);
+}
 async function loginEmail(){
   const email = document.getElementById('login-email')?.value.trim().toLowerCase();
   const pass = document.getElementById('login-password')?.value;
@@ -3183,6 +3307,7 @@ async function loginEmail(){
     rememberSessionUser(ownerLogin);
     if(err) err.style.display='none';
     closeModal('login-modal'); updateAuthUI();
+    showOwnerWelcome(ownerLogin);
     showToast(`Modo dono ativado para ${ownerLogin.name}.`,'👑');
     return;
   }
@@ -3371,6 +3496,7 @@ function confirmTakeTask(){
   o.takenAt = todayLabel();
   o.takenAtMs = Date.now();
   saveStore(LS_KEYS.orders, orders);
+  ensureTeamTaskNotices();
   updateCartItemFromOrder(o);
   currentTaskFlowOrderId = o.id;
   closeTaskConfirmModal();
@@ -3386,6 +3512,7 @@ function completeTask(id){
   if(o.uploaderId !== currentUser?.id && !isOwner()) return showToast('Só o upador responsável ou dono pode finalizar.','🔒');
   o.status='realizado'; o.completedAt = todayLabel(); o.completedAtMs = Date.now();
   saveStore(LS_KEYS.orders, orders);
+  ensureTeamTaskNotices();
   updateCartItemFromOrder(o);
   refreshAdminSection();
   renderOrderNotification();
@@ -3540,14 +3667,71 @@ function setExistingUserRole(){
   user.role = role;
   saveStore(LS_KEYS.users, users); renderUploaders(); updateAdminMenu(); showToast('Cargo atualizado.','✅');
 }
+function ensureTeamTaskNotices(){
+  if(applyingTaskNotices) return;
+  applyingTaskNotices = true;
+  const orders = loadStore(LS_KEYS.orders, []);
+  const messages = loadStore(LS_KEYS.chat, []);
+  let changed = false;
+  orders.filter(o => isOrderPaid(o) && !o.accountProductId && o.status !== 'realizado').forEach(order => {
+    const availableId = `TASK-NEW-${order.id}`;
+    if(!messages.some(m => m.id === availableId)){
+      messages.push({
+        id:availableId,
+        author:'Sistema',
+        role:'dono',
+        kind:'task_available',
+        taskId:order.id,
+        text:`Nova tarefa aprovada: ${order.service} para ${order.client || order.owner || 'cliente'} no valor ${order.paymentAmount || order.price || ''}.`,
+        createdAt:todayLabel()
+      });
+      changed = true;
+    }
+    if(order.uploaderId){
+      const takenId = `TASK-TAKEN-${order.id}-${order.uploaderId}`;
+      if(!messages.some(m => m.id === takenId)){
+        messages.push({
+          id:takenId,
+          author:'Sistema',
+          role:'dono',
+          kind:'task_taken',
+          taskId:order.id,
+          text:`${order.uploaderName || 'Um upador'} pegou a tarefa ${order.id}.`,
+          createdAt:todayLabel()
+        });
+        changed = true;
+      }
+    }
+  });
+  if(changed) saveStore(LS_KEYS.chat, messages.slice(-180));
+  applyingTaskNotices = false;
+}
+function renderChatTaskAction(taskId){
+  const order = loadStore(LS_KEYS.orders, []).find(o => o.id === taskId);
+  if(!order) return '<div class="chat-task-card locked">Tarefa não encontrada.</div>';
+  if(order.status === 'realizado') return '<div class="chat-task-card locked"><button class="btn btn-outline mini-btn" disabled>🔒 Finalizado</button></div>';
+  if(order.uploaderId){
+    return `<div class="chat-task-card locked"><button class="btn btn-outline mini-btn" disabled>🔒 Pego por ${escapeHTML(order.uploaderName || 'upador')}</button></div>`;
+  }
+  return `<div class="chat-task-card"><button class="btn btn-primary mini-btn" onclick="takeTask('${escapeHTML(order.id)}')">Realizar tarefa</button></div>`;
+}
+function renderChatMessage(message){
+  const mine = message.author === currentUser?.name ? 'mine' : '';
+  return `<div class="chat-message ${mine}">
+    <div class="chat-meta">${escapeHTML(message.author || 'Sistema')} · ${escapeHTML(message.createdAt || '')}</div>
+    <div>${escapeHTML(message.text || '')}</div>
+    ${message.taskId ? renderChatTaskAction(message.taskId) : ''}
+  </div>`;
+}
 function renderChat(){
   if(!canUseTeamChat()){ document.getElementById('admin-content').innerHTML = ''; return; }
+  ensureTeamTaskNotices();
   const messages = loadStore(LS_KEYS.chat, []);
   document.getElementById('admin-content').innerHTML = `
     <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💬 Chat Upador</h2>
     <div class="admin-card">
       ${isOwner() ? '<div style="display:flex;justify-content:flex-end;margin-bottom:.75rem"><button class="btn btn-outline mini-btn" onclick="clearChat()">Limpar chat</button></div>' : ''}
-      <div class="chat-box" id="chat-box">${messages.map(m=>`<div class="chat-message ${m.author===currentUser?.name?'mine':''}"><div class="chat-meta">${m.author} · ${m.createdAt}</div><div>${m.text}</div></div>`).join('')}</div>
+      <div class="chat-box" id="chat-box">${messages.map(renderChatMessage).join('')}</div>
       <div style="display:flex;gap:.7rem;margin-top:1rem"><input class="form-control" id="chat-input" placeholder="Mensagem para donos e upadores" onkeydown="if(event.key==='Enter') sendChat()"/><button class="btn btn-primary" onclick="sendChat()">Enviar</button></div>
     </div>`;
   const box = document.getElementById('chat-box'); if(box) box.scrollTop = box.scrollHeight;
@@ -3845,6 +4029,7 @@ function handleLiveStoreUpdate(key){
   if(!Object.values(LS_KEYS).includes(key)) return;
   if(key === LS_KEYS.currentUser || key === LS_KEYS.users) syncCurrentUserFromStore();
   if([LS_KEYS.users, LS_KEYS.orders, LS_KEYS.currentUser].includes(key)){
+    if(key === LS_KEYS.orders) ensureTeamTaskNotices();
     updateAuthUI();
     renderAccountPanel();
     renderOrderNotification();
@@ -3856,6 +4041,7 @@ function handleLiveStoreUpdate(key){
     if(document.getElementById('cart-modal')?.classList.contains('active')) renderCartModal();
   }
   if(key === LS_KEYS.chat && currentAdminSection === 'chat') refreshAdminSection();
+  if(key === LS_KEYS.ownerDismissed) renderAccountPanel();
   if(key === LS_KEYS.products){
     buildContas();
     updateServiceCards();
@@ -3865,7 +4051,8 @@ function handleLiveStoreUpdate(key){
 window.addEventListener('storage', e => handleLiveStoreUpdate(e.key));
 window.addEventListener('zsup:store', e => handleLiveStoreUpdate(e.detail?.key));
 window.addEventListener('focus', () => pullGlobalState());
-document.addEventListener('visibilitychange', () => { if(!document.hidden) pullGlobalState(); });
+window.addEventListener('beforeunload', () => markOwnerSeen());
+document.addEventListener('visibilitychange', () => { if(document.hidden) markOwnerSeen(); else pullGlobalState(); });
 
 // Close on backdrop click
 document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('active'); }));

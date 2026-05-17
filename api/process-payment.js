@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 
 const MERCADO_PAGO_PAYMENTS_URL = 'https://api.mercadopago.com/v1/payments';
+const STATEMENT_DESCRIPTOR = 'ZSUPBRAWL';
 
 const RANK_POINTS = [
   0, 250, 500,
@@ -41,6 +42,85 @@ function toMoney(value) {
 
 function roundMoney(value) {
   return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+}
+
+function publicBaseUrl(req) {
+  const explicit = process.env.PUBLIC_SITE_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  if (explicit) {
+    const normalized = String(explicit).trim().replace(/\/$/, '');
+    return normalized.startsWith('http') ? normalized : `https://${normalized}`;
+  }
+
+  const host = req?.headers?.['x-forwarded-host'] || req?.headers?.host;
+  if (!host) return '';
+  const proto = req?.headers?.['x-forwarded-proto'] || 'https';
+  return `${proto}://${host}`.replace(/\/$/, '');
+}
+
+function notificationUrl(req) {
+  const configured = process.env.MERCADO_PAGO_NOTIFICATION_URL || process.env.MP_NOTIFICATION_URL;
+  if (configured) return String(configured).trim();
+  const base = publicBaseUrl(req);
+  return base ? `${base}/api/mercado-pago-webhook` : '';
+}
+
+function sitePictureUrl(req, path = '/images/site/icon-trophy.png') {
+  const base = publicBaseUrl(req);
+  return base ? `${base}${path}` : '';
+}
+
+function splitName(name = '') {
+  const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+  return {
+    first_name: parts[0] || 'Cliente',
+    last_name: parts.slice(1).join(' ') || 'ZS UpBrawl'
+  };
+}
+
+function splitPhone(phone = '') {
+  const digits = String(phone || '').replace(/\D/g, '');
+  const withoutCountry = digits.startsWith('55') ? digits.slice(2) : digits;
+  return {
+    area_code: withoutCountry.slice(0, 2) || '12',
+    number: withoutCountry.slice(2) || withoutCountry || '992025025'
+  };
+}
+
+function itemCategory(type) {
+  return 'games';
+}
+
+function itemImagePath(type) {
+  if (type === 'ranked') return '/images/site/icon-ranked.webp';
+  if (type === 'prestigio') return '/images/site/icon-prestige-3.webp';
+  if (type === 'account') return '/images/site/icon-account-red.webp';
+  return '/images/site/icon-trophy.png';
+}
+
+function buildMarketplaceItem({ order, calculated, req }) {
+  return {
+    id: `${calculated.type}-${String(order.id || crypto.randomUUID()).slice(0, 64)}`,
+    title: calculated.title,
+    description: calculated.description,
+    picture_url: sitePictureUrl(req, itemImagePath(calculated.type)),
+    category_id: itemCategory(calculated.type),
+    quantity: 1,
+    currency_id: 'BRL',
+    unit_price: calculated.amount
+  };
+}
+
+function buildAdditionalPayer(order, data) {
+  const name = splitName(order.client || data.payer?.first_name || '');
+  const phone = splitPhone(order.whatsapp || '');
+  return {
+    first_name: String(data.payer?.first_name || name.first_name).slice(0, 80),
+    last_name: String(data.payer?.last_name || name.last_name).slice(0, 80),
+    phone,
+    authentication_type: 'Native Web',
+    is_first_purchase_online: false,
+    is_prime_user: false
+  };
 }
 
 function calcTrofeu(atual, subir) {
@@ -169,11 +249,13 @@ function normalizedFormData(formData = {}) {
   };
 }
 
-function buildPaymentPayload({ order, calculated, formData }) {
+function buildPaymentPayload({ order, calculated, formData, req }) {
   const data = normalizedFormData(formData);
   const payerEmail = String(order.email || data.payer.email || '').trim().toLowerCase();
   const payer = { email: payerEmail };
   const identification = data.payer.identification || {};
+  const item = buildMarketplaceItem({ order, calculated, req });
+  const webhook = notificationUrl(req);
 
   if (identification.type && identification.number) {
     payer.identification = {
@@ -188,6 +270,8 @@ function buildPaymentPayload({ order, calculated, formData }) {
   const payment = {
     transaction_amount: calculated.amount,
     description: `${calculated.title} - ${calculated.description}`,
+    statement_descriptor: STATEMENT_DESCRIPTOR,
+    capture: true,
     payment_method_id: String(data.payment_method_id || '').trim(),
     payer,
     external_reference: String(order.id || '').trim(),
@@ -197,19 +281,60 @@ function buildPaymentPayload({ order, calculated, formData }) {
       scheduled_date: String(order.date || '').slice(0, 40),
       scheduled_time: String(order.time || '').slice(0, 20),
       client: String(order.client || '').slice(0, 120),
-      whatsapp: String(order.whatsapp || '').slice(0, 40)
+      whatsapp: String(order.whatsapp || '').slice(0, 40),
+      item_id: item.id,
+      item_title: item.title,
+      item_category_id: item.category_id
+    },
+    additional_info: {
+      items: [item],
+      payer: buildAdditionalPayer(order, data)
     }
   };
 
   if (data.token) payment.token = data.token;
   if (data.installments) payment.installments = data.installments;
   if (data.issuer_id) payment.issuer_id = String(data.issuer_id);
-  if (process.env.MERCADO_PAGO_NOTIFICATION_URL) payment.notification_url = process.env.MERCADO_PAGO_NOTIFICATION_URL;
+  if (webhook) payment.notification_url = webhook;
 
   return payment;
 }
 
-module.exports = async function handler(req, res) {
+function buildPreferencePayload({ order, calculated, req }) {
+  const item = buildMarketplaceItem({ order, calculated, req });
+  const base = publicBaseUrl(req);
+  const webhook = notificationUrl(req);
+  const phone = splitPhone(order.whatsapp || '');
+  const preference = {
+    items: [item],
+    payer: {
+      email: String(order.email || '').trim().toLowerCase(),
+      ...splitName(order.client || ''),
+      phone
+    },
+    external_reference: String(order.id || '').trim(),
+    statement_descriptor: STATEMENT_DESCRIPTOR,
+    metadata: {
+      order_id: String(order.id || '').trim(),
+      service_type: calculated.type,
+      client: String(order.client || '').slice(0, 120),
+      whatsapp: String(order.whatsapp || '').slice(0, 40)
+    }
+  };
+
+  if (webhook) preference.notification_url = webhook;
+  if (base) {
+    preference.back_urls = {
+      success: `${base}/?payment=approved&external_reference=${encodeURIComponent(order.id || '')}`,
+      pending: `${base}/?payment=pending&external_reference=${encodeURIComponent(order.id || '')}`,
+      failure: `${base}/?payment=failure&external_reference=${encodeURIComponent(order.id || '')}`
+    };
+    preference.auto_return = 'approved';
+  }
+  return preference;
+}
+
+async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
 
   if (req.method !== 'POST') {
@@ -258,7 +383,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const paymentPayload = buildPaymentPayload({ order, calculated, formData });
+  const paymentPayload = buildPaymentPayload({ order, calculated, formData, req });
   if (!paymentPayload.payment_method_id) {
     res.status(400).json({ error: 'Meio de pagamento invalido.' });
     return;
@@ -295,4 +420,17 @@ module.exports = async function handler(req, res) {
   } catch (error) {
     res.status(502).json({ error: 'Nao foi possivel conectar ao Mercado Pago.' });
   }
+}
+
+module.exports = handler;
+module.exports.__mp = {
+  calculateService,
+  toMoney,
+  roundMoney,
+  publicBaseUrl,
+  notificationUrl,
+  buildMarketplaceItem,
+  buildPaymentPayload,
+  buildPreferencePayload,
+  STATEMENT_DESCRIPTOR
 };
