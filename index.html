@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ZS UpBrawl – Elojob Brawl Stars #1 do Brasil</title>
 <meta name="description" content="O melhor serviço de Elojob para Brawl Stars. UP Troféu, UP Ranked, UP Prestígio e Contas premium."/>
+<link rel="icon" href="/images/site/icon-trophy.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -31,6 +32,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:1rem 2rem;display:fl
 .nav-links a{color:var(--text-muted);text-decoration:none;font-size:.88rem;font-weight:500;transition:.3s}
 .nav-links a:hover{color:var(--neon-purple);text-shadow:0 0 12px var(--neon-purple)}
 .nav-cta{display:flex;gap:.75rem;align-items:center}
+.account-menu{position:relative}
+.account-trigger{min-width:112px;display:inline-flex;align-items:center;justify-content:center;gap:.45rem;white-space:nowrap}
+.account-panel{position:absolute;top:calc(100% + .7rem);right:0;width:min(360px,calc(100vw - 2rem));background:linear-gradient(145deg,rgba(14,14,34,.98),rgba(3,6,18,.98));border:1px solid rgba(168,85,247,.35);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.04) inset;display:none;backdrop-filter:blur(18px)}
+.account-panel.active{display:block;animation:fadeIn .18s ease}
+.account-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.9rem}
+.account-name{font-weight:900;font-size:.95rem}
+.account-role{font-size:.72rem;color:var(--text-muted);margin-top:.18rem}
+.account-code-box{background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.28);border-radius:.8rem;padding:.85rem;margin:.85rem 0}
+.account-code-label{font-size:.68rem;color:var(--text-muted);font-weight:900;letter-spacing:.8px;text-transform:uppercase;margin-bottom:.35rem}
+.account-code-value{font-family:'Orbitron',monospace;font-size:1.22rem;color:var(--neon-cyan);font-weight:900;letter-spacing:1px;word-break:break-word}
+.account-stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+.account-stat{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:.72rem;padding:.7rem}
+.account-stat strong{display:block;font-family:'Orbitron',sans-serif;font-size:1.05rem;color:#fff;margin-bottom:.16rem}
+.account-stat span{font-size:.7rem;color:var(--text-muted);line-height:1.3}
+.account-actions{display:flex;gap:.55rem;margin-top:.85rem;flex-wrap:wrap}
+.cart-nav-btn{position:relative;width:42px;height:42px;border-radius:.7rem;border:1px solid rgba(168,85,247,.36);background:rgba(168,85,247,.08);color:#fff;display:grid;place-items:center;cursor:pointer;font-size:1.05rem;transition:.25s}
+.cart-nav-btn:hover{background:rgba(168,85,247,.18);transform:translateY(-1px)}
+.cart-badge{position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;border-radius:50%;background:#ef4444;color:#fff;font-size:.68rem;font-weight:900;display:grid;place-items:center;border:2px solid #050510;padding:0 .25rem}
 .btn{padding:.55rem 1.2rem;border-radius:.5rem;font-weight:600;cursor:pointer;border:none;font-size:.84rem;transition:.3s;font-family:'Inter',sans-serif;letter-spacing:.4px}
 .btn-outline{background:transparent;border:1px solid var(--neon-purple);color:var(--neon-purple)}
 .btn-outline:hover{background:var(--neon-purple);color:#fff;box-shadow:0 0 20px rgba(168,85,247,.5)}
@@ -240,12 +259,12 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .danger-text{color:#f87171;font-size:.78rem;margin-top:.35rem;display:none}
 
 /* ── TOAST ── */
-#toast-container{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:.7rem;pointer-events:none}
+#toast-container{position:fixed;top:5.4rem;right:1.5rem;z-index:12000;display:flex;flex-direction:column;gap:.7rem;pointer-events:none}
 .toast{background:rgba(13,13,31,.97);border:1px solid var(--border-glow);border-radius:.75rem;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;min-width:260px;animation:toastIn .3s ease;box-shadow:0 8px 32px rgba(0,0,0,.5);backdrop-filter:blur(12px)}
 @keyframes toastIn{from{transform:translateX(110%);opacity:0}to{transform:none;opacity:1}}
 
 /* ── FEEDBACK ── */
-.feedback-panel{position:fixed;right:1.5rem;bottom:1.5rem;z-index:10000;width:min(360px,calc(100vw - 2rem));background:linear-gradient(145deg,rgba(16,16,36,.98),rgba(5,5,14,.98));border:1px solid rgba(148,163,184,.2);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 0 1px rgba(168,85,247,.15);display:none;backdrop-filter:blur(16px)}
+.feedback-panel{position:fixed;left:1.5rem;bottom:1.5rem;z-index:8500;width:min(360px,calc(100vw - 2rem));background:linear-gradient(145deg,rgba(16,16,36,.98),rgba(5,5,14,.98));border:1px solid rgba(148,163,184,.2);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 0 1px rgba(168,85,247,.15);display:none;backdrop-filter:blur(16px)}
 .feedback-panel.active{display:block;animation:toastIn .25s ease}
 .feedback-close{position:absolute;top:.7rem;right:.7rem;width:28px;height:28px;border-radius:50%;border:1px solid rgba(148,163,184,.28);background:rgba(148,163,184,.12);color:#cbd5e1;cursor:pointer;font-size:.95rem;line-height:1;display:grid;place-items:center}
 .feedback-close:hover{background:rgba(148,163,184,.2);color:#fff}
@@ -258,6 +277,27 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .feedback-star:hover,.feedback-star.active{background:rgba(251,191,36,.22);transform:translateY(-1px)}
 .feedback-panel textarea{min-height:82px;resize:vertical}
 .feedback-source{display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;padding:.25rem .55rem;border-radius:50px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.24);color:#86efac;font-size:.7rem;font-weight:800}
+
+/* ── ORDER NOTIFICATION ── */
+.order-notification{position:fixed;right:1.5rem;bottom:1.5rem;z-index:8600;width:min(390px,calc(100vw - 2rem));display:none;background:linear-gradient(145deg,rgba(12,18,34,.98),rgba(4,5,16,.98));border:1px solid rgba(148,163,184,.22);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 0 1px rgba(255,255,255,.04) inset;backdrop-filter:blur(16px)}
+.order-notification.active{display:block;animation:toastIn .25s ease}
+.order-head{display:grid;grid-template-columns:48px 1fr auto;gap:.75rem;align-items:center;margin-bottom:.8rem}
+.order-head img{width:48px;height:48px;border-radius:.85rem;object-fit:contain;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:.25rem}
+.order-title{font-weight:900;font-size:.94rem}
+.order-sub{font-size:.72rem;color:var(--text-muted);margin-top:.2rem}
+.order-dot{width:13px;height:13px;border-radius:50%;box-shadow:0 0 0 5px rgba(255,255,255,.04)}
+.order-dot.red{background:#ef4444;box-shadow:0 0 18px rgba(239,68,68,.7)}
+.order-dot.yellow{background:#fbbf24;box-shadow:0 0 18px rgba(251,191,36,.6)}
+.order-dot.green{background:#22c55e;box-shadow:0 0 18px rgba(34,197,94,.65)}
+.order-message{color:var(--text-primary);font-size:.84rem;line-height:1.55;margin-bottom:.8rem}
+.order-timer{display:inline-flex;align-items:center;gap:.35rem;border:1px solid rgba(239,68,68,.26);background:rgba(239,68,68,.09);color:#fecaca;border-radius:50px;padding:.32rem .65rem;font-family:'Orbitron',monospace;font-size:.74rem;font-weight:900;margin-bottom:.75rem}
+.order-uploader-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem;margin:.75rem 0}
+.order-uploader-stats div{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:.62rem;padding:.55rem;text-align:center}
+.order-uploader-stats strong{display:block;font-family:'Orbitron',sans-serif;font-size:.92rem;color:#fff}
+.order-uploader-stats span{display:block;color:var(--text-muted);font-size:.64rem;margin-top:.16rem}
+.order-actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.85rem}
+.tip-heart{font-size:4rem;text-align:center;margin:.6rem 0;color:#fb7185;text-shadow:0 0 25px rgba(251,113,133,.45)}
+.copy-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:.85rem;padding:.9rem;color:var(--text-primary);font-family:monospace;word-break:break-word}
 
 /* ── FOOTER ── */
 footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px solid var(--border-glow);padding:3rem 2rem 1.5rem}
@@ -291,13 +331,34 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 
 @media(max-width:768px){
   .nav-links{display:none}
+  nav{padding:.8rem 1rem}
+  .nav-cta{gap:.45rem}
+  .account-trigger{min-width:auto;padding:.5rem .75rem;max-width:128px;overflow:hidden;text-overflow:ellipsis}
+  .account-panel{right:-3.2rem}
   .admin-sidebar{display:none}
   .admin-content{margin-left:0}
   .ranks-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
 }
 @media(max-width:540px){
+  nav .logo{font-size:1rem;letter-spacing:1px;max-width:112px;line-height:1.25}
+  .nav-cta{position:static;flex-direction:row-reverse}
+  .account-menu{position:fixed;left:8rem;top:.75rem;z-index:401}
+  .nav-cta>.btn-primary{display:none}
+  .account-trigger{width:38px;min-width:38px;max-width:38px;height:38px;padding:0;font-size:0}
+  .account-trigger::before{content:'👤';font-size:1rem}
+  .cart-nav-btn{position:fixed;left:10.9rem;top:.75rem;z-index:401;width:38px;height:38px}
+  .hero-btns{flex-direction:column;align-items:center}
+  .hero-btns .btn-lg{width:min(100%,280px)}
+  .hero-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem;width:100%;max-width:320px;margin-left:auto;margin-right:auto}
+  .stat-num{font-size:1.65rem}
   .wa-float{top:5.2rem;bottom:auto;left:1rem;width:44px;height:44px}
-  .feedback-panel{right:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}
+  #toast-container{top:4.8rem;right:.75rem;width:calc(100vw - 1.5rem)}
+  .toast{min-width:0;width:100%}
+  .feedback-panel{left:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}
+  .order-notification{right:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}
+  .feedback-panel.active + .order-notification.active{bottom:19rem}
+  .order-uploader-stats{grid-template-columns:1fr}
+  .account-panel{position:fixed;top:4.6rem;left:.75rem;right:.75rem;width:auto}
 }
 
 /* ── MERCADO PAGO CHECKOUT STATUS ── */
@@ -326,6 +387,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 .mp-method-btn{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:.85rem;padding:1rem .8rem;color:var(--text-primary);font-family:'Inter',sans-serif;cursor:pointer;transition:.25s;text-align:left;min-height:92px}
 .mp-method-btn:hover,.mp-method-btn.active{border-color:var(--neon-cyan);background:rgba(6,182,212,.1);box-shadow:0 0 24px rgba(6,182,212,.12);transform:translateY(-2px)}
 .mp-method-icon{display:block;font-size:1.35rem;margin-bottom:.45rem}
+.mp-method-icon img{width:34px;height:34px;object-fit:contain;display:block;border-radius:.45rem;background:#fff;padding:.18rem}
 .mp-method-title{display:block;font-weight:800;font-size:.86rem}
 .mp-method-sub{display:block;color:var(--text-muted);font-size:.72rem;line-height:1.35;margin-top:.25rem}
 #paymentBrick_container{background:rgba(5,6,18,.55);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:1rem}
@@ -383,6 +445,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   <textarea class="form-control" id="feedback-description" placeholder="Conte como foi a compra. A descrição é obrigatória."></textarea>
   <button class="btn btn-primary" style="width:100%;padding:.72rem;margin-top:.75rem" onclick="submitFeedback()">Enviar feedback</button>
 </div>
+<div class="order-notification" id="order-notification" aria-live="polite"></div>
 
 <!-- ═══ NAV ═══ -->
 <div class="content">
@@ -395,7 +458,11 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <li id="admin-nav-link" style="display:none"><a href="#" onclick="openAdmin();return false">Admin</a></li>
   </ul>
   <div class="nav-cta">
-    <button class="btn btn-outline" id="login-nav-btn" onclick="openLogin()">Entrar</button>
+    <button class="cart-nav-btn" id="cart-nav-btn" onclick="openCart()" aria-label="Abrir carrinho" title="Carrinho">🛒<span class="cart-badge" id="cart-count">0</span></button>
+    <div class="account-menu" id="account-menu">
+      <button class="btn btn-outline account-trigger" id="login-nav-btn" onclick="openLogin()">Entrar</button>
+      <div class="account-panel" id="account-panel"></div>
+    </div>
     <button class="btn btn-primary" onclick="openScheduleMain()">🗓 Agendar</button>
   </div>
 </nav>
@@ -673,17 +740,17 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
         <div class="mp-checkout-status" id="mp-checkout-status">Preparando checkout seguro...</div>
         <div class="mp-method-grid">
           <button class="mp-method-btn" type="button" data-method="pix" onclick="selectCheckoutMethod('pix')">
-            <span class="mp-method-icon">◇</span>
+            <span class="mp-method-icon"><img src="/images/site/icon-pix.png" alt="Pix"/></span>
             <span class="mp-method-title">PIX QR Code</span>
             <span class="mp-method-sub">Abre um modal só do PIX com copia e cola.</span>
           </button>
           <button class="mp-method-btn" type="button" data-method="credit" onclick="selectCheckoutMethod('credit')">
-            <span class="mp-method-icon">▣</span>
+            <span class="mp-method-icon"><img src="/images/site/icon-cards.png" alt="Cartões"/></span>
             <span class="mp-method-title">Cartão de crédito</span>
             <span class="mp-method-sub">Formulário seguro do Mercado Pago.</span>
           </button>
           <button class="mp-method-btn" type="button" data-method="debit" onclick="selectCheckoutMethod('debit')">
-            <span class="mp-method-icon">▤</span>
+            <span class="mp-method-icon"><img src="/images/site/icon-cards.png" alt="Cartões"/></span>
             <span class="mp-method-title">Cartão de débito</span>
             <span class="mp-method-sub">Opção dedicada para débito.</span>
           </button>
@@ -711,6 +778,51 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
       <button class="btn btn-primary" id="mp-pix-copy-btn" type="button" onclick="copyPixCheckoutCode()">Copiar PIX</button>
       <button class="btn btn-outline" id="mp-pix-paid-btn" type="button" onclick="checkPixPaymentStatus(true)">Já paguei</button>
     </div>
+  </div>
+</div>
+
+<!-- CARRINHO -->
+<div class="modal-overlay" id="cart-modal">
+  <div class="modal" style="max-width:620px">
+    <button class="modal-close" onclick="closeModal('cart-modal')">✕</button>
+    <h2>🛒 Carrinho</h2>
+    <p class="modal-sub">Acompanhe pedidos em checkout e compras recentes.</p>
+    <div id="cart-content"></div>
+  </div>
+</div>
+
+<!-- CONFIRMAR TAREFA -->
+<div class="modal-overlay" id="task-confirm-modal">
+  <div class="modal" style="max-width:500px">
+    <button class="modal-close" style="background:rgba(148,163,184,.18);color:#cbd5e1" onclick="closeTaskConfirmModal()">✕</button>
+    <h2>Pegar tarefa</h2>
+    <p class="modal-sub">Quando você confirmar, o cliente será avisado e seu nome será mostrado para ele.</p>
+    <div class="locked-note" id="task-deadline-note">Você tem que completar isso no prazo do agendamento escolhido pelo cliente.</div>
+    <div id="task-confirm-summary"></div>
+    <div style="display:flex;gap:.7rem;margin-top:1rem">
+      <button class="btn btn-outline" style="flex:1;padding:.78rem" onclick="closeTaskConfirmModal()">Cancelar</button>
+      <button class="btn btn-primary" style="flex:2;padding:.78rem" onclick="confirmTakeTask()">Pegar tarefa</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLUXO DO UPADOR -->
+<div class="modal-overlay" id="task-flow-modal">
+  <div class="modal" style="max-width:560px">
+    <button class="modal-close" onclick="closeModal('task-flow-modal')">✕</button>
+    <div id="task-flow-content"></div>
+  </div>
+</div>
+
+<!-- GORJETA -->
+<div class="modal-overlay" id="tip-modal">
+  <div class="modal" style="max-width:420px;text-align:center">
+    <button class="modal-close" onclick="closeModal('tip-modal')">✕</button>
+    <div class="tip-heart">♥</div>
+    <h2>Enviar gorjeta</h2>
+    <p class="modal-sub">Obrigado por apoiar o upador.</p>
+    <div class="copy-box" id="tip-pix-key">12992025025</div>
+    <button class="btn btn-primary" style="width:100%;padding:.78rem;margin-top:1rem" onclick="copyTipPix()">Copiar</button>
   </div>
 </div>
 
@@ -883,7 +995,10 @@ const SITE_IMAGES = {
   rankMitico:'/images/site/rank-mitico.webp',
   rankLendario:'/images/site/rank-lendario.webp',
   rankMestres:'/images/site/rank-mestres.webp',
-  rankPro:'/images/site/rank-pro.webp'
+  rankPro:'/images/site/rank-pro.webp',
+  pix:'/images/site/icon-pix.png',
+  cards:'/images/site/icon-cards.png',
+  orderNotification:'/images/site/icon-order-notification.png'
 };
 const REMOTE_IMAGE_MAP = {
   'https://www.brawlstarsdicas.com.br/wp-content/uploads/2019/01/trofeus-brawl-stars-icone-trophy.png':SITE_IMAGES.trophy,
@@ -893,7 +1008,10 @@ const REMOTE_IMAGE_MAP = {
   'https://static.wikia.nocookie.net/brawlstars/images/f/ff/Rank_Prestige_2.png/revision/latest/scale-to-width-down/28?cb=20260224232422':SITE_IMAGES.prestige2,
   'https://static.wikia.nocookie.net/brawlstars/images/9/92/Rank_Prestige_3.png/revision/latest/scale-to-width-down/28?cb=20260224232437':SITE_IMAGES.prestige3,
   'https://th.bing.com/th/id/OIP.RvyVKMJvDECu6oYiCfucoAHaIU?w=179&h=202&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3':SITE_IMAGES.account,
-  'https://static.wikia.nocookie.net/brawlstars/images/e/e6/Site-logo.png/revision/latest?cb=20210824024831':SITE_IMAGES.account
+  'https://static.wikia.nocookie.net/brawlstars/images/e/e6/Site-logo.png/revision/latest?cb=20210824024831':SITE_IMAGES.account,
+  'https://www.bing.com/th/id/OIP.AEYxcQj7kBWLQrKjCjg6DgHaHa?w=193&h=193&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2':SITE_IMAGES.pix,
+  'https://w7.pngwing.com/pngs/935/180/png-transparent-computer-icons-credit-card-finance-debit-card-credit-card-angle-web-design-text-thumbnail.png':SITE_IMAGES.cards,
+  'https://th.bing.com/th/id/OIP.T18hv4vSdfuvaelAQL6f0wHaHa?w=210&h=210&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3':SITE_IMAGES.orderNotification
 };
 
 const BRAWLERS_DATA = {
@@ -1077,6 +1195,7 @@ let currentUser=null, currentOrder=null;
 let paymentInProgress=false;
 let embeddedPaymentService=null, mercadoPagoPublicKey='', mpSelectedMethod='', currentPixPayment=null, pixStatusTimer=null, pixGenerating=false;
 let selectedFeedbackRating=0;
+let currentAdminSection='dashboard', pendingTaskId='', taskFlowStep=1, currentTaskFlowOrderId='', orderNotificationTimer=null;
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const LS_KEYS = {
   users:'zsup_users',
@@ -1085,13 +1204,15 @@ const LS_KEYS = {
   products:'zsup_products',
   feedbacks:'zsup_feedbacks',
   pendingFeedback:'zsup_pending_feedback',
-  currentUser:'zsup_current_user'
+  currentUser:'zsup_current_user',
+  cart:'zsup_cart'
 };
 
 function loadStore(key, fallback){
   try{ return JSON.parse(localStorage.getItem(key)) || fallback; }catch(e){ return fallback; }
 }
-function saveStore(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+function notifyStoreChange(key){ window.dispatchEvent(new CustomEvent('zsup:store', {detail:{key}})); }
+function saveStore(key, value){ localStorage.setItem(key, JSON.stringify(value)); notifyStoreChange(key); }
 function uid(prefix='ZS'){ return prefix + Math.random().toString(36).slice(2,8).toUpperCase(); }
 function todayLabel(){ return new Date().toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'}); }
 function moneyFromText(v){ return Number(String(v||'0').replace(/[^\d,.-]/g,'').replace('.','').replace(',','.')) || 0; }
@@ -1112,6 +1233,27 @@ async function sha256(text){
 function canManageAdmin(){ return ['dono','admin'].includes(currentUser?.role); }
 function canModerate(){ return ['dono','admin','mod'].includes(currentUser?.role); }
 function canUseTeamChat(){ return ['dono','admin','mod','upador'].includes(currentUser?.role); }
+function generateCustomerCode(){ return uid('COD-'); }
+function ensureCustomerCode(user){
+  if(user && !user.customerCode) user.customerCode = generateCustomerCode();
+  return user?.customerCode || '';
+}
+function getCurrentStoredUser(){
+  if(!currentUser?.id) return null;
+  return loadStore(LS_KEYS.users, []).find(u => u.id === currentUser.id) || currentUser;
+}
+function userMatchesOrder(user, order){
+  if(!user || !order) return false;
+  const email = String(user.email || '').toLowerCase();
+  const orderEmail = String(order.email || '').toLowerCase();
+  return order.clientUserId === user.id || (email && orderEmail && email === orderEmail) || (user.phone && order.whatsapp && user.phone === order.whatsapp);
+}
+function getOrderCustomerCode(order){
+  const users = loadStore(LS_KEYS.users, []);
+  const user = users.find(u => order?.clientUserId && u.id === order.clientUserId) ||
+    users.find(u => String(u.email || '').toLowerCase() === String(order?.email || '').toLowerCase());
+  return user?.customerCode || order?.customerCode || '';
+}
 function ownerExists(){ return loadStore(LS_KEYS.users, []).some(u => u.role === 'dono'); }
 async function loginOwnerViaServer(email, password){
   try{
@@ -1129,9 +1271,11 @@ async function loginOwnerViaServer(email, password){
   }
 }
 function rememberSessionUser(user){
+  ensureCustomerCode(user);
   const users = loadStore(LS_KEYS.users, []);
   const existing = users.find(u => u.id === user.id || u.email?.toLowerCase() === user.email?.toLowerCase());
   if(existing){
+    ensureCustomerCode(existing);
     Object.assign(existing, {...user, passwordHash:existing.passwordHash});
   } else {
     users.push(user);
@@ -1152,15 +1296,28 @@ function ensureSeedData(){
       .map(u => {
         if(u.password && !u.passwordHash){ u.needsPasswordReset = true; delete u.password; }
         return u;
-      });
+    });
     saveStore(LS_KEYS.users, cleaned);
   }
+  const usersWithCodes = loadStore(LS_KEYS.users, []);
+  let userCodesChanged = false;
+  usersWithCodes.forEach(u => {
+    if(!u.customerCode){ u.customerCode = generateCustomerCode(); userCodesChanged = true; }
+  });
+  if(userCodesChanged) saveStore(LS_KEYS.users, usersWithCodes);
   if(!localStorage.getItem(LS_KEYS.orders)){
     saveStore(LS_KEYS.orders, [
-      {id:'ZS-A1B2C3',client:'Gabriel S.',owner:'Gabriel S.',service:'UP Troféu',details:'5.000 troféus',price:'R$ 25,00',date:'10/05/2026',time:'18:00',payment:'PIX',status:'pendente',uploaderId:null,uploaderName:null,createdAt:todayLabel()},
-      {id:'ZS-D4E5F6',client:'Maria L.',owner:'Maria L.',service:'UP Prestígio',details:'Prestígio III - Spike',price:'R$ 70,00',date:'10/05/2026',time:'20:00',payment:'Mercado Pago',status:'andamento',uploaderId:'USR-UP1',uploaderName:'Upador Alpha',createdAt:todayLabel()}
+      {id:'ZS-A1B2C3',client:'Gabriel S.',owner:'Gabriel S.',service:'UP Troféu',details:'5.000 troféus',price:'R$ 25,00',date:'10/05/2026',time:'18:00',payment:'PIX',paymentStatus:'approved',status:'pendente',uploaderId:null,uploaderName:null,customerCode:generateCustomerCode(),createdAt:todayLabel(),createdAtMs:Date.now()},
+      {id:'ZS-D4E5F6',client:'Maria L.',owner:'Maria L.',service:'UP Prestígio',details:'Prestígio III - Spike',price:'R$ 70,00',date:'10/05/2026',time:'20:00',payment:'Mercado Pago',paymentStatus:'approved',status:'andamento',uploaderId:'USR-UP1',uploaderName:'Upador Alpha',customerCode:generateCustomerCode(),createdAt:todayLabel(),createdAtMs:Date.now()}
     ]);
   }
+  const migratedOrders = loadStore(LS_KEYS.orders, []);
+  let ordersChanged = false;
+  migratedOrders.forEach(o => {
+    if(!o.customerCode){ o.customerCode = generateCustomerCode(); ordersChanged = true; }
+    if(!o.createdAtMs){ o.createdAtMs = Date.now(); ordersChanged = true; }
+  });
+  if(ordersChanged) saveStore(LS_KEYS.orders, migratedOrders);
   if(!localStorage.getItem(LS_KEYS.products)){
     saveStore(LS_KEYS.products, DEFAULT_PRODUCTS);
   } else {
@@ -1198,7 +1355,7 @@ function statusLabel(status){
   const labels = {
     pendente:'<span class="status-badge status-pending">⏳ Pendente</span>',
     andamento:'<span class="status-badge status-active">⚡ Em andamento</span>',
-    realizado:'<span class="status-badge status-done">✔ Realizado</span>'
+    realizado:'<span class="status-badge status-done">✔ Finalizado</span>'
   };
   return labels[status] || labels.pendente;
 }
@@ -1266,16 +1423,18 @@ function handlePaymentReturn(){
   if(idx >= 0){
     orders[idx].paymentStatus = status;
     orders[idx].paidAt = status === 'approved' ? todayLabel() : orders[idx].paidAt;
-    orders[idx].status = status === 'approved' ? 'andamento' : 'pendente';
+    orders[idx].approvedAtMs = status === 'approved' ? Date.now() : orders[idx].approvedAtMs;
+    orders[idx].status = status === 'approved' ? (orders[idx].uploaderId ? 'andamento' : 'pendente') : 'pendente';
     saveStore(LS_KEYS.orders, orders);
     currentOrder = orders[idx];
+    updateCartItemFromOrder(currentOrder);
   }
 
   if(status === 'approved'){
     showToast('Pagamento aprovado! Pedido liberado para a equipe.','✅');
     if(currentOrder){
       sendWhatsAppNotification(currentOrder);
-      queueFeedbackPrompt({orderId:currentOrder.id, service:currentOrder.service, product:currentOrder.details, client:currentOrder.client});
+      renderOrderNotification();
     }
   } else if(status === 'pending'){
     showToast('Pagamento pendente. Assim que aprovar, a equipe continua.','⏳');
@@ -1289,7 +1448,7 @@ function handlePaymentReturn(){
 
 // ═══ INIT ═══
 window.onload = () => {
-  ensureSeedData(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); handlePaymentReturn(); restoreFeedbackPrompt();
+  ensureSeedData(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer();
 };
 
 function animateStats(){
@@ -1518,6 +1677,263 @@ function updateServiceCards(){
   if(contaImg) contaImg.src = SITE_IMAGES.account;
 }
 
+function ordersForUser(user=currentUser){
+  const orders = loadStore(LS_KEYS.orders, []);
+  if(user) return orders.filter(o => userMatchesOrder(user, o));
+  return currentOrder ? [currentOrder] : [];
+}
+function extractTrophies(order){
+  const text = `${order?.service || ''} ${order?.details || ''}`;
+  if(!/trof/i.test(text)) return 0;
+  const subir = text.match(/Subir:\s*([\d.]+)/i)?.[1] || text.match(/([\d.]+)\s*trof/i)?.[1] || '0';
+  return Number(String(subir).replace(/\D/g,'')) || 0;
+}
+function extractRankedPoints(order){
+  const text = `${order?.service || ''} ${order?.details || ''}`;
+  if(!/ranked/i.test(text)) return 0;
+  const nums = String(order?.details || '').match(/\d+/g)?.map(Number) || [];
+  return nums.length ? Math.max(0, Math.max(...nums) - Math.min(...nums)) : 0;
+}
+function statsFromOrders(orders){
+  return {
+    total: orders.length,
+    pending: orders.filter(o => o.status === 'pendente').length,
+    active: orders.filter(o => o.status === 'andamento').length,
+    done: orders.filter(o => o.status === 'realizado').length,
+    trophies: orders.reduce((sum,o)=>sum + extractTrophies(o), 0),
+    ranked: orders.reduce((sum,o)=>sum + extractRankedPoints(o), 0),
+    spent: orders.reduce((sum,o)=>sum + moneyFromText(o.paymentAmount || o.price), 0)
+  };
+}
+function getUploaderStats(userId){
+  const orders = loadStore(LS_KEYS.orders, []).filter(o => o.uploaderId === userId);
+  const done = orders.filter(o => o.status === 'realizado');
+  const base = done.length ? done : orders;
+  return {
+    taken: orders.length,
+    done: done.length,
+    trophies: base.reduce((sum,o)=>sum + extractTrophies(o), 0),
+    ranked: base.reduce((sum,o)=>sum + extractRankedPoints(o), 0)
+  };
+}
+function syncCurrentUserFromStore(){
+  const id = localStorage.getItem(LS_KEYS.currentUser);
+  currentUser = id ? loadStore(LS_KEYS.users, []).find(u => u.id === id) || null : null;
+  if(currentUser) ensureCustomerCode(currentUser);
+}
+function renderAccountPanel(){
+  const panel = document.getElementById('account-panel');
+  if(!panel) return;
+  if(!currentUser){
+    panel.classList.remove('active');
+    panel.innerHTML = '';
+    return;
+  }
+  const users = loadStore(LS_KEYS.users, []);
+  const stored = users.find(u => u.id === currentUser.id) || currentUser;
+  let changed = false;
+  if(!stored.customerCode){ stored.customerCode = generateCustomerCode(); changed = true; }
+  currentUser = stored;
+  if(changed) saveStore(LS_KEYS.users, users);
+  const stats = statsFromOrders(ordersForUser(currentUser));
+  panel.innerHTML = `
+    <div class="account-head">
+      <div>
+        <div class="account-name">${escapeHTML(currentUser.name)}</div>
+        <div class="account-role">${escapeHTML(currentUser.email || currentUser.role || 'Cliente')}</div>
+      </div>
+      ${roleBadge(currentUser.role)}
+    </div>
+    <div class="account-code-box">
+      <div class="account-code-label">Código</div>
+      <div class="account-code-value">${escapeHTML(currentUser.customerCode)}</div>
+    </div>
+    <div class="account-stat-grid">
+      <div class="account-stat"><strong>${stats.total}</strong><span>pedidos</span></div>
+      <div class="account-stat"><strong>${stats.trophies.toLocaleString('pt-BR')}</strong><span>troféus upados</span></div>
+      <div class="account-stat"><strong>${stats.pending}</strong><span>pendentes</span></div>
+      <div class="account-stat"><strong>${stats.active}</strong><span>em andamento</span></div>
+      <div class="account-stat"><strong>${stats.done}</strong><span>finalizados</span></div>
+      <div class="account-stat"><strong>${formatBRL(stats.spent)}</strong><span>total comprado</span></div>
+    </div>
+    <div class="account-actions">
+      <button class="btn btn-outline mini-btn" onclick="rerollCustomerCode()">Rerolar código</button>
+      <button class="btn btn-outline mini-btn" onclick="logoutCurrentUser()">Sair da conta</button>
+    </div>
+  `;
+}
+function toggleAccountPanel(){
+  if(!currentUser) return openModal('login-modal');
+  renderAccountPanel();
+  document.getElementById('account-panel')?.classList.toggle('active');
+}
+function logoutCurrentUser(){
+  if(currentUser) showToast(`${currentUser.name} saiu da conta.`, '👋');
+  currentUser = null;
+  localStorage.removeItem(LS_KEYS.currentUser);
+  notifyStoreChange(LS_KEYS.currentUser);
+  updateAuthUI();
+}
+function rerollCustomerCode(){
+  if(!currentUser) return openLogin();
+  const oldCode = currentUser.customerCode;
+  const users = loadStore(LS_KEYS.users, []);
+  const user = users.find(u => u.id === currentUser.id);
+  const newCode = generateCustomerCode();
+  if(user) user.customerCode = newCode;
+  currentUser.customerCode = newCode;
+  const orders = loadStore(LS_KEYS.orders, []);
+  orders.forEach(o => {
+    if(userMatchesOrder(currentUser, o) || o.customerCode === oldCode) o.customerCode = newCode;
+  });
+  if(currentOrder && (userMatchesOrder(currentUser, currentOrder) || currentOrder.customerCode === oldCode)) currentOrder.customerCode = newCode;
+  saveStore(LS_KEYS.users, users);
+  saveStore(LS_KEYS.orders, orders);
+  renderAccountPanel();
+  renderOrderNotification();
+  showToast('Código atualizado em tempo real no admin.','✅');
+}
+
+function cartItems(){ return loadStore(LS_KEYS.cart, []); }
+function saveCart(items){ saveStore(LS_KEYS.cart, items.slice(0, 20)); updateCartCount(); }
+function upsertCartItem(order){
+  if(!order?.id) return;
+  const items = cartItems().filter(i => i.id !== order.id);
+  items.unshift({
+    id: order.id,
+    service: order.service,
+    details: order.details,
+    price: order.paymentAmount || order.price,
+    status: order.paymentStatus || 'checkout_aberto',
+    orderStatus: order.status || 'pendente',
+    createdAt: order.createdAt || todayLabel()
+  });
+  saveCart(items);
+}
+function updateCartItemFromOrder(order){
+  const items = cartItems();
+  const item = items.find(i => i.id === order?.id);
+  if(item){
+    item.status = order.paymentStatus || item.status;
+    item.orderStatus = order.status || item.orderStatus;
+    item.price = order.paymentAmount || order.price || item.price;
+    saveCart(items);
+  } else if(order?.id) upsertCartItem(order);
+}
+function removeCartItem(id){
+  saveCart(cartItems().filter(i => i.id !== id));
+  renderCartModal();
+}
+function updateCartCount(){
+  const count = cartItems().filter(i => !['approved','realizado'].includes(i.status) && i.orderStatus !== 'realizado').length;
+  const el = document.getElementById('cart-count');
+  if(el) el.textContent = String(count);
+}
+function renderCartModal(){
+  const el = document.getElementById('cart-content');
+  if(!el) return;
+  const items = cartItems();
+  if(!items.length){
+    el.innerHTML = '<div class="locked-note">Seu carrinho está vazio.</div>';
+    return;
+  }
+  el.innerHTML = `<div style="display:flex;flex-direction:column;gap:.75rem">${items.map(item => `
+    <div class="admin-card" style="margin:0">
+      <div style="display:flex;justify-content:space-between;gap:1rem;align-items:flex-start">
+        <div>
+          <strong>${escapeHTML(item.service || 'Pedido')}</strong>
+          <div style="color:var(--text-muted);font-size:.78rem;margin-top:.25rem">${escapeHTML(item.details || '')}</div>
+          <div style="color:var(--neon-cyan);font-size:.75rem;margin-top:.35rem">${escapeHTML(item.createdAt || '')}</div>
+        </div>
+        <strong>${escapeHTML(item.price || '')}</strong>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:.7rem;align-items:center;margin-top:.75rem">
+        <span class="status-badge ${item.orderStatus === 'realizado' ? 'status-done' : item.status === 'approved' ? 'status-active' : 'status-pending'}">${item.status === 'approved' ? 'Pago' : item.orderStatus === 'realizado' ? 'Finalizado' : 'No carrinho'}</span>
+        <button class="btn btn-outline mini-btn" onclick="removeCartItem('${escapeHTML(item.id)}')">Remover</button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+function openCart(){
+  renderCartModal();
+  openModal('cart-modal');
+}
+
+function isOrderPaid(order){
+  return order?.paymentStatus === 'approved' || order?.paidAt || order?.status === 'realizado' || order?.uploaderId;
+}
+function latestOrderForNotification(){
+  const user = currentUser?.role === 'cliente' ? currentUser : null;
+  const orders = user ? ordersForUser(user) : (currentOrder ? [currentOrder] : []);
+  const paid = orders.filter(isOrderPaid).sort((a,b)=>(b.createdAtMs || 0) - (a.createdAtMs || 0));
+  return paid.find(o => o.status !== 'realizado') || paid[0] || null;
+}
+function formatCountdown(ms){
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const h = String(Math.floor(total / 3600)).padStart(2,'0');
+  const m = String(Math.floor((total % 3600) / 60)).padStart(2,'0');
+  const s = String(total % 60).padStart(2,'0');
+  return `${h}:${m}:${s}`;
+}
+function renderOrderNotification(){
+  const el = document.getElementById('order-notification');
+  if(!el) return;
+  const order = latestOrderForNotification();
+  if(!order){
+    el.classList.remove('active');
+    el.innerHTML = '';
+    return;
+  }
+  const code = getOrderCustomerCode(order);
+  const isDone = order.status === 'realizado';
+  const hasUploader = Boolean(order.uploaderId);
+  const color = isDone ? 'green' : hasUploader ? 'yellow' : 'red';
+  const stats = hasUploader ? getUploaderStats(order.uploaderId) : null;
+  const deadline = (order.approvedAtMs || order.createdAtMs || Date.now()) + 48 * 60 * 60 * 1000;
+  const timer = formatCountdown(deadline - Date.now());
+  const message = isDone
+    ? 'Sua conta foi upada com sucesso.'
+    : hasUploader
+      ? `Sua conta será upada por <strong>${escapeHTML(order.uploaderName || 'um upador')}</strong>.`
+      : 'Nenhum upador pegou seu pedido ainda. Aguarde. Se ultrapassar o tempo de espera, você será reembolsado.';
+  el.innerHTML = `
+    <div class="order-head">
+      <img src="${SITE_IMAGES.orderNotification}" alt="Pedido"/>
+      <div>
+        <div class="order-title">Pedido ${escapeHTML(order.id || '')}</div>
+        <div class="order-sub">Código: ${escapeHTML(code || 'sem código')}</div>
+      </div>
+      <span class="order-dot ${color}"></span>
+    </div>
+    <div class="order-message">${message}</div>
+    ${!isDone && !hasUploader ? `<div class="order-timer">48h restantes: ${timer}</div>` : ''}
+    ${stats ? `<div class="order-uploader-stats">
+      <div><strong>${stats.trophies.toLocaleString('pt-BR')}</strong><span>troféus subidos</span></div>
+      <div><strong>${stats.done}</strong><span>pedidos finalizados</span></div>
+      <div><strong>${stats.taken}</strong><span>tarefas pegas</span></div>
+    </div>` : ''}
+    ${isDone ? `<div class="order-actions">
+      <button class="btn btn-primary mini-btn" onclick="openFeedbackForOrder('${escapeHTML(order.id)}')">Dar feedback</button>
+      <button class="btn btn-outline mini-btn" onclick="openTipModal()">Enviar gorjeta para upador</button>
+    </div>` : ''}
+  `;
+  el.classList.add('active');
+}
+function startLiveOrderTimer(){
+  if(orderNotificationTimer) clearInterval(orderNotificationTimer);
+  orderNotificationTimer = setInterval(renderOrderNotification, 1000);
+}
+function openFeedbackForOrder(id){
+  const order = loadStore(LS_KEYS.orders, []).find(o => o.id === id) || currentOrder;
+  if(!order) return;
+  queueFeedbackPrompt({orderId:order.id, service:order.service, product:order.details, client:order.client});
+}
+function openTipModal(){ openModal('tip-modal'); }
+function copyTipPix(){
+  const key = document.getElementById('tip-pix-key')?.textContent || '12992025025';
+  if(navigator.clipboard) navigator.clipboard.writeText(key).catch(()=>{});
+  showToast('Chave Pix copiada.','📋');
+}
+
 // ═══ MODALS ═══
 function openModal(id){ document.getElementById(id).classList.add('active'); }
 function closeModal(id){ document.getElementById(id).classList.remove('active'); }
@@ -1526,10 +1942,7 @@ function closePage(id){ document.getElementById(id).classList.remove('active'); 
 
 function openLogin(){
   if(currentUser){
-    showToast(`${currentUser.name} saiu da conta.`, '👋');
-    currentUser = null;
-    localStorage.removeItem(LS_KEYS.currentUser);
-    updateAuthUI();
+    toggleAccountPanel();
     return;
   }
   openModal('login-modal');
@@ -1546,6 +1959,7 @@ function openAdmin(){
     showToast('Admin é apenas para equipe.','🔒');
     return;
   }
+  currentAdminSection='dashboard';
   openPage('admin-page'); updateAdminMenu(); renderAdminDashboard();
 }
 function openScheduleMain(){ openModal('service-picker-modal'); }
@@ -1842,6 +2256,10 @@ function renderPayment(){
   </div>
   <div class="form-group"><label>Observações do serviço</label><textarea class="form-control" id="sched-notes" rows="2" placeholder="Login, tag, detalhes do pedido ou horários melhores"></textarea></div>
   <div class="pix-box">
+    <div style="display:flex;justify-content:center;gap:.7rem;align-items:center;margin-bottom:.75rem">
+      <img src="${SITE_IMAGES.pix}" alt="Pix" style="width:36px;height:36px;object-fit:contain;border-radius:.5rem;background:#fff;padding:.15rem"/>
+      <img src="${SITE_IMAGES.cards}" alt="Cartões" style="width:36px;height:36px;object-fit:contain;border-radius:.5rem;background:#fff;padding:.15rem"/>
+    </div>
     <div class="mp-badge" style="margin-bottom:.75rem">Mercado Pago Checkout</div>
     <p style="color:var(--text-muted);font-size:.82rem;line-height:1.6;margin:0">
       Ao continuar, o formulário real do Mercado Pago será carregado aqui no site para PIX com QR Code/copia e cola, cartão de crédito, cartão de débito e boleto disponíveis.
@@ -1900,19 +2318,22 @@ function savePaymentOrder(payment){
   if(!currentOrder) return;
   const orders = loadStore(LS_KEYS.orders, []);
   const idx = orders.findIndex(o => o.id === currentOrder.id);
+  const approved = payment.status === 'approved';
   const updated = {
     ...currentOrder,
     mercadoPagoPaymentId: payment.id || currentOrder.mercadoPagoPaymentId || '',
     paymentMethodId: payment.payment_method_id || currentOrder.paymentMethodId || '',
     paymentStatus: payment.status || currentOrder.paymentStatus || 'pendente',
     paymentStatusDetail: payment.status_detail || '',
-    paidAt: payment.status === 'approved' ? todayLabel() : currentOrder.paidAt,
-    status: payment.status === 'approved' ? 'andamento' : 'pendente'
+    paidAt: approved ? todayLabel() : currentOrder.paidAt,
+    approvedAtMs: approved ? Date.now() : currentOrder.approvedAtMs,
+    status: approved ? (currentOrder.uploaderId ? 'andamento' : 'pendente') : 'pendente'
   };
   if(idx >= 0) orders[idx] = updated;
   else orders.unshift(updated);
   saveStore(LS_KEYS.orders, orders);
   currentOrder = updated;
+  updateCartItemFromOrder(updated);
 }
 
 function renderPaymentResult(payment){
@@ -1953,9 +2374,11 @@ function finishEmbeddedPayment(payment){
     paymentInProgress = false;
     stopPixStatusPolling();
     setPixStatus('Pagamento aprovado. Pedido liberado para a equipe.', 'approved');
+    closeModal('mp-pix-modal');
+    closeModal('mp-checkout-modal');
     sendWhatsAppNotification(currentOrder);
-    queueFeedbackPrompt({orderId:currentOrder.id, service:currentOrder.service, product:currentOrder.details, client:currentOrder.client});
     schedStep=4; renderScheduleStep();
+    renderOrderNotification();
     showToast('Pagamento aprovado. Pedido liberado.','✅');
     return;
   }
@@ -2210,6 +2633,8 @@ async function confirmOrder(){
     id: uid('ZS-'),
     client,
     owner: client,
+    clientUserId: currentUser?.role === 'cliente' ? currentUser.id : '',
+    customerCode: currentUser?.customerCode || generateCustomerCode(),
     email,
     whatsapp,
     service: serviceLabel(),
@@ -2223,13 +2648,15 @@ async function confirmOrder(){
     status:'pendente',
     uploaderId:null,
     uploaderName:null,
-    createdAt:todayLabel()
+    createdAt:todayLabel(),
+    createdAtMs:Date.now()
   };
 
   paymentInProgress = true;
   embeddedPaymentService = servicePayment;
   currentOrder.paymentAmount = formatBRL(servicePayment.amount);
   currentOrder.paymentStatus = 'checkout_aberto';
+  upsertCartItem(currentOrder);
   openEmbeddedCheckout();
 }
 
@@ -2247,14 +2674,16 @@ function sendWhatsAppNotification(order){
 function renderConfirm(){
   if(!currentOrder) currentOrder = {id:uid('ZS-'),service:serviceLabel(),details:'Detalhes a confirmar',price:'A combinar',date:schedDate,time:schedTime,payment:paymentMethodLabel(schedPayment),client:'Cliente',notes:''};
   const msg = encodeURIComponent(orderWhatsAppText(currentOrder));
+  const customerCode = getOrderCustomerCode(currentOrder) || currentOrder.customerCode || currentOrder.id;
   return `<div class="confirm-box">
     <div style="font-size:3rem;margin-bottom:.5rem">🎉</div>
     <h3 style="font-family:'Orbitron',sans-serif;font-size:1.15rem;color:#22c55e;margin-bottom:.5rem">Pedido Confirmado!</h3>
-    <p style="color:var(--text-muted);font-size:.87rem;line-height:1.6">Seu serviço foi agendado. Guarde o código abaixo: ele é muito importante para localizar seu pedido no atendimento e no admin.</p>
+    <p style="color:var(--text-muted);font-size:.87rem;line-height:1.6">Seu serviço foi agendado. Guarde o código da conta abaixo: ele é usado pelo upador para confirmar que está falando com você.</p>
     <div class="code-box">
-      <div style="font-size:.72rem;color:var(--text-muted);font-weight:800;letter-spacing:1px;text-transform:uppercase">Código único do agendamento</div>
-      <div class="code-value">${currentOrder.id}</div>
-      <button class="btn btn-outline mini-btn" onclick="regenerateOrderCode()" style="margin-top:.6rem">Gerar outro código</button>
+      <div style="font-size:.72rem;color:var(--text-muted);font-weight:800;letter-spacing:1px;text-transform:uppercase">Código da conta</div>
+      <div class="code-value">${escapeHTML(customerCode)}</div>
+      <div style="font-size:.72rem;color:var(--text-muted);margin-top:.35rem">Pedido: ${escapeHTML(currentOrder.id)}</div>
+      <button class="btn btn-outline mini-btn" onclick="regenerateOrderCode()" style="margin-top:.6rem">Rerolar código</button>
     </div>
     <div style="font-size:.82rem;color:var(--text-muted);line-height:1.7;text-align:left;background:rgba(255,255,255,.04);border-radius:.75rem;padding:.9rem">
       <strong style="color:var(--text-primary)">Detalhes:</strong><br/>
@@ -2271,12 +2700,20 @@ function renderConfirm(){
 
 function regenerateOrderCode(){
   if(!currentOrder) return;
-  const oldId = currentOrder.id;
-  currentOrder.id = uid('ZS-');
+  const oldCode = currentOrder.customerCode;
+  currentOrder.customerCode = generateCustomerCode();
   const orders = loadStore(LS_KEYS.orders, []);
-  const idx = orders.findIndex(o => o.id === oldId);
-  if(idx >= 0){ orders[idx].id = currentOrder.id; saveStore(LS_KEYS.orders, orders); }
+  const idx = orders.findIndex(o => o.id === currentOrder.id);
+  if(idx >= 0){ orders[idx].customerCode = currentOrder.customerCode; }
+  if(currentUser?.role === 'cliente'){
+    const users = loadStore(LS_KEYS.users, []);
+    const user = users.find(u => u.id === currentUser.id);
+    if(user){ user.customerCode = currentOrder.customerCode; currentUser.customerCode = currentOrder.customerCode; saveStore(LS_KEYS.users, users); }
+    orders.forEach(o => { if(o.customerCode === oldCode || userMatchesOrder(currentUser, o)) o.customerCode = currentOrder.customerCode; });
+  }
+  saveStore(LS_KEYS.orders, orders);
   renderScheduleStep();
+  renderAccountPanel();
   showToast('Código atualizado no admin.','✅');
 }
 function goStep(n){
@@ -2359,10 +2796,14 @@ function showToast(msg, icon){
 
 // Overrides funcionais para login, admin, upadores, chat e produtos
 function updateAuthUI(){
+  syncCurrentUserFromStore();
   const btn = document.getElementById('login-nav-btn');
-  if(btn) btn.textContent = currentUser ? `${currentUser.name} · Sair` : 'Entrar';
+  if(btn) btn.textContent = currentUser ? `👤 ${currentUser.name}` : 'Entrar';
   const adminLink = document.getElementById('admin-nav-link');
   if(adminLink) adminLink.style.display = ['dono','admin','mod','upador'].includes(currentUser?.role) ? '' : 'none';
+  renderAccountPanel();
+  updateCartCount();
+  renderOrderNotification();
 }
 function updateAdminMenu(){
   const ownerOnly = ['users','logins','financeiro'];
@@ -2374,7 +2815,7 @@ function updateAdminMenu(){
     if(!getSection){ item.style.display=''; return; }
     const hidden = (!isOwner() && ownerOnly.includes(getSection)) ||
       (!canManageAdmin() && managerOnly.includes(getSection)) ||
-      (currentUser?.role === 'upador' && getSection !== 'chat' && getSection !== 'dashboard') ||
+      (currentUser?.role === 'upador' && !['dashboard','orders','schedule','chat'].includes(getSection)) ||
       (currentUser?.role === 'mod' && !modAllowed.includes(getSection));
     item.style.display = hidden ? 'none' : '';
   });
@@ -2436,7 +2877,7 @@ async function signupUser(){
     return;
   }
   const role = 'cliente';
-  const user = {id:uid('USR-'),name,email,phone,passwordHash:await sha256(password),role,active:true};
+  const user = {id:uid('USR-'),name,email,phone,passwordHash:await sha256(password),role,active:true,customerCode:generateCustomerCode()};
   users.push(user);
   saveStore(LS_KEYS.users, users);
   currentUser = user;
@@ -2447,9 +2888,19 @@ async function signupUser(){
 }
 function renderAdminDashboard(){
   if(currentUser?.role === 'upador'){
+    const orders = loadStore(LS_KEYS.orders, []);
+    const visible = orders.filter(o => !o.uploaderId || o.uploaderId === currentUser.id);
+    const stats = getUploaderStats(currentUser.id);
     document.getElementById('admin-content').innerHTML = `
       <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem;font-size:1.4rem">Painel do upador</h2>
-      <div class="locked-note">Você está como upador. As áreas administrativas e de pedidos foram removidas; use o Chat Upador para falar com a equipe.</div>
+      <div class="locked-note">Você está como upador. Pegue tarefas disponíveis, finalize as suas entregas e use o Chat Upador para falar com a equipe.</div>
+      <div class="admin-stat-grid">
+        <div class="admin-stat-card"><div class="admin-stat-val">${visible.filter(o=>!o.uploaderId).length}</div><div class="admin-stat-label">Tarefas disponíveis</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-val">${stats.taken}</div><div class="admin-stat-label">Tarefas pegas</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-val">${stats.done}</div><div class="admin-stat-label">Finalizadas</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-val">${stats.trophies.toLocaleString('pt-BR')}</div><div class="admin-stat-label">Troféus subidos</div></div>
+      </div>
+      <div class="admin-card"><h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Tarefas</h4>${ordersTable(visible)}</div>
       <div class="admin-card"><button class="btn btn-primary" onclick="renderChat()">Abrir Chat Upador</button></div>`;
     return;
   }
@@ -2482,7 +2933,7 @@ function renderAdminDashboard(){
       <div class="admin-stat-card"><div class="admin-stat-val">${orders.length}</div><div class="admin-stat-label">📋 Pedidos totais</div></div>
       <div class="admin-stat-card"><div class="admin-stat-val">${pending}</div><div class="admin-stat-label">⏳ Pendentes</div></div>
       <div class="admin-stat-card"><div class="admin-stat-val">${active}</div><div class="admin-stat-label">⚡ Em andamento</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-val">${done}</div><div class="admin-stat-label">✔ Realizados</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">${done}</div><div class="admin-stat-label">✔ Finalizados</div></div>
       <div class="admin-stat-card"><div class="admin-stat-val">R$ ${avgTicket.toFixed(2).replace('.',',')}</div><div class="admin-stat-label">🎯 Ticket médio</div></div>
       <div class="admin-stat-card"><div class="admin-stat-val">${trophyTotal.toLocaleString('pt-BR')}</div><div class="admin-stat-label">🏆 Troféus upados</div></div>
       <div class="admin-stat-card"><div class="admin-stat-val">${rankedTotal.toLocaleString('pt-BR')}</div><div class="admin-stat-label">📈 Pontos ranked</div></div>
@@ -2495,8 +2946,8 @@ function renderAdminDashboard(){
       </div>
       <div class="admin-card" style="position:relative">
         <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Status dos pedidos</h4>
-        <div class="donut" style="background:conic-gradient(#22c55e 0 ${donePct*3.6}deg, var(--neon-blue) ${donePct*3.6}deg ${(donePct+activePct)*3.6}deg, #fbbf24 ${(donePct+activePct)*3.6}deg ${(donePct+activePct+pendingPct)*3.6}deg, rgba(255,255,255,.08) 0deg)"><div class="donut-label">${donePct}%<br/><span style="font-family:'Inter';font-size:.7rem;color:var(--text-muted)">realizados</span></div></div>
-        <div class="metric-mini"><span>Realizados</span><strong>${done}</strong></div><div class="metric-mini"><span>Em andamento</span><strong>${active}</strong></div><div class="metric-mini"><span>Pendentes</span><strong>${pending}</strong></div>
+        <div class="donut" style="background:conic-gradient(#22c55e 0 ${donePct*3.6}deg, var(--neon-blue) ${donePct*3.6}deg ${(donePct+activePct)*3.6}deg, #fbbf24 ${(donePct+activePct)*3.6}deg ${(donePct+activePct+pendingPct)*3.6}deg, rgba(255,255,255,.08) 0deg)"><div class="donut-label">${donePct}%<br/><span style="font-family:'Inter';font-size:.7rem;color:var(--text-muted)">finalizados</span></div></div>
+        <div class="metric-mini"><span>Finalizados</span><strong>${done}</strong></div><div class="metric-mini"><span>Em andamento</span><strong>${active}</strong></div><div class="metric-mini"><span>Pendentes</span><strong>${pending}</strong></div>
       </div>
     </div>
     <div class="insight-grid">
@@ -2515,13 +2966,14 @@ function renderAdminDashboard(){
     </div>`;
 }
 function roleBadge(role){
-  return `<span class="role-pill ${role==='dono'?'role-owner':'role-uploader'}">${role==='dono'?'Dono':'Upador'}</span>`;
+  const label = role === 'dono' ? 'Dono' : role === 'admin' ? 'Admin' : role === 'mod' ? 'Mod' : role === 'upador' ? 'Upador' : 'Cliente';
+  return `<span class="role-pill ${role==='dono'?'role-owner':'role-uploader'}">${label}</span>`;
 }
 function ordersTable(orders){
   if(!orders.length) return '<div style="color:var(--text-muted);font-size:.86rem">Nenhum pedido registrado ainda.</div>';
   return `<div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Código</th><th>Dono</th><th>Serviço</th><th>Agenda</th><th>Status</th><th>Upador</th><th>Ação</th></tr></thead><tbody>
     ${orders.map(o=>`<tr>
-      <td style="font-family:monospace;color:var(--neon-purple)">${o.id}</td>
+      <td style="font-family:monospace;color:var(--neon-purple)">${o.id}<br/><span style="color:var(--text-muted);font-size:.7rem">${getOrderCustomerCode(o) || o.customerCode || '-'}</span></td>
       <td>${o.owner || o.client}<br/><span style="color:var(--text-muted);font-size:.72rem">${o.whatsapp || ''}</span></td>
       <td>${o.service}<br/><span style="color:var(--text-muted);font-size:.72rem">${o.details}</span></td>
       <td>${o.date} ${o.time}<br/><strong>${o.price}</strong></td>
@@ -2531,25 +2983,125 @@ function ordersTable(orders){
     </tr>`).join('')}</tbody></table></div>`;
 }
 function orderActions(o){
-  if(o.status==='realizado') return '<span style="color:var(--text-muted);font-size:.78rem">Concluído</span>';
+  if(o.status==='realizado') return '<span style="color:var(--text-muted);font-size:.78rem">Finalizado</span>';
   if(o.uploaderId && o.uploaderId !== currentUser?.id && !isOwner()) return `<button class="btn btn-outline mini-btn" disabled>Pego por ${o.uploaderName}</button>`;
   if(!o.uploaderId) return `<button class="btn btn-primary mini-btn" onclick="takeTask('${o.id}')">Realizar tarefa</button>`;
-  return `<div class="admin-actions"><button class="btn btn-outline mini-btn" disabled>${o.uploaderName} pegou</button><button class="btn btn-primary mini-btn" onclick="completeTask('${o.id}')">Marcar realizada</button></div>`;
+  return `<div class="admin-actions"><button class="btn btn-outline mini-btn" disabled>${o.uploaderName} pegou</button><button class="btn btn-primary mini-btn" onclick="completeTask('${o.id}')">Marcar finalizada</button></div>`;
+}
+function parseBRDate(dateText='', timeText='23:59'){
+  const [day, month, year] = String(dateText).split('/').map(Number);
+  if(!day || !month || !year) return null;
+  const [hour, minute] = String(timeText || '23:59').split(':').map(Number);
+  return new Date(year, month - 1, day, hour || 23, minute || 59);
+}
+function taskDeadlineText(order){
+  const date = parseBRDate(order?.date, order?.time);
+  if(!date) return 'Você tem que completar isso no prazo do agendamento escolhido pelo cliente.';
+  const diffDays = Math.max(1, Math.ceil((date.getTime() - Date.now()) / 86400000));
+  return `Você tem que completar isso em ${diffDays} ${diffDays === 1 ? 'dia' : 'dias'}.`;
 }
 function takeTask(id){
   if(!currentUser) return openLogin();
+  pendingTaskId = id;
   const orders = loadStore(LS_KEYS.orders, []);
   const o = orders.find(x=>x.id===id);
   if(!o || o.uploaderId) return showToast('Essa tarefa já foi pega.','🔒');
-  o.uploaderId = currentUser.id; o.uploaderName = currentUser.name; o.status='andamento';
-  saveStore(LS_KEYS.orders, orders); renderAdminOrders(); showToast('Tarefa atribuída a você.','✅');
+  const note = document.getElementById('task-deadline-note');
+  const summary = document.getElementById('task-confirm-summary');
+  if(note) note.textContent = taskDeadlineText(o);
+  if(summary) summary.innerHTML = `
+    <div class="code-box" style="text-align:left">
+      <div style="font-size:.75rem;color:var(--text-muted);font-weight:800;margin-bottom:.35rem">Pedido ${escapeHTML(o.id)}</div>
+      <strong>${escapeHTML(o.service)}</strong>
+      <div style="color:var(--text-muted);font-size:.82rem;line-height:1.5;margin-top:.35rem">${escapeHTML(o.details || '')}</div>
+      <div style="color:var(--neon-cyan);font-size:.78rem;margin-top:.5rem">Código do cliente: ${escapeHTML(getOrderCustomerCode(o) || o.customerCode || '-')}</div>
+    </div>`;
+  openModal('task-confirm-modal');
+}
+function closeTaskConfirmModal(){
+  pendingTaskId = '';
+  closeModal('task-confirm-modal');
+}
+function confirmTakeTask(){
+  if(!pendingTaskId || !currentUser) return;
+  const orders = loadStore(LS_KEYS.orders, []);
+  const o = orders.find(x=>x.id===pendingTaskId);
+  if(!o || o.uploaderId){
+    closeTaskConfirmModal();
+    return showToast('Essa tarefa já foi pega.','🔒');
+  }
+  o.uploaderId = currentUser.id;
+  o.uploaderName = currentUser.name;
+  o.status = 'andamento';
+  o.takenAt = todayLabel();
+  o.takenAtMs = Date.now();
+  saveStore(LS_KEYS.orders, orders);
+  updateCartItemFromOrder(o);
+  currentTaskFlowOrderId = o.id;
+  closeTaskConfirmModal();
+  refreshAdminSection();
+  renderOrderNotification();
+  showToast('Tarefa atribuída a você.','✅');
+  openTaskFlow(o.id);
 }
 function completeTask(id){
   const orders = loadStore(LS_KEYS.orders, []);
   const o = orders.find(x=>x.id===id);
   if(!o) return;
   if(o.uploaderId !== currentUser?.id && !isOwner()) return showToast('Só o upador responsável ou dono pode finalizar.','🔒');
-  o.status='realizado'; saveStore(LS_KEYS.orders, orders); renderAdminOrders(); showToast('Pedido marcado como realizado.','✅');
+  o.status='realizado'; o.completedAt = todayLabel(); o.completedAtMs = Date.now();
+  saveStore(LS_KEYS.orders, orders);
+  updateCartItemFromOrder(o);
+  refreshAdminSection();
+  renderOrderNotification();
+  showToast('Pedido marcado como finalizado.','✅');
+}
+function taskFlowOrder(){
+  return loadStore(LS_KEYS.orders, []).find(o => o.id === currentTaskFlowOrderId);
+}
+function openTaskFlow(id){
+  currentTaskFlowOrderId = id;
+  taskFlowStep = 1;
+  renderTaskFlowStep();
+  openModal('task-flow-modal');
+}
+function renderTaskFlowStep(){
+  const el = document.getElementById('task-flow-content');
+  const order = taskFlowOrder();
+  if(!el || !order) return;
+  const code = getOrderCustomerCode(order) || order.customerCode || '-';
+  const message = `Olá, me chamo ${currentUser?.name || 'upador'}. Preciso que você me informe o código da sua conta. Ele aparece quando você finaliza uma compra ou entrando no seu perfil e indo até Código.`;
+  if(taskFlowStep === 1){
+    el.innerHTML = `
+      <h2>Passo 1</h2>
+      <p class="modal-sub">Código do cliente</p>
+      <div class="code-box"><div class="code-value">${escapeHTML(code)}</div></div>
+      <div style="font-weight:800;margin:.9rem 0 .45rem">Mande essa mensagem para o cliente:</div>
+      <div class="copy-box" id="task-copy-message">${escapeHTML(message)}</div>
+      <button class="btn btn-outline" style="width:100%;padding:.72rem;margin-top:.75rem" onclick="copyTaskMessage()">Copiar essa mensagem</button>
+      <div class="locked-note" style="margin-top:1rem">Confira se os códigos estão iguais.</div>
+      <button class="btn btn-primary" style="width:100%;padding:.82rem;margin-top:.75rem" onclick="taskFlowStep=2;renderTaskFlowStep()">Próximo passo</button>
+    `;
+    return;
+  }
+  if(taskFlowStep === 2){
+    el.innerHTML = `
+      <h2>Passo 2</h2>
+      <p class="modal-sub">Se os códigos forem iguais, peça para logar na conta do cliente.</p>
+      <button class="btn btn-primary" style="width:100%;padding:.82rem" onclick="taskFlowStep=3;renderTaskFlowStep()">Entendido</button>
+    `;
+    return;
+  }
+  el.innerHTML = `
+    <h2>Passo 3</h2>
+    <p class="modal-sub">Fluxo iniciado. Complete a tarefa dentro do prazo combinado.</p>
+    <button class="btn btn-primary" style="width:100%;padding:.82rem" onclick="closeModal('task-flow-modal')">Concluir</button>
+  `;
+}
+function copyTaskMessage(){
+  const text = document.getElementById('task-copy-message')?.textContent || '';
+  if(navigator.clipboard && text) navigator.clipboard.writeText(text).catch(()=>{});
+  showToast('Mensagem copiada.','📋');
 }
 function resetFinanceAndOrders(){
   if(!requireOwner()) return;
@@ -2559,9 +3111,8 @@ function resetFinanceAndOrders(){
   showToast('Financeiro e pedidos zerados.','✅');
 }
 function renderAdminOrders(){
-  if(currentUser?.role === 'upador'){ renderAdminDashboard(); return; }
   const orders = loadStore(LS_KEYS.orders, []);
-  const visible = canModerate() ? orders : [];
+  const visible = currentUser?.role === 'upador' ? orders.filter(o => !o.uploaderId || o.uploaderId === currentUser.id) : canModerate() ? orders : [];
   document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">📋 Pedidos e agendamentos</h2><div class="admin-card">${ordersTable(visible)}</div>`;
 }
 function renderUploaders(){
@@ -2601,7 +3152,7 @@ async function createTeamUser(){
   const password = document.getElementById('up-pass').value.trim();
   const role = document.getElementById('up-role').value;
   if(!name || !email || !password) return showToast('Preencha nome, email e senha.','⚠️');
-  users.push({id:uid('USR-'),name,email,phone,passwordHash:await sha256(password),role,active:true});
+  users.push({id:uid('USR-'),name,email,phone,passwordHash:await sha256(password),role,active:true,customerCode:generateCustomerCode()});
   saveStore(LS_KEYS.users, users); renderUploaders(); showToast('Login da equipe cadastrado.','✅');
 }
 function setExistingUserRole(){
@@ -2833,14 +3384,14 @@ function renderLogins(){
     <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">🔑 Logins e códigos</h2>
     <div class="admin-card">
       <h4 style="margin-bottom:.8rem">Contas cadastradas</h4>
-      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Nome</th><th>Email</th><th>Senha</th><th>Número</th><th>Perfil</th></tr></thead><tbody>
-        ${users.map(u=>`<tr><td>${u.name}</td><td>${u.email}</td><td style="font-family:monospace">${u.passwordHash ? 'protegida por hash' : (u.needsPasswordReset ? 'redefinir' : '-')}</td><td>${u.phone || '-'}</td><td>${roleBadge(u.role)}</td></tr>`).join('')}
+      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Nome</th><th>Email</th><th>Código</th><th>Senha</th><th>Número</th><th>Perfil</th></tr></thead><tbody>
+        ${users.map(u=>`<tr><td>${u.name}</td><td>${u.email}</td><td style="font-family:monospace;color:var(--neon-cyan)">${u.customerCode || '-'}</td><td style="font-family:monospace">${u.passwordHash ? 'protegida por hash' : (u.needsPasswordReset ? 'redefinir' : '-')}</td><td>${u.phone || '-'}</td><td>${roleBadge(u.role)}</td></tr>`).join('')}
       </tbody></table></div>
     </div>
     <div class="admin-card">
       <h4 style="margin-bottom:.8rem">Códigos dos agendamentos</h4>
-      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Código</th><th>Nome</th><th>Número</th><th>Serviço</th><th>Observações</th></tr></thead><tbody>
-        ${orders.map(o=>`<tr><td style="font-family:monospace;color:var(--neon-purple)">${o.id}</td><td>${o.client || o.owner}</td><td>${o.whatsapp || '-'}</td><td>${o.service}<br/><small style="color:var(--text-muted)">${o.details}</small></td><td>${o.notes || '-'}</td></tr>`).join('')}
+      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Pedido</th><th>Código do cliente</th><th>Nome</th><th>Número</th><th>Serviço</th><th>Observações</th></tr></thead><tbody>
+        ${orders.map(o=>`<tr><td style="font-family:monospace;color:var(--neon-purple)">${o.id}</td><td style="font-family:monospace;color:var(--neon-cyan)">${getOrderCustomerCode(o) || o.customerCode || '-'}</td><td>${o.client || o.owner}</td><td>${o.whatsapp || '-'}</td><td>${o.service}<br/><small style="color:var(--text-muted)">${o.details}</small></td><td>${o.notes || '-'}</td></tr>`).join('')}
       </tbody></table></div>
     </div>`;
 }
@@ -2851,8 +3402,9 @@ function renderFinance(){
   document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💰 Financeiro</h2><div class="admin-stat-grid"><div class="admin-stat-card"><div class="admin-stat-val">R$ ${revenue.toFixed(2).replace('.',',')}</div><div class="admin-stat-label">Total registrado</div></div><div class="admin-stat-card"><div class="admin-stat-val">${orders.filter(o=>o.payment==='PIX').length}</div><div class="admin-stat-label">Pagamentos PIX</div></div></div>`;
 }
 function adminNav(section, el){
+  currentAdminSection = section;
   document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
-  el.classList.add('active');
+  if(el) el.classList.add('active');
   if(section==='dashboard') renderAdminDashboard();
   if(section==='orders' || section==='schedule') renderAdminOrders();
   if(section==='uploaders') renderUploaders();
@@ -2863,11 +3415,45 @@ function adminNav(section, el){
   if(section==='logins') renderLogins();
   if(section==='financeiro') renderFinance();
 }
+function refreshAdminSection(){
+  const adminPage = document.getElementById('admin-page');
+  if(!adminPage?.classList.contains('active')) return;
+  const activeItem = [...document.querySelectorAll('.admin-nav-item')].find(item => (item.getAttribute('onclick') || '').includes(`'${currentAdminSection}'`));
+  adminNav(currentAdminSection || 'dashboard', activeItem);
+}
+
+function handleLiveStoreUpdate(key){
+  if(!Object.values(LS_KEYS).includes(key)) return;
+  if(key === LS_KEYS.currentUser || key === LS_KEYS.users) syncCurrentUserFromStore();
+  if([LS_KEYS.users, LS_KEYS.orders, LS_KEYS.currentUser].includes(key)){
+    updateAuthUI();
+    renderAccountPanel();
+    renderOrderNotification();
+    refreshAdminSection();
+  }
+  if(key === LS_KEYS.cart){
+    updateCartCount();
+    if(document.getElementById('cart-modal')?.classList.contains('active')) renderCartModal();
+  }
+  if(key === LS_KEYS.chat && currentAdminSection === 'chat') refreshAdminSection();
+  if(key === LS_KEYS.products){
+    buildContas();
+    updateServiceCards();
+    refreshAdminSection();
+  }
+}
+window.addEventListener('storage', e => handleLiveStoreUpdate(e.key));
+window.addEventListener('zsup:store', e => handleLiveStoreUpdate(e.detail?.key));
 
 // Close on backdrop click
 document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('active'); }));
 document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.modal-overlay.active').forEach(m=>m.classList.remove('active')); });
 window.addEventListener('scroll', () => { document.getElementById('navbar').style.background = window.scrollY>50 ? 'rgba(0,0,0,.96)':'rgba(0,0,0,.88)'; });
+document.addEventListener('click', e => {
+  const menu = document.getElementById('account-menu');
+  const panel = document.getElementById('account-panel');
+  if(menu && panel?.classList.contains('active') && !menu.contains(e.target)) panel.classList.remove('active');
+});
 </script>
 </body>
 </html>
