@@ -2714,6 +2714,13 @@ async function fetchMercadoPagoPublicKey(){
   return mercadoPagoPublicKey;
 }
 
+function paymentErrorMessage(data={}, fallback='Erro ao processar pagamento.'){
+  const detail = data.detail || {};
+  const causes = Array.isArray(detail.cause) ? detail.cause : Array.isArray(data.cause) ? data.cause : [];
+  const causeText = causes.map(cause => cause.description || cause.message || cause.code).filter(Boolean).join(' ');
+  return data.error || detail.message || causeText || detail.error || fallback;
+}
+
 function savePaymentOrder(payment){
   if(!currentOrder) return;
   const orders = loadStore(LS_KEYS.orders, []);
@@ -2859,7 +2866,7 @@ async function checkPixPaymentStatus(manual=false){
     if(manual) setPixStatus('Consultando pagamento no Mercado Pago...');
     const res = await fetch(`/api/payment-status?id=${encodeURIComponent(currentPixPayment.id)}`, {cache:'no-store'});
     const data = await res.json().catch(() => ({}));
-    if(!res.ok) throw new Error(data.error || 'Não foi possível consultar o pagamento.');
+    if(!res.ok) throw new Error(paymentErrorMessage(data, 'Não foi possível consultar o pagamento.'));
     currentPixPayment = {...currentPixPayment, ...data};
     savePaymentOrder(currentPixPayment);
 
@@ -2912,7 +2919,7 @@ async function startPixCheckout(){
       })
     });
     const data = await res.json().catch(() => ({}));
-    if(!res.ok) throw new Error(data.error || 'Não foi possível gerar o PIX.');
+    if(!res.ok) throw new Error(paymentErrorMessage(data, 'Não foi possível gerar o PIX.'));
     savePaymentOrder(data);
     renderPixCheckout(data);
     startPixStatusPolling(data.id);
@@ -2939,8 +2946,10 @@ async function renderCardCheckout(method){
     const mp = new MercadoPago(publicKey, {locale:'pt-BR'});
     const bricksBuilder = mp.bricks();
     const paymentMethods = method === 'debit' ? {debitCard:'all'} : {creditCard:'all'};
+    const initialization = {amount: embeddedPaymentService.amount, payer:{email:currentOrder.email}};
+    if(currentOrder.mercadoPagoPreferenceId) initialization.preferenceId = currentOrder.mercadoPagoPreferenceId;
     const settings = {
-      initialization: {amount: embeddedPaymentService.amount, payer:{email:currentOrder.email}},
+      initialization,
       customization: {paymentMethods},
       callbacks: {
         onReady: () => setCheckoutStatus(method === 'debit' ? 'Débito pronto. Preencha o cartão.' : 'Crédito pronto. Preencha o cartão.'),
@@ -2953,7 +2962,7 @@ async function renderCardCheckout(method){
           })
             .then(async res => {
               const data = await res.json().catch(() => ({}));
-              if(!res.ok) throw new Error(data.error || 'Pagamento recusado pelo Mercado Pago.');
+              if(!res.ok) throw new Error(paymentErrorMessage(data, 'Pagamento recusado pelo Mercado Pago.'));
               finishEmbeddedPayment(data);
               resolve(data);
             })
@@ -2991,7 +3000,7 @@ async function prepareMercadoPagoPreference(){
       body:JSON.stringify({order:currentOrder, service:embeddedPaymentService})
     });
     const data = await res.json().catch(()=>({}));
-    if(!res.ok) throw new Error(data.error || 'Preferência Mercado Pago não criada.');
+    if(!res.ok) throw new Error(paymentErrorMessage(data, 'Preferência Mercado Pago não criada.'));
     currentOrder.mercadoPagoPreferenceId = data.id || '';
     currentOrder.mercadoPagoPreferenceUrl = data.init_point || data.sandbox_init_point || '';
     setCheckoutStatus('Checkout seguro pronto. Escolha PIX, crédito ou débito.');

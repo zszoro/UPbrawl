@@ -117,9 +117,30 @@ function buildAdditionalPayer(order, data) {
     first_name: String(data.payer?.first_name || name.first_name).slice(0, 80),
     last_name: String(data.payer?.last_name || name.last_name).slice(0, 80),
     phone,
-    authentication_type: 'Native Web',
+    authentication_type: 'Native web',
     is_first_purchase_online: false,
     is_prime_user: false
+  };
+}
+
+function mercadoPagoErrorMessage(data = {}) {
+  const causes = Array.isArray(data.cause)
+    ? data.cause.map(cause => cause?.description || cause?.message || cause?.code).filter(Boolean)
+    : [];
+  return data.message || causes[0] || data.error || 'Mercado Pago recusou o pagamento.';
+}
+
+function mercadoPagoErrorDetail(data = {}) {
+  return {
+    message: data.message || data.error || '',
+    status: data.status || data.status_code || '',
+    error: data.error || '',
+    cause: Array.isArray(data.cause)
+      ? data.cause.map(cause => ({
+          code: cause?.code || '',
+          description: cause?.description || cause?.message || ''
+        }))
+      : []
   };
 }
 
@@ -294,10 +315,48 @@ function buildPaymentPayload({ order, calculated, formData, req }) {
 
   if (data.token) payment.token = data.token;
   if (data.installments) payment.installments = data.installments;
-  if (data.issuer_id) payment.issuer_id = String(data.issuer_id);
+  if (data.issuer_id) {
+    const issuerId = Number(data.issuer_id);
+    payment.issuer_id = Number.isFinite(issuerId) ? issuerId : data.issuer_id;
+  }
   if (webhook) payment.notification_url = webhook;
 
   return payment;
+}
+
+async function createMercadoPagoPayment(accessToken, body, idempotencyKey) {
+  try {
+    const { MercadoPagoConfig, Payment } = require('mercadopago');
+    const client = new MercadoPagoConfig({
+      accessToken,
+      options: { timeout: 10000 }
+    });
+    const payment = new Payment(client);
+    return await payment.create({
+      body,
+      requestOptions: { idempotencyKey }
+    });
+  } catch (sdkError) {
+    const mpResponse = await fetch(MERCADO_PAGO_PAYMENTS_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+        'X-Idempotency-Key': idempotencyKey
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await mpResponse.json().catch(() => ({}));
+
+    if (!mpResponse.ok) {
+      const error = new Error(mercadoPagoErrorMessage(data));
+      error.status = 502;
+      error.detail = mercadoPagoErrorDetail(data);
+      throw error;
+    }
+
+    return data;
+  }
 }
 
 function buildPreferencePayload({ order, calculated, req }) {
@@ -391,21 +450,7 @@ async function handler(req, res) {
 
   try {
     const idempotencyKey = crypto.randomUUID();
-    const mpResponse = await fetch(MERCADO_PAGO_PAYMENTS_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-        'X-Idempotency-Key': idempotencyKey
-      },
-      body: JSON.stringify(paymentPayload)
-    });
-    const data = await mpResponse.json().catch(() => ({}));
-
-    if (!mpResponse.ok) {
-      res.status(502).json({ error: data.message || data.error || 'Mercado Pago recusou o pagamento.', detail: data });
-      return;
-    }
+    const data = await createMercadoPagoPayment(accessToken, paymentPayload, idempotencyKey);
 
     res.status(200).json({
       id: data.id,
@@ -418,7 +463,15 @@ async function handler(req, res) {
       external_reference: data.external_reference || orderId
     });
   } catch (error) {
-    res.status(502).json({ error: 'Nao foi possivel conectar ao Mercado Pago.' });
+    console.error('[process-payment] Mercado Pago payment failed', {
+      orderId,
+      message: error.message,
+      detail: error.detail || null
+    });
+    res.status(error.status || 502).json({
+      error: error.message || 'Nao foi possivel conectar ao Mercado Pago.',
+      detail: error.detail || null
+    });
   }
 }
 
@@ -432,5 +485,7 @@ module.exports.__mp = {
   buildMarketplaceItem,
   buildPaymentPayload,
   buildPreferencePayload,
+  createMercadoPagoPayment,
+  mercadoPagoErrorMessage,
   STATEMENT_DESCRIPTOR
 };

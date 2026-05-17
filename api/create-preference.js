@@ -2,6 +2,27 @@ const { calculateService, toMoney, buildPreferencePayload } = require('./process
 
 const MERCADO_PAGO_PREFERENCES_URL = 'https://api.mercadopago.com/checkout/preferences';
 
+function mercadoPagoErrorMessage(data = {}) {
+  const causes = Array.isArray(data.cause)
+    ? data.cause.map(cause => cause?.description || cause?.message || cause?.code).filter(Boolean)
+    : [];
+  return data.message || causes[0] || data.error || 'Mercado Pago recusou a preferencia.';
+}
+
+function mercadoPagoErrorDetail(data = {}) {
+  return {
+    message: data.message || data.error || '',
+    status: data.status || data.status_code || '',
+    error: data.error || '',
+    cause: Array.isArray(data.cause)
+      ? data.cause.map(cause => ({
+          code: cause?.code || '',
+          description: cause?.description || cause?.message || ''
+        }))
+      : []
+  };
+}
+
 function readBody(req) {
   if (typeof req.body === 'string') return JSON.parse(req.body || '{}');
   return req.body || {};
@@ -27,7 +48,12 @@ async function createPreference(accessTokenValue, body) {
       body: JSON.stringify(body)
     });
     const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.message || data.error || 'Mercado Pago recusou a preferencia.');
+    if (!response.ok) {
+      const error = new Error(mercadoPagoErrorMessage(data));
+      error.status = 502;
+      error.detail = mercadoPagoErrorDetail(data);
+      throw error;
+    }
     return data;
   }
 }
@@ -93,6 +119,14 @@ module.exports = async function handler(req, res) {
       items: preferencePayload.items
     });
   } catch (error) {
-    res.status(502).json({ error: error.message || 'Nao foi possivel criar a preferencia.' });
+    console.error('[create-preference] Mercado Pago preference failed', {
+      orderId,
+      message: error.message,
+      detail: error.detail || null
+    });
+    res.status(error.status || 502).json({
+      error: error.message || 'Nao foi possivel criar a preferencia.',
+      detail: error.detail || null
+    });
   }
 };
