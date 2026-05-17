@@ -47,8 +47,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:1rem 2rem;display:fl
 .account-stat strong{display:block;font-family:'Orbitron',sans-serif;font-size:1.05rem;color:#fff;margin-bottom:.16rem}
 .account-stat span{font-size:.7rem;color:var(--text-muted);line-height:1.3}
 .account-actions{display:flex;gap:.55rem;margin-top:.85rem;flex-wrap:wrap}
-.cart-nav-btn{position:relative;width:42px;height:42px;border-radius:.7rem;border:1px solid rgba(168,85,247,.36);background:rgba(168,85,247,.08);color:#fff;display:grid;place-items:center;cursor:pointer;font-size:1.05rem;transition:.25s}
+.cart-nav-btn{position:relative;width:42px;height:42px;border-radius:.7rem;border:1px solid rgba(168,85,247,.36);background:rgba(168,85,247,.08);color:#fff;display:grid;place-items:center;cursor:pointer;font-size:1.05rem;transition:.25s;font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif}
 .cart-nav-btn:hover{background:rgba(168,85,247,.18);transform:translateY(-1px)}
+.cart-emoji{font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;font-size:1.08rem;line-height:1}
 .cart-badge{position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;border-radius:50%;background:#ef4444;color:#fff;font-size:.68rem;font-weight:900;display:grid;place-items:center;border:2px solid #050510;padding:0 .25rem}
 .btn{padding:.55rem 1.2rem;border-radius:.5rem;font-weight:600;cursor:pointer;border:none;font-size:.84rem;transition:.3s;font-family:'Inter',sans-serif;letter-spacing:.4px}
 .btn-outline{background:transparent;border:1px solid var(--neon-purple);color:var(--neon-purple)}
@@ -180,6 +181,7 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .conta-card{background:rgba(13,13,31,.9);border:1px solid var(--border-glow);border-radius:1.25rem;padding:1.75rem;position:relative;overflow:hidden;backdrop-filter:blur(8px)}
 .conta-card::after{content:'';position:absolute;inset:auto 1.1rem 0;height:1px;background:linear-gradient(90deg,transparent,rgba(6,182,212,.55),transparent)}
 .conta-card.out::before{content:'SEM ESTOQUE';position:absolute;top:1rem;right:-2.2rem;background:#ef4444;color:#fff;font-size:.62rem;font-weight:800;padding:.28rem 2.5rem;transform:rotate(35deg);letter-spacing:1px}
+.conta-card.sold::before{content:'SOLD';position:absolute;top:1rem;right:-2.2rem;background:#64748b;color:#fff;font-size:.62rem;font-weight:800;padding:.28rem 2.5rem;transform:rotate(35deg);letter-spacing:1px}
 .conta-price{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;color:var(--neon-purple);margin-bottom:1rem}
 .account-hero{height:92px;border-radius:1rem;background:linear-gradient(135deg,rgba(168,85,247,.18),rgba(6,182,212,.08));border:1px solid rgba(255,255,255,.08);display:grid;place-items:center;margin:.9rem 0 1rem;position:relative;overflow:hidden}
 .account-hero img{width:68px;height:68px;object-fit:contain;filter:drop-shadow(0 12px 18px rgba(0,0,0,.5))}
@@ -298,6 +300,9 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .order-actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.85rem}
 .tip-heart{font-size:4rem;text-align:center;margin:.6rem 0;color:#fb7185;text-shadow:0 0 25px rgba(251,113,133,.45)}
 .copy-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:.85rem;padding:.9rem;color:var(--text-primary);font-family:monospace;word-break:break-word}
+.performance-list{display:flex;flex-direction:column;gap:.75rem}
+.performance-item{display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:center;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:.8rem;padding:.85rem}
+.sold-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .65rem;border-radius:50px;background:rgba(100,116,139,.16);border:1px solid rgba(148,163,184,.28);color:#cbd5e1;font-size:.72rem;font-weight:900}
 
 /* ── FOOTER ── */
 footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px solid var(--border-glow);padding:3rem 2rem 1.5rem}
@@ -458,7 +463,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <li id="admin-nav-link" style="display:none"><a href="#" onclick="openAdmin();return false">Admin</a></li>
   </ul>
   <div class="nav-cta">
-    <button class="cart-nav-btn" id="cart-nav-btn" onclick="openCart()" aria-label="Abrir carrinho" title="Carrinho">🛒<span class="cart-badge" id="cart-count">0</span></button>
+    <button class="cart-nav-btn" id="cart-nav-btn" onclick="openCart()" aria-label="Abrir carrinho" title="Carrinho"><span class="cart-emoji">🛒</span><span class="cart-badge" id="cart-count">0</span></button>
     <div class="account-menu" id="account-menu">
       <button class="btn btn-outline account-trigger" id="login-nav-btn" onclick="openLogin()">Entrar</button>
       <div class="account-panel" id="account-panel"></div>
@@ -826,6 +831,64 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
   </div>
 </div>
 
+<!-- VER CODIGO -->
+<div class="modal-overlay" id="code-password-modal">
+  <div class="modal" style="max-width:420px">
+    <button class="modal-close" onclick="closeModal('code-password-modal')">✕</button>
+    <h2>Confirmar senha</h2>
+    <p class="modal-sub">Digite a senha da sua conta para ver seu código.</p>
+    <div class="form-group"><label>Senha</label><input type="password" class="form-control" id="code-password-input" placeholder="Sua senha" onkeydown="if(event.key==='Enter') confirmCodePassword()"/></div>
+    <div class="danger-text" id="code-password-error"></div>
+    <button class="btn btn-primary" style="width:100%;padding:.82rem" onclick="confirmCodePassword()">Ver código</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="customer-code-modal">
+  <div class="modal" style="max-width:460px">
+    <button class="modal-close" onclick="closeModal('customer-code-modal')">✕</button>
+    <h2>Seu código</h2>
+    <p class="modal-sub">Use este código para confirmar sua identidade com o upador.</p>
+    <div class="code-box"><div class="code-value" id="customer-code-modal-value">-</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+      <button class="btn btn-primary" style="padding:.78rem" onclick="copyCustomerCode()">Copiar código</button>
+      <button class="btn btn-outline" style="padding:.78rem" onclick="generateNewCustomerCode()">Gerar novo código</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOVA CONTA ADMIN -->
+<div class="modal-overlay" id="account-product-modal">
+  <div class="modal" style="max-width:640px">
+    <button class="modal-close" onclick="closeModal('account-product-modal')">✕</button>
+    <h2>Adicionar conta</h2>
+    <p class="modal-sub">Cadastre a conta, preço, estoque e os dados de entrega automática.</p>
+    <div class="admin-grid">
+      <input class="form-control" id="acc-name" placeholder="Nome da conta"/>
+      <input class="form-control" id="acc-price" placeholder="Preço"/>
+      <input class="form-control" id="acc-tier" placeholder="Tier. Ex: Lendário"/>
+      <input class="form-control" id="acc-meta" placeholder="Troféus | Brawlers | Gemas | Skins"/>
+      <input class="form-control" id="acc-login-email" placeholder="Email/login da conta"/>
+      <input class="form-control" id="acc-login-password" placeholder="Senha da conta"/>
+      <input class="form-control" id="acc-images" placeholder="Imagens locais separadas por vírgula"/>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:.82rem;margin-top:1rem" onclick="saveAccountProduct()">Salvar conta</button>
+  </div>
+</div>
+
+<!-- ENTREGA DE CONTA -->
+<div class="modal-overlay" id="account-delivery-modal">
+  <div class="modal" style="max-width:520px">
+    <button class="modal-close" onclick="closeModal('account-delivery-modal')">✕</button>
+    <h2>Entrega automática</h2>
+    <p class="modal-sub">Pagamento aprovado. Estes são os dados da conta comprada.</p>
+    <div class="copy-box" id="account-delivery-data"></div>
+    <div class="locked-note" style="margin-top:1rem">
+      Para entrar, acesse o Gmail com o email e senha acima, confirme qualquer aviso de segurança e depois use esse email para logar na conta do jogo. Troque a senha assim que confirmar o acesso.
+    </div>
+    <a id="account-help-link" href="#" target="_blank" style="text-decoration:none"><button class="btn btn-primary" style="width:100%;padding:.82rem">Preciso de ajuda</button></a>
+  </div>
+</div>
+
 <!-- ═══ BRAWLERS PAGE ═══ -->
 <div class="page" id="brawlers-page">
   <div class="page-header">
@@ -858,6 +921,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
     <div class="admin-nav-item active" onclick="adminNav('dashboard',this)">📊 Dashboard</div>
     <div class="admin-nav-item" onclick="adminNav('orders',this)">📋 Pedidos</div>
     <div class="admin-nav-item" onclick="adminNav('schedule',this)">🗓 Agendamentos</div>
+    <div class="admin-nav-item" onclick="adminNav('performance',this)">📣 Meu desempenho</div>
     <div class="admin-nav-item" onclick="adminNav('uploaders',this)">⚡ Upadores</div>
     <div class="admin-nav-item" onclick="adminNav('chat',this)">💬 Chat Upador</div>
     <div class="admin-nav-item" onclick="adminNav('products',this)">🛒 Produtos</div>
@@ -1165,8 +1229,8 @@ const DEFAULT_PRODUCTS = [
   {id:'PRD-TROFEU',type:'service',slug:'trofeu',name:'UP Troféu',price:'R$ 5,00 / 1.000 abaixo de 40k',badge:'A partir de R$5/1k troféus',image:SITE_IMAGES.trophy,active:true},
   {id:'PRD-RANKED',type:'service',slug:'ranked',name:'UP Ranked',price:'R$ 35,00 base por divisão',badge:'Preço por pontos',image:SITE_IMAGES.ranked,active:true},
   {id:'PRD-PREST',type:'service',slug:'prestigio',name:'UP Prestígio',price:'R$ 10,00 a R$ 70,00',badge:'100+ Brawlers disponíveis',image:SITE_IMAGES.prestige3,active:true},
-  {id:'PRD-CONTA1',type:'account',name:'Conta Lendária Suprema',tier:'Lendário',trofeus:'85.000',brawlers:'58',gems:'450',skins:'24',price:'R$ 1.299',active:true,images:DEFAULT_ACCOUNT_PHOTOS},
-  {id:'PRD-CONTA2',type:'account',name:'Conta Diamante Elite',tier:'Diamante',trofeus:'52.000',brawlers:'41',gems:'200',skins:'15',price:'R$ 649',active:true,images:DEFAULT_ACCOUNT_PHOTOS}
+  {id:'PRD-CONTA1',type:'account',name:'Conta Lendária Suprema',tier:'Lendário',trofeus:'85.000',brawlers:'58',gems:'450',skins:'24',price:'R$ 1.299',active:true,sold:false,loginEmail:'entrega@zsupbrawl.com',loginPassword:'troque-apos-login',images:DEFAULT_ACCOUNT_PHOTOS},
+  {id:'PRD-CONTA2',type:'account',name:'Conta Diamante Elite',tier:'Diamante',trofeus:'52.000',brawlers:'41',gems:'200',skins:'15',price:'R$ 649',active:true,sold:false,loginEmail:'entrega2@zsupbrawl.com',loginPassword:'troque-apos-login',images:DEFAULT_ACCOUNT_PHOTOS}
 ];
 
 const FAQS = [
@@ -1196,6 +1260,7 @@ let paymentInProgress=false;
 let embeddedPaymentService=null, mercadoPagoPublicKey='', mpSelectedMethod='', currentPixPayment=null, pixStatusTimer=null, pixGenerating=false;
 let selectedFeedbackRating=0;
 let currentAdminSection='dashboard', pendingTaskId='', taskFlowStep=1, currentTaskFlowOrderId='', orderNotificationTimer=null;
+let globalSyncTimer=null, globalStateUpdatedAt=0, applyingRemoteState=false, ownerKnownApprovedOrders=new Set();
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const LS_KEYS = {
   users:'zsup_users',
@@ -1207,12 +1272,69 @@ const LS_KEYS = {
   currentUser:'zsup_current_user',
   cart:'zsup_cart'
 };
+const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks'];
 
 function loadStore(key, fallback){
   try{ return JSON.parse(localStorage.getItem(key)) || fallback; }catch(e){ return fallback; }
 }
 function notifyStoreChange(key){ window.dispatchEvent(new CustomEvent('zsup:store', {detail:{key}})); }
-function saveStore(key, value){ localStorage.setItem(key, JSON.stringify(value)); notifyStoreChange(key); }
+function saveStore(key, value){
+  localStorage.setItem(key, JSON.stringify(value));
+  notifyStoreChange(key);
+  if(!applyingRemoteState && GLOBAL_SYNC_KEYS.includes(key)) pushGlobalStateKey(key, value);
+}
+async function pullGlobalState({initial=false}={}){
+  try{
+    const res = await fetch('/api/state', {cache:'no-store'});
+    if(!res.ok) throw new Error('sync unavailable');
+    const data = await res.json().catch(()=>({}));
+    const state = data.state || {};
+    if(data.updatedAt && data.updatedAt <= globalStateUpdatedAt) return true;
+    globalStateUpdatedAt = data.updatedAt || globalStateUpdatedAt;
+    applyingRemoteState = true;
+    GLOBAL_SYNC_KEYS.forEach(key => {
+      if(Object.prototype.hasOwnProperty.call(state, key)){
+        const next = JSON.stringify(state[key]);
+        if(localStorage.getItem(key) !== next){
+          localStorage.setItem(key, next);
+          notifyStoreChange(key);
+        }
+      }
+    });
+    applyingRemoteState = false;
+    return true;
+  }catch(error){
+    applyingRemoteState = false;
+    if(!initial) console.warn('Global sync paused:', error.message || error);
+    return false;
+  }
+}
+async function pushGlobalStateKey(key, value){
+  if(!GLOBAL_SYNC_KEYS.includes(key)) return;
+  try{
+    const res = await fetch('/api/state', {
+      method:'PATCH',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({key, value})
+    });
+    const data = await res.json().catch(()=>({}));
+    if(data.updatedAt) globalStateUpdatedAt = Math.max(globalStateUpdatedAt, data.updatedAt);
+  }catch(error){
+    console.warn('Global sync save failed:', error.message || error);
+  }
+}
+function pushAllGlobalState(){
+  GLOBAL_SYNC_KEYS.forEach(key => {
+    const raw = localStorage.getItem(key);
+    if(raw !== null) pushGlobalStateKey(key, loadStore(key, null));
+  });
+}
+function startGlobalSync(){
+  pushAllGlobalState();
+  pullGlobalState();
+  if(globalSyncTimer) clearInterval(globalSyncTimer);
+  globalSyncTimer = setInterval(() => pullGlobalState(), 2500);
+}
 function uid(prefix='ZS'){ return prefix + Math.random().toString(36).slice(2,8).toUpperCase(); }
 function todayLabel(){ return new Date().toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'}); }
 function moneyFromText(v){ return Number(String(v||'0').replace(/[^\d,.-]/g,'').replace('.','').replace(',','.')) || 0; }
@@ -1327,7 +1449,10 @@ function ensureSeedData(){
       type: p.type || (p.name?.toLowerCase().includes('conta') ? 'account' : 'service'),
       slug: p.slug || (p.name?.includes('Troféu') ? 'trofeu' : p.name?.includes('Ranked') ? 'ranked' : p.name?.includes('Prestígio') ? 'prestigio' : ''),
       image: normalizeImageUrl(p.image || defaultServiceImage(p.slug || (p.name?.includes('Troféu') ? 'trofeu' : p.name?.includes('Ranked') ? 'ranked' : p.name?.includes('Prestígio') ? 'prestigio' : 'custom'))),
-      images: (p.images || (p.name?.toLowerCase().includes('conta') ? DEFAULT_ACCOUNT_PHOTOS : [])).map(normalizeImageUrl)
+      images: (p.images || (p.name?.toLowerCase().includes('conta') ? DEFAULT_ACCOUNT_PHOTOS : [])).map(normalizeImageUrl),
+      sold: Boolean(p.sold),
+      loginEmail: p.loginEmail || '',
+      loginPassword: p.loginPassword || ''
     }));
     DEFAULT_PRODUCTS.filter(p=>p.type==='service').forEach(def => {
       if(!migrated.some(p=>p.slug===def.slug)) migrated.push(def);
@@ -1424,7 +1549,7 @@ function handlePaymentReturn(){
     orders[idx].paymentStatus = status;
     orders[idx].paidAt = status === 'approved' ? todayLabel() : orders[idx].paidAt;
     orders[idx].approvedAtMs = status === 'approved' ? Date.now() : orders[idx].approvedAtMs;
-    orders[idx].status = status === 'approved' ? (orders[idx].uploaderId ? 'andamento' : 'pendente') : 'pendente';
+    orders[idx].status = status === 'approved' ? (orders[idx].accountProductId ? 'realizado' : orders[idx].uploaderId ? 'andamento' : 'pendente') : 'pendente';
     saveStore(LS_KEYS.orders, orders);
     currentOrder = orders[idx];
     updateCartItemFromOrder(currentOrder);
@@ -1434,6 +1559,10 @@ function handlePaymentReturn(){
     showToast('Pagamento aprovado! Pedido liberado para a equipe.','✅');
     if(currentOrder){
       sendWhatsAppNotification(currentOrder);
+      if(currentOrder.accountProductId){
+        markAccountSold(currentOrder.accountProductId);
+        showAccountDeliveryModal(currentOrder);
+      }
       renderOrderNotification();
     }
   } else if(status === 'pending'){
@@ -1447,8 +1576,9 @@ function handlePaymentReturn(){
 }
 
 // ═══ INIT ═══
-window.onload = () => {
-  ensureSeedData(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer();
+window.onload = async () => {
+  await pullGlobalState({initial:true});
+  ensureSeedData(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications();
 };
 
 function animateStats(){
@@ -1557,7 +1687,7 @@ function buildContas(){
     const photos = (c.images && c.images.length ? c.images : DEFAULT_ACCOUNT_PHOTOS).map(normalizeImageUrl).filter(Boolean);
     const loopPhotos = [...photos, ...photos];
     return `
-    <div class="conta-card ${c.active ? '' : 'out'}">
+    <div class="conta-card ${c.sold ? 'sold' : c.active ? '' : 'out'}">
       <span style="font-size:.7rem;font-weight:800;letter-spacing:1px;color:var(--neon-purple);text-transform:uppercase">${c.tier || 'Conta'}</span>
       <div style="font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:700;margin:.4rem 0 .75rem">${c.name}</div>
       <div class="account-hero"><img src="${SITE_IMAGES.account}" alt="Conta premium"/></div>
@@ -1569,7 +1699,8 @@ function buildContas(){
       </div>
       <div class="account-carousel"><div class="account-track">${loopPhotos.map(img=>`<img class="account-photo" src="${img}" alt="${c.name}" onclick="openPhotoLightbox('${img.replace(/'/g,"\\'")}','${String(c.price).replace(/'/g,"\\'")}')"/>`).join('')}</div></div>
       <div class="conta-price">${c.price}</div>
-      <button class="btn ${c.active ? 'btn-primary' : 'btn-primary btn-disabled'}" style="width:100%;padding:.72rem" ${c.active ? `onclick="openContaWhatsApp('${c.id}')"` : 'disabled'}>${c.active ? 'Comprar pelo WhatsApp' : '🔒 Sem Estoque'}</button>
+      <div class="locked-note" style="margin:.8rem 0">Entrega automática: após o pagamento aprovado, o email e a senha aparecem aqui no site.</div>
+      <button class="btn ${c.active && !c.sold ? 'btn-primary' : 'btn-primary btn-disabled'}" style="width:100%;padding:.72rem" ${c.active && !c.sold ? `onclick="openAccountCheckout('${c.id}')"` : 'disabled'}>${c.sold ? 'SOLD' : c.active ? 'Comprar conta' : '🔒 Sem Estoque'}</button>
     </div>`}).join('');
 }
 
@@ -1586,6 +1717,68 @@ function openContaWhatsApp(id){
   if(!conta) return;
   queueFeedbackPrompt({orderId:id, service:'Conta premium', product:conta.name});
   window.open(`${WHATSAPP_URL}?text=${encodeURIComponent(`Olá! Tenho interesse na ${conta.name} por ${conta.price}.`)}`, '_blank');
+}
+function openAccountCheckout(id){
+  const conta = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS).find(p => p.id === id);
+  if(!conta || !conta.active || conta.sold) return showToast('Essa conta não está disponível.','⚠️');
+  if(!conta.loginEmail || !conta.loginPassword) return showToast('Essa conta ainda não tem login de entrega cadastrado.','⚠️');
+  const amount = moneyFromText(conta.price);
+  if(!amount) return showToast('Preço da conta inválido.','⚠️');
+  if(!currentUser){
+    showToast('Entre ou cadastre-se para receber a entrega automática.','🔐');
+    openLogin();
+    return;
+  }
+  currentOrder = {
+    id: uid('ZS-'),
+    client: currentUser.name,
+    owner: currentUser.name,
+    clientUserId: currentUser.id,
+    customerCode: currentUser.customerCode || generateCustomerCode(),
+    email: currentUser.email,
+    whatsapp: currentUser.phone || '',
+    service: 'Conta premium',
+    details: conta.name,
+    price: conta.price,
+    paymentAmount: formatBRL(amount),
+    date: new Date().toLocaleDateString('pt-BR'),
+    time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
+    payment: 'Mercado Pago Checkout',
+    paymentStatus:'checkout_aberto',
+    status:'pendente',
+    accountProductId: conta.id,
+    accountDelivery:{email:conta.loginEmail, password:conta.loginPassword},
+    createdAt:todayLabel(),
+    createdAtMs:Date.now()
+  };
+  embeddedPaymentService = {type:'account', amount, name:conta.name, productId:conta.id};
+  paymentInProgress = true;
+  upsertCartItem(currentOrder);
+  openEmbeddedCheckout();
+}
+function markAccountSold(productId){
+  const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS);
+  const product = products.find(p => p.id === productId);
+  if(product){
+    product.active = false;
+    product.sold = true;
+    product.soldAt = todayLabel();
+    saveStore(LS_KEYS.products, products);
+    buildContas();
+    updateServiceCards();
+  }
+}
+function showAccountDeliveryModal(order){
+  const delivery = order.accountDelivery || {};
+  const data = document.getElementById('account-delivery-data');
+  if(data){
+    data.innerHTML = `<strong>Email:</strong> ${escapeHTML(delivery.email || 'Não cadastrado')}<br/><strong>Senha:</strong> ${escapeHTML(delivery.password || 'Não cadastrada')}`;
+  }
+  const help = document.getElementById('account-help-link');
+  if(help){
+    help.href = `https://wa.me/5512992025025?text=${encodeURIComponent('Comprei uma conta e preciso de ajuda')}`;
+  }
+  openModal('account-delivery-modal');
 }
 
 function serviceImageForName(name=''){
@@ -1746,7 +1939,8 @@ function renderAccountPanel(){
     </div>
     <div class="account-code-box">
       <div class="account-code-label">Código</div>
-      <div class="account-code-value">${escapeHTML(currentUser.customerCode)}</div>
+      <div class="account-code-value">••••••</div>
+      <button class="btn btn-outline mini-btn" style="margin-top:.6rem" onclick="openCodePasswordModal()">Ver código</button>
     </div>
     <div class="account-stat-grid">
       <div class="account-stat"><strong>${stats.total}</strong><span>pedidos</span></div>
@@ -1757,7 +1951,6 @@ function renderAccountPanel(){
       <div class="account-stat"><strong>${formatBRL(stats.spent)}</strong><span>total comprado</span></div>
     </div>
     <div class="account-actions">
-      <button class="btn btn-outline mini-btn" onclick="rerollCustomerCode()">Rerolar código</button>
       <button class="btn btn-outline mini-btn" onclick="logoutCurrentUser()">Sair da conta</button>
     </div>
   `;
@@ -1792,6 +1985,45 @@ function rerollCustomerCode(){
   renderAccountPanel();
   renderOrderNotification();
   showToast('Código atualizado em tempo real no admin.','✅');
+}
+function openCodePasswordModal(){
+  document.getElementById('account-panel')?.classList.remove('active');
+  const input = document.getElementById('code-password-input');
+  const err = document.getElementById('code-password-error');
+  if(input) input.value = '';
+  if(err){ err.textContent=''; err.style.display='none'; }
+  openModal('code-password-modal');
+}
+async function confirmCodePassword(){
+  if(!currentUser) return openLogin();
+  const password = document.getElementById('code-password-input')?.value || '';
+  const err = document.getElementById('code-password-error');
+  const stored = getCurrentStoredUser();
+  if(!stored?.passwordHash){
+    if(err){ err.textContent = 'Esta conta não possui senha local para validar.'; err.style.display='block'; }
+    return;
+  }
+  const valid = await sha256(password) === stored.passwordHash;
+  if(!valid){
+    if(err){ err.textContent = 'Senha incorreta.'; err.style.display='block'; }
+    return;
+  }
+  closeModal('code-password-modal');
+  renderCustomerCodeModal();
+  openModal('customer-code-modal');
+}
+function renderCustomerCodeModal(){
+  const el = document.getElementById('customer-code-modal-value');
+  if(el) el.textContent = getCurrentStoredUser()?.customerCode || currentUser?.customerCode || '-';
+}
+function copyCustomerCode(){
+  const code = document.getElementById('customer-code-modal-value')?.textContent || '';
+  if(navigator.clipboard && code) navigator.clipboard.writeText(code).catch(()=>{});
+  showToast('Código copiado.','📋');
+}
+function generateNewCustomerCode(){
+  rerollCustomerCode();
+  renderCustomerCodeModal();
 }
 
 function cartItems(){ return loadStore(LS_KEYS.cart, []); }
@@ -1917,6 +2149,19 @@ function renderOrderNotification(){
     </div>` : ''}
   `;
   el.classList.add('active');
+}
+function seedOwnerApprovedNotifications(){
+  ownerKnownApprovedOrders = new Set(loadStore(LS_KEYS.orders, []).filter(isOrderPaid).map(o => o.id));
+}
+function notifyOwnerApprovedPurchases(){
+  if(currentUser?.role !== 'dono') return;
+  const approved = loadStore(LS_KEYS.orders, []).filter(isOrderPaid);
+  approved.forEach(order => {
+    if(!ownerKnownApprovedOrders.has(order.id)){
+      ownerKnownApprovedOrders.add(order.id);
+      showToast(`Compra aprovada: ${order.client || order.owner || 'Cliente'} - ${order.service}`, '💰');
+    }
+  });
 }
 function startLiveOrderTimer(){
   if(orderNotificationTimer) clearInterval(orderNotificationTimer);
@@ -2327,7 +2572,7 @@ function savePaymentOrder(payment){
     paymentStatusDetail: payment.status_detail || '',
     paidAt: approved ? todayLabel() : currentOrder.paidAt,
     approvedAtMs: approved ? Date.now() : currentOrder.approvedAtMs,
-    status: approved ? (currentOrder.uploaderId ? 'andamento' : 'pendente') : 'pendente'
+    status: approved ? (currentOrder.accountProductId ? 'realizado' : currentOrder.uploaderId ? 'andamento' : 'pendente') : 'pendente'
   };
   if(idx >= 0) orders[idx] = updated;
   else orders.unshift(updated);
@@ -2377,6 +2622,10 @@ function finishEmbeddedPayment(payment){
     closeModal('mp-pix-modal');
     closeModal('mp-checkout-modal');
     sendWhatsAppNotification(currentOrder);
+    if(currentOrder.accountProductId){
+      markAccountSold(currentOrder.accountProductId);
+      showAccountDeliveryModal(currentOrder);
+    }
     schedStep=4; renderScheduleStep();
     renderOrderNotification();
     showToast('Pagamento aprovado. Pedido liberado.','✅');
@@ -2808,14 +3057,14 @@ function updateAuthUI(){
 function updateAdminMenu(){
   const ownerOnly = ['users','logins','financeiro'];
   const managerOnly = ['uploaders','products','contas'];
-  const modAllowed = ['dashboard','orders','schedule','chat'];
+  const modAllowed = ['dashboard','orders','schedule','performance','chat'];
   document.querySelectorAll('.admin-nav-item').forEach(item => {
     const attr = item.getAttribute('onclick') || '';
     const getSection = (attr.match(/adminNav\('([^']+)'/) || [])[1];
     if(!getSection){ item.style.display=''; return; }
     const hidden = (!isOwner() && ownerOnly.includes(getSection)) ||
       (!canManageAdmin() && managerOnly.includes(getSection)) ||
-      (currentUser?.role === 'upador' && !['dashboard','orders','schedule','chat'].includes(getSection)) ||
+      (currentUser?.role === 'upador' && !['dashboard','orders','schedule','performance','chat'].includes(getSection)) ||
       (currentUser?.role === 'mod' && !modAllowed.includes(getSection));
     item.style.display = hidden ? 'none' : '';
   });
@@ -3092,16 +3341,29 @@ function renderTaskFlowStep(){
     `;
     return;
   }
+  const phone = String(order.whatsapp || '').replace(/\D/g,'');
+  const waPhone = phone.startsWith('55') ? phone : `55${phone}`;
+  const waMsg = encodeURIComponent(`Olá, sou ${currentUser?.name || 'upador'} da ZS UpBrawl. Vou iniciar seu atendimento do pedido ${order.id}.`);
   el.innerHTML = `
     <h2>Passo 3</h2>
-    <p class="modal-sub">Fluxo iniciado. Complete a tarefa dentro do prazo combinado.</p>
-    <button class="btn btn-primary" style="width:100%;padding:.82rem" onclick="closeModal('task-flow-modal')">Concluir</button>
+    <p class="modal-sub">Fale com o cliente e, depois de entregar, volte na página de Agendamentos e clique em “Marcar finalizado”.</p>
+    <div class="copy-box" id="task-client-phone">${escapeHTML(order.whatsapp || '-')}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:.8rem">
+      <a href="https://wa.me/${waPhone}?text=${waMsg}" target="_blank" style="text-decoration:none"><button class="btn btn-primary" style="width:100%;padding:.78rem">Abrir WhatsApp</button></a>
+      <button class="btn btn-outline" style="padding:.78rem" onclick="copyTaskClientPhone()">Copiar número</button>
+    </div>
+    <button class="btn btn-outline" style="width:100%;padding:.78rem;margin-top:.75rem" onclick="closeModal('task-flow-modal');renderAdminOrders()">Voltar para agendamentos</button>
   `;
 }
 function copyTaskMessage(){
   const text = document.getElementById('task-copy-message')?.textContent || '';
   if(navigator.clipboard && text) navigator.clipboard.writeText(text).catch(()=>{});
   showToast('Mensagem copiada.','📋');
+}
+function copyTaskClientPhone(){
+  const text = document.getElementById('task-client-phone')?.textContent || '';
+  if(navigator.clipboard && text) navigator.clipboard.writeText(text).catch(()=>{});
+  showToast('Número do cliente copiado.','📋');
 }
 function resetFinanceAndOrders(){
   if(!requireOwner()) return;
@@ -3114,6 +3376,32 @@ function renderAdminOrders(){
   const orders = loadStore(LS_KEYS.orders, []);
   const visible = currentUser?.role === 'upador' ? orders.filter(o => !o.uploaderId || o.uploaderId === currentUser.id) : canModerate() ? orders : [];
   document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">📋 Pedidos e agendamentos</h2><div class="admin-card">${ordersTable(visible)}</div>`;
+}
+function renderMyPerformance(){
+  if(!currentUser){ document.getElementById('admin-content').innerHTML = ''; return; }
+  const accepted = loadStore(LS_KEYS.orders, [])
+    .filter(o => o.uploaderId === currentUser.id && o.status !== 'realizado')
+    .sort((a,b)=>(b.takenAtMs || b.createdAtMs || 0) - (a.takenAtMs || a.createdAtMs || 0));
+  const stats = getUploaderStats(currentUser.id);
+  document.getElementById('admin-content').innerHTML = `
+    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">📣 Meu desempenho</h2>
+    <div class="admin-stat-grid">
+      <div class="admin-stat-card"><div class="admin-stat-val">${accepted.length}</div><div class="admin-stat-label">Agendamentos pendentes aceitos</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">${stats.done}</div><div class="admin-stat-label">Finalizados</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-val">${stats.trophies.toLocaleString('pt-BR')}</div><div class="admin-stat-label">Troféus subidos</div></div>
+    </div>
+    <div class="admin-card">
+      <h4 style="font-weight:700;margin-bottom:1rem;font-size:.9rem">Notificações de tarefas aceitas</h4>
+      ${accepted.length ? `<div class="performance-list">${accepted.map(o=>`
+        <div class="performance-item">
+          <div>
+            <strong>${escapeHTML(o.service)} - ${escapeHTML(o.client || o.owner || '')}</strong>
+            <div style="color:var(--text-muted);font-size:.78rem;margin-top:.25rem">${escapeHTML(o.details || '')}</div>
+            <div style="color:var(--neon-cyan);font-size:.72rem;margin-top:.25rem">${escapeHTML(o.date || '')} ${escapeHTML(o.time || '')} · Código ${escapeHTML(getOrderCustomerCode(o) || o.customerCode || '-')}</div>
+          </div>
+          <button class="btn btn-primary mini-btn" onclick="completeTask('${o.id}')">Marcar finalizado</button>
+        </div>`).join('')}</div>` : '<div style="color:var(--text-muted);font-size:.86rem">Nenhum agendamento aceito pendente.</div>'}
+    </div>`;
 }
 function renderUploaders(){
   if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = ''; return; }
@@ -3313,26 +3601,25 @@ function renderContasAdmin(){
   const contas = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS).filter(p => p.type === 'account');
   document.getElementById('admin-content').innerHTML = `
     <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👑 Contas</h2>
-    <div class="locked-note">Canal exclusivo para administrar as contas da loja: estoque, preço, metas e imagens locais.</div>
-    <div class="admin-card">
-      <div class="admin-grid">
-        <input class="form-control" id="acc-name" placeholder="Nome da conta"/>
-        <input class="form-control" id="acc-price" placeholder="Preço"/>
-        <input class="form-control" id="acc-tier" placeholder="Tier. Ex: Lendário"/>
-        <input class="form-control" id="acc-meta" placeholder="Troféus | Brawlers | Gemas | Skins"/>
-        <input class="form-control" id="acc-images" placeholder="Imagens locais separadas por vírgula"/>
-        <button class="btn btn-primary" onclick="saveAccountProduct()">Criar conta</button>
-      </div>
-    </div>
-    <div class="admin-card"><div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Conta</th><th>Preço</th><th>Tier</th><th>Meta</th><th>Imagens</th><th>Status</th><th>Ação</th></tr></thead><tbody>${contas.map(p=>`<tr>
+    <div class="locked-note">Canal exclusivo para administrar contas da loja, estoque e dados de entrega automática.</div>
+    <div class="admin-card"><button class="btn btn-primary" onclick="openAccountProductModal()">Adicionar conta</button></div>
+    <div class="admin-card"><div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Conta</th><th>Preço</th><th>Tier</th><th>Meta</th><th>Login</th><th>Imagens</th><th>Status</th><th>Ação</th></tr></thead><tbody>${contas.map(p=>`<tr>
       <td><input class="form-control" id="acc-name-${p.id}" value="${p.name || ''}"/></td>
       <td><input class="form-control" id="acc-price-${p.id}" value="${p.price || ''}"/></td>
       <td><input class="form-control" id="acc-tier-${p.id}" value="${p.tier || ''}"/></td>
       <td><input class="form-control" id="acc-meta-${p.id}" value="${[p.trofeus,p.brawlers,p.gems,p.skins].join(' | ')}"/></td>
+      <td><input class="form-control" id="acc-login-email-${p.id}" value="${p.loginEmail || ''}" placeholder="Email"/><input class="form-control" style="margin-top:.4rem" id="acc-login-password-${p.id}" value="${p.loginPassword || ''}" placeholder="Senha"/></td>
       <td><div style="display:flex;align-items:center;gap:.55rem"><img src="${SITE_IMAGES.account}" alt="" style="width:34px;height:34px;object-fit:contain"/><input class="form-control" id="acc-images-${p.id}" value="${(p.images||DEFAULT_ACCOUNT_PHOTOS).map(normalizeImageUrl).join(', ')}"/></div></td>
-      <td><select class="form-control" id="acc-active-${p.id}"><option value="true" ${p.active?'selected':''}>Ativa</option><option value="false" ${!p.active?'selected':''}>Pausada</option></select></td>
-      <td><button class="btn btn-outline mini-btn" onclick="updateAccountProduct('${p.id}')">Salvar</button></td>
+      <td>${p.sold ? '<span class="sold-badge">SOLD</span>' : `<select class="form-control" id="acc-active-${p.id}"><option value="true" ${p.active?'selected':''}>Ativa</option><option value="false" ${!p.active?'selected':''}>Pausada</option></select>`}</td>
+      <td><div class="admin-actions"><button class="btn btn-outline mini-btn" onclick="updateAccountProduct('${p.id}')">Salvar</button>${p.sold ? `<button class="btn btn-primary mini-btn" onclick="restockAccountProduct('${p.id}')">Adicionar estoque</button><button class="btn btn-outline mini-btn" onclick="removeAccountProduct('${p.id}')">Remover da página</button>` : `<button class="btn btn-outline mini-btn" onclick="removeAccountProduct('${p.id}')">Remover da página</button>`}</div></td>
     </tr>`).join('')}</tbody></table></div></div>`;
+}
+function openAccountProductModal(){
+  ['acc-name','acc-price','acc-tier','acc-meta','acc-login-email','acc-login-password','acc-images'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  openModal('account-product-modal');
 }
 function saveAccountProduct(){
   if(!canManageAdmin()) return;
@@ -3341,10 +3628,12 @@ function saveAccountProduct(){
   const price = document.getElementById('acc-price').value.trim();
   const tier = document.getElementById('acc-tier').value.trim() || 'Conta';
   const meta = document.getElementById('acc-meta').value.split('|').map(x=>x.trim());
+  const loginEmail = document.getElementById('acc-login-email').value.trim();
+  const loginPassword = document.getElementById('acc-login-password').value.trim();
   const images = document.getElementById('acc-images').value.split(',').map(x=>normalizeImageUrl(x.trim())).filter(Boolean);
-  if(!name || !price) return showToast('Preencha conta e preço.','⚠️');
-  products.push({id:uid('PRD-'),type:'account',name,price,tier,trofeus:meta[0]||'0',brawlers:meta[1]||'0',gems:meta[2]||'0',skins:meta[3]||'0',images:images.length?images:DEFAULT_ACCOUNT_PHOTOS,active:true});
-  saveStore(LS_KEYS.products, products); renderContasAdmin(); buildContas(); updateServiceCards(); showToast('Conta criada.','✅');
+  if(!name || !price || !loginEmail || !loginPassword) return showToast('Preencha conta, preço, email e senha.','⚠️');
+  products.push({id:uid('PRD-'),type:'account',name,price,tier,trofeus:meta[0]||'0',brawlers:meta[1]||'0',gems:meta[2]||'0',skins:meta[3]||'0',loginEmail,loginPassword,images:images.length?images:DEFAULT_ACCOUNT_PHOTOS,active:true,sold:false});
+  saveStore(LS_KEYS.products, products); closeModal('account-product-modal'); renderContasAdmin(); buildContas(); updateServiceCards(); showToast('Conta criada.','✅');
 }
 function updateAccountProduct(id){
   if(!canManageAdmin()) return;
@@ -3356,12 +3645,27 @@ function updateAccountProduct(id){
     p.price=document.getElementById(`acc-price-${id}`).value.trim();
     p.tier=document.getElementById(`acc-tier-${id}`).value.trim() || 'Conta';
     const meta=document.getElementById(`acc-meta-${id}`).value.split('|').map(x=>x.trim());
+    p.loginEmail=document.getElementById(`acc-login-email-${id}`).value.trim();
+    p.loginPassword=document.getElementById(`acc-login-password-${id}`).value.trim();
     const images=document.getElementById(`acc-images-${id}`).value.split(',').map(x=>normalizeImageUrl(x.trim())).filter(Boolean);
     p.trofeus=meta[0]||'0'; p.brawlers=meta[1]||'0'; p.gems=meta[2]||'0'; p.skins=meta[3]||'0';
     p.images=images.length?images:DEFAULT_ACCOUNT_PHOTOS;
-    p.active=document.getElementById(`acc-active-${id}`).value === 'true';
+    if(!p.sold) p.active=document.getElementById(`acc-active-${id}`).value === 'true';
   }
   saveStore(LS_KEYS.products, products); renderContasAdmin(); buildContas(); updateServiceCards(); showToast('Conta atualizada na loja.','✅');
+}
+function restockAccountProduct(id){
+  if(!canManageAdmin()) return;
+  const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS);
+  const p = products.find(x=>x.id===id);
+  if(p){ p.sold=false; p.active=true; delete p.soldAt; }
+  saveStore(LS_KEYS.products, products); renderContasAdmin(); buildContas(); updateServiceCards(); showToast('Conta voltou ao estoque.','✅');
+}
+function removeAccountProduct(id){
+  if(!canManageAdmin()) return;
+  if(!confirm('Remover esta conta da página?')) return;
+  const products = loadStore(LS_KEYS.products, DEFAULT_PRODUCTS).filter(p => p.id !== id);
+  saveStore(LS_KEYS.products, products); renderContasAdmin(); buildContas(); updateServiceCards(); showToast('Conta removida da página.','✅');
 }
 function renderUsers(){
   if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="locked-note">Upadores comuns não podem mexer nos usuários do admin.</div>`; return; }
@@ -3385,7 +3689,7 @@ function renderLogins(){
     <div class="admin-card">
       <h4 style="margin-bottom:.8rem">Contas cadastradas</h4>
       <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Nome</th><th>Email</th><th>Código</th><th>Senha</th><th>Número</th><th>Perfil</th></tr></thead><tbody>
-        ${users.map(u=>`<tr><td>${u.name}</td><td>${u.email}</td><td style="font-family:monospace;color:var(--neon-cyan)">${u.customerCode || '-'}</td><td style="font-family:monospace">${u.passwordHash ? 'protegida por hash' : (u.needsPasswordReset ? 'redefinir' : '-')}</td><td>${u.phone || '-'}</td><td>${roleBadge(u.role)}</td></tr>`).join('')}
+        ${users.map(u=>`<tr><td>${u.name}</td><td>${u.email}</td><td style="font-family:monospace;color:var(--neon-cyan)">${u.customerCode || '-'}<br/><button class="btn btn-outline mini-btn" onclick="adminGenerateUserCode('${u.id}')">Gerar outro código</button></td><td style="font-family:monospace">${u.passwordHash ? 'protegida por hash' : (u.needsPasswordReset ? 'redefinir' : '-')}</td><td>${u.phone || '-'}</td><td>${roleBadge(u.role)}</td></tr>`).join('')}
       </tbody></table></div>
     </div>
     <div class="admin-card">
@@ -3394,6 +3698,24 @@ function renderLogins(){
         ${orders.map(o=>`<tr><td style="font-family:monospace;color:var(--neon-purple)">${o.id}</td><td style="font-family:monospace;color:var(--neon-cyan)">${getOrderCustomerCode(o) || o.customerCode || '-'}</td><td>${o.client || o.owner}</td><td>${o.whatsapp || '-'}</td><td>${o.service}<br/><small style="color:var(--text-muted)">${o.details}</small></td><td>${o.notes || '-'}</td></tr>`).join('')}
       </tbody></table></div>
     </div>`;
+}
+function adminGenerateUserCode(userId){
+  if(!requireOwner()) return;
+  const users = loadStore(LS_KEYS.users, []);
+  const user = users.find(u => u.id === userId);
+  if(!user) return;
+  const oldCode = user.customerCode;
+  user.customerCode = generateCustomerCode();
+  const orders = loadStore(LS_KEYS.orders, []);
+  orders.forEach(o => {
+    if(o.clientUserId === user.id || String(o.email || '').toLowerCase() === String(user.email || '').toLowerCase() || o.customerCode === oldCode){
+      o.customerCode = user.customerCode;
+    }
+  });
+  saveStore(LS_KEYS.users, users);
+  saveStore(LS_KEYS.orders, orders);
+  renderLogins();
+  showToast('Código do cliente atualizado.','✅');
 }
 function renderFinance(){
   if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💰 Financeiro</h2><div class="locked-note">Upadores comuns não podem acessar o financeiro.</div>`; return; }
@@ -3407,6 +3729,7 @@ function adminNav(section, el){
   if(el) el.classList.add('active');
   if(section==='dashboard') renderAdminDashboard();
   if(section==='orders' || section==='schedule') renderAdminOrders();
+  if(section==='performance') renderMyPerformance();
   if(section==='uploaders') renderUploaders();
   if(section==='chat') renderChat();
   if(section==='products') renderProducts();
@@ -3429,6 +3752,7 @@ function handleLiveStoreUpdate(key){
     updateAuthUI();
     renderAccountPanel();
     renderOrderNotification();
+    notifyOwnerApprovedPurchases();
     refreshAdminSection();
   }
   if(key === LS_KEYS.cart){

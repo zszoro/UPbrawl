@@ -143,6 +143,18 @@ function calculateService(service = {}) {
     };
   }
 
+  if (type === 'account') {
+    const amount = toMoney(service.amount);
+    const name = String(service.name || 'Conta Brawl Stars').trim().slice(0, 120);
+    if (amount <= 0) throw new Error('Valor da conta invalido.');
+    return {
+      type,
+      amount: roundMoney(amount),
+      title: 'Conta Brawl Stars',
+      description: name
+    };
+  }
+
   throw new Error('Servico de pagamento invalido.');
 }
 
