@@ -2,6 +2,7 @@ const crypto = require('crypto');
 
 const MERCADO_PAGO_PAYMENTS_URL = 'https://api.mercadopago.com/v1/payments';
 const STATEMENT_DESCRIPTOR = 'ZSUPBRAWL';
+const CARD_MIN_AMOUNT = 10;
 
 const RANK_POINTS = [
   0, 250, 500,
@@ -451,6 +452,10 @@ async function handler(req, res) {
   const paymentPayload = buildPaymentPayload({ order, calculated, formData, req });
   if (!paymentPayload.payment_method_id) {
     res.status(400).json({ error: 'Meio de pagamento invalido.' });
+    return;
+  }
+  if (paymentPayload.payment_method_id !== 'pix' && calculated.amount < CARD_MIN_AMOUNT) {
+    res.status(400).json({ error: `Cartao fica disponivel para pedidos acima de R$ ${CARD_MIN_AMOUNT.toFixed(2).replace('.', ',')}. Para este valor, use PIX.` });
     return;
   }
 

@@ -443,6 +443,8 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
 .mp-method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin-bottom:1rem}
 .mp-method-btn{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:.85rem;padding:1rem .8rem;color:var(--text-primary);font-family:'Inter',sans-serif;cursor:pointer;transition:.25s;text-align:left;min-height:92px}
 .mp-method-btn:hover,.mp-method-btn.active{border-color:var(--neon-cyan);background:rgba(6,182,212,.1);box-shadow:0 0 24px rgba(6,182,212,.12);transform:translateY(-2px)}
+.mp-method-btn.disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.35)}
+.mp-method-btn.disabled:hover{transform:none;box-shadow:none;border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.045)}
 .mp-method-icon{display:block;font-size:1.35rem;margin-bottom:.45rem}
 .mp-method-icon img{width:34px;height:34px;object-fit:contain;display:block;border-radius:.45rem;background:#fff;padding:.18rem}
 .mp-method-title{display:block;font-weight:800;font-size:.86rem}
@@ -1325,6 +1327,7 @@ let currentAdminSection='dashboard', pendingTaskId='', taskFlowStep=1, currentTa
 let globalSyncTimer=null, globalStateUpdatedAt=0, applyingRemoteState=false, remoteStateHasData=false, syncWarned=false, applyingTaskNotices=false, ownerKnownApprovedOrders=new Set();
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const TIME_SLOTS = ['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
+const CARD_MIN_AMOUNT = 10;
 const LS_KEYS = {
   users:'zsup_users',
   orders:'zsup_orders',
@@ -1411,6 +1414,7 @@ function uid(prefix='ZS'){ return prefix + Math.random().toString(36).slice(2,8)
 function todayLabel(){ return new Date().toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'}); }
 function moneyFromText(v){ return Number(String(v||'0').replace(/[^\d,.-]/g,'').replace('.','').replace(',','.')) || 0; }
 function formatBRL(value){ return 'R$ ' + Number(value || 0).toFixed(2).replace('.',','); }
+function cardMinAmountLabel(){ return formatBRL(CARD_MIN_AMOUNT); }
 function intFromInput(value){ return parseInt(String(value || '').replace(/[^\d-]/g,''), 10) || 0; }
 function normalizeImageUrl(url){ return REMOTE_IMAGE_MAP[String(url || '').trim()] || String(url || '').trim(); }
 function defaultServiceImage(slug){
@@ -2777,10 +2781,31 @@ function setCheckoutMethod(method){
   document.querySelectorAll('.mp-method-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.method === mpSelectedMethod));
 }
 
+function isCardAmountAllowed(){
+  return Number(embeddedPaymentService?.amount || 0) >= CARD_MIN_AMOUNT;
+}
+
+function updateCheckoutMethodAvailability(){
+  const allowed = isCardAmountAllowed();
+  document.querySelectorAll('.mp-method-btn[data-method="credit"], .mp-method-btn[data-method="debit"]').forEach(btn => {
+    btn.classList.toggle('disabled', !allowed);
+    btn.setAttribute('aria-disabled', String(!allowed));
+    const sub = btn.querySelector('.mp-method-sub');
+    if(sub && !allowed) sub.textContent = `Disponível acima de ${cardMinAmountLabel()}.`;
+    else if(sub && btn.dataset.method === 'credit') sub.textContent = 'Formulário seguro do Mercado Pago.';
+    else if(sub && btn.dataset.method === 'debit') sub.textContent = 'Opção dedicada para débito.';
+  });
+}
+
 function resetCheckoutSurface(){
   setCheckoutMethod('');
+  updateCheckoutMethodAvailability();
   const container = document.getElementById('paymentBrick_container');
   if(container) container.innerHTML = '<div class="mp-brick-placeholder">Escolha PIX, cartão de crédito ou cartão de débito acima.</div>';
+  if(container){
+    const cardNote = isCardAmountAllowed() ? '' : `<br/><br/>Cartão fica disponível para pedidos acima de ${cardMinAmountLabel()}. Para este valor, use PIX.`;
+    container.innerHTML = `<div class="mp-brick-placeholder">Escolha PIX, cartão de crédito ou cartão de débito acima.${cardNote}</div>`;
+  }
   const result = document.getElementById('mp-payment-result');
   if(result){ result.className = 'mp-result-box'; result.innerHTML = ''; }
 }
@@ -3012,6 +3037,15 @@ async function startPixCheckout(){
 }
 
 async function renderCardCheckout(method){
+  if(!isCardAmountAllowed()){
+    setCheckoutMethod('');
+    const msg = `Cartão fica disponível para pedidos acima de ${cardMinAmountLabel()}. Para este valor, use PIX.`;
+    setCheckoutStatus(msg, true);
+    const container = document.getElementById('paymentBrick_container');
+    if(container) container.innerHTML = `<div class="mp-brick-placeholder">${msg}</div>`;
+    showToast('Para este valor, use PIX.','⚠️');
+    return;
+  }
   setCheckoutMethod(method);
   setCheckoutStatus(method === 'debit' ? 'Carregando cartão de débito...' : 'Carregando cartão de crédito...');
   const result = document.getElementById('mp-payment-result');
