@@ -105,8 +105,14 @@ function buildMarketplaceItem({ order, calculated, req }) {
     picture_url: sitePictureUrl(req, itemImagePath(calculated.type)),
     category_id: itemCategory(calculated.type),
     quantity: 1,
-    currency_id: 'BRL',
     unit_price: calculated.amount
+  };
+}
+
+function buildPreferenceItem({ order, calculated, req }) {
+  return {
+    ...buildMarketplaceItem({ order, calculated, req }),
+    currency_id: 'BRL'
   };
 }
 
@@ -360,7 +366,7 @@ async function createMercadoPagoPayment(accessToken, body, idempotencyKey) {
 }
 
 function buildPreferencePayload({ order, calculated, req }) {
-  const item = buildMarketplaceItem({ order, calculated, req });
+  const item = buildPreferenceItem({ order, calculated, req });
   const base = publicBaseUrl(req);
   const webhook = notificationUrl(req);
   const phone = splitPhone(order.whatsapp || '');
@@ -483,6 +489,7 @@ module.exports.__mp = {
   publicBaseUrl,
   notificationUrl,
   buildMarketplaceItem,
+  buildPreferenceItem,
   buildPaymentPayload,
   buildPreferencePayload,
   createMercadoPagoPayment,
