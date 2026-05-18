@@ -285,6 +285,18 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .feedback-panel textarea{min-height:82px;resize:vertical}
 .feedback-source{display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;padding:.25rem .55rem;border-radius:50px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.24);color:#86efac;font-size:.7rem;font-weight:800}
 
+/* EDIT MODE */
+body.edit-mode-active [data-edit-id]:hover{outline:2px solid rgba(251,191,36,.85);outline-offset:4px;box-shadow:0 0 26px rgba(251,191,36,.24);cursor:crosshair}
+.edit-panel{position:fixed;right:1rem;top:5rem;z-index:13000;width:min(390px,calc(100vw - 2rem));max-height:calc(100vh - 6rem);overflow:auto;background:linear-gradient(145deg,rgba(31,22,10,.98),rgba(8,8,18,.98));border:1px solid rgba(251,191,36,.42);border-radius:1rem;padding:1rem;box-shadow:0 24px 80px rgba(0,0,0,.68),0 0 60px rgba(251,191,36,.15);display:none}
+.edit-panel.active{display:block;animation:toastIn .25s ease}
+.edit-panel h3{font-family:'Orbitron',sans-serif;margin:0 0 .35rem;color:#fde68a}
+.edit-panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin:.75rem 0}
+.edit-toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}
+.edit-highlight{outline:2px solid #fbbf24!important;outline-offset:4px!important}
+.edit-loading{display:none;color:#fde68a;font-size:.78rem;margin-top:.5rem}
+.edit-loading.active{display:block}
+.edit-history-table td,.edit-history-table th{vertical-align:top}
+
 /* ── ORDER NOTIFICATION ── */
 .order-notification{position:fixed;right:1.5rem;bottom:1.5rem;z-index:8600;width:min(390px,calc(100vw - 2rem));display:none;background:linear-gradient(145deg,rgba(12,18,34,.98),rgba(4,5,16,.98));border:1px solid rgba(148,163,184,.22);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 0 1px rgba(255,255,255,.04) inset;backdrop-filter:blur(16px)}
 .order-notification.active{display:block;animation:toastIn .25s ease}
@@ -510,6 +522,28 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
 </div>
 <div class="order-notification" id="order-notification" aria-live="polite"></div>
 <div class="team-task-notification" id="team-task-notification" aria-live="polite"></div>
+<div class="edit-panel" id="edit-panel">
+  <h3>Editor visual</h3>
+  <p class="modal-sub" id="edit-panel-sub">Selecione um elemento editável.</p>
+  <div class="form-group"><label>Texto</label><textarea class="form-control" id="edit-text" rows="3"></textarea></div>
+  <div class="edit-panel-grid">
+    <div class="form-group"><label>Cor texto</label><input class="form-control" id="edit-color" type="color"/></div>
+    <div class="form-group"><label>Fundo</label><input class="form-control" id="edit-bg" type="color"/></div>
+    <div class="form-group"><label>Fonte px</label><input class="form-control" id="edit-font" type="number" min="8" max="96"/></div>
+    <div class="form-group"><label>Alinhar</label><select class="form-control" id="edit-align"><option value="">Padrão</option><option value="left">Esquerda</option><option value="center">Centro</option><option value="right">Direita</option></select></div>
+  </div>
+  <div class="form-group"><label>Imagem ou link</label><input class="form-control" id="edit-url" placeholder="/images/site/... ou https://"/></div>
+  <label style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-muted)"><input type="checkbox" id="edit-hidden"/> Esconder elemento</label>
+  <label style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-muted);margin-top:.4rem"><input type="checkbox" id="edit-autosave"/> Salvamento automático</label>
+  <div class="edit-loading" id="edit-loading">Salvando alterações...</div>
+  <div class="edit-toolbar">
+    <button class="btn btn-primary mini-btn" onclick="saveVisualEdit()">Salvar alterações</button>
+    <button class="btn btn-outline mini-btn" onclick="previewVisualEdit()">Preview</button>
+    <button class="btn btn-outline mini-btn" onclick="undoLastVisualEdit()">Desfazer última alteração</button>
+    <button class="btn btn-outline mini-btn" onclick="restoreSelectedEditDefault()">Restaurar padrão</button>
+    <button class="btn btn-outline mini-btn" onclick="cancelVisualEdit()">Cancelar</button>
+  </div>
+</div>
 <div class="owner-welcome-overlay" id="owner-welcome-overlay" aria-live="polite">
   <div class="owner-welcome-card">
     <img class="owner-welcome-gif" src="/images/site/dinheiro.gif" alt="Dinheiro"/>
@@ -993,6 +1027,8 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
     <div class="admin-nav-item" onclick="adminNav('uploaders',this)">⚡ Upadores</div>
     <div class="admin-nav-item" onclick="adminNav('chat',this)">💬 Chat Upador</div>
     <div class="admin-nav-item" onclick="adminNav('products',this)">🛒 Produtos</div>
+    <div class="admin-nav-item" onclick="adminNav('editmode',this)">✨ Modo Edição</div>
+    <div class="admin-nav-item" onclick="adminNav('edithistory',this)">🕘 Histórico de Edições</div>
     <div class="admin-nav-item" onclick="adminNav('users',this)">👥 Usuários</div>
     <div class="admin-nav-item" onclick="adminNav('logins',this)">🔑 Logins</div>
     <div class="admin-nav-item" onclick="adminNav('contas',this)">👑 Contas</div>
@@ -1333,6 +1369,7 @@ let globalSyncTimer=null, globalStateUpdatedAt=0, applyingRemoteState=false, rem
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const TIME_SLOTS = ['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
 const CARD_MIN_AMOUNT = 10;
+let editModeActive=false, editSelectedEl=null, editSelectedOriginal={}, editLastHistoryId='', siteEditsUpdatedAt=0;
 const LS_KEYS = {
   users:'zsup_users',
   orders:'zsup_orders',
@@ -1347,9 +1384,11 @@ const LS_KEYS = {
   cart:'zsup_cart',
   availability:'zsup_availability',
   teamDismissed:'zsup_team_task_dismissed',
-  chatRead:'zsup_chat_mentions_read'
+  chatRead:'zsup_chat_mentions_read',
+  siteEdits:'zsup_site_edits',
+  editHistory:'zsup_edit_history'
 };
-const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks','zsup_owner_dismissed_notices','zsup_availability'];
+const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks','zsup_owner_dismissed_notices','zsup_availability','zsup_site_edits','zsup_edit_history'];
 
 function loadStore(key, fallback){
   try{ return JSON.parse(localStorage.getItem(key)) || fallback; }catch(e){ return fallback; }
@@ -1751,7 +1790,7 @@ function handlePaymentReturn(){
 // ═══ INIT ═══
 window.onload = async () => {
   await pullGlobalState({initial:true});
-  ensureSeedData(); ensureTeamTaskNotices(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications();
+  ensureSeedData(); ensureTeamTaskNotices(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications(); fetchSiteEdits();
   renderTeamTaskNotification(); updateAdminBadges();
 };
 
@@ -3444,8 +3483,8 @@ function updateAuthUI(){
   updateAdminBadges();
 }
 function updateAdminMenu(){
-  const ownerOnly = ['users','logins','financeiro'];
-  const managerOnly = ['uploaders','products','contas'];
+  const ownerOnly = ['financeiro'];
+  const managerOnly = ['uploaders','products','contas','users','logins','editmode','edithistory'];
   const modAllowed = ['dashboard','orders','schedule','availability','performance','chat'];
   document.querySelectorAll('.admin-nav-item').forEach(item => {
     const attr = item.getAttribute('onclick') || '';
@@ -3668,6 +3707,27 @@ function quickAdminNav(section){
 function roleBadge(role){
   const label = role === 'dono' ? 'Dono' : role === 'admin' ? 'Admin' : role === 'mod' ? 'Mod' : role === 'upador' ? 'Upador' : 'Cliente';
   return `<span class="role-pill ${role==='dono'?'role-owner':'role-uploader'}">${label}</span>`;
+}
+function allKnownUsers(){
+  const map = new Map();
+  loadStore(LS_KEYS.users, []).forEach(u => {
+    if(!u.id) u.id = uid('USR-');
+    map.set(u.id, {...u, source:u.source || 'login'});
+  });
+  loadStore(LS_KEYS.orders, []).forEach(o => {
+    const email = String(o.email || '').toLowerCase();
+    const existing = [...map.values()].find(u => email && String(u.email || '').toLowerCase() === email);
+    if(existing){
+      if(!existing.phone && o.whatsapp) existing.phone = o.whatsapp;
+      if(!existing.customerCode && o.customerCode) existing.customerCode = o.customerCode;
+      return;
+    }
+    if(email || o.client || o.owner){
+      const id = `ORD-${email || normalizeMention(o.client || o.owner || o.id)}`;
+      map.set(id, {id, name:o.client || o.owner || 'Cliente', email, phone:o.whatsapp || '', role:'cliente', active:true, customerCode:o.customerCode || '', source:'pedido'});
+    }
+  });
+  return [...map.values()].sort((a,b)=>String(a.name || '').localeCompare(String(b.name || ''), 'pt-BR'));
 }
 function ordersTable(orders){
   if(!orders.length) return '<div style="color:var(--text-muted);font-size:.86rem">Nenhum pedido registrado ainda.</div>';
@@ -4262,9 +4322,189 @@ function clearAvailabilityCalendar(){
   renderAvailability();
   showToast('Calendário de disponibilidade limpo.','✅');
 }
+function editableSelector(){
+  return 'h1,h2,h3,h4,p,a,button,img,.service-card,.hero-content,.stat-card,.product-card,.account-card,.testimonial-card,.faq-item,[data-edit-id]';
+}
+function initEditableElements(){
+  document.querySelectorAll(editableSelector()).forEach((el, index) => {
+    if(el.closest('#admin-page,.modal-overlay,.edit-panel,#toast-container,.team-task-notification,.order-notification')) return;
+    if(!el.dataset.editId){
+      const label = (el.id || el.className || el.tagName || 'el').toString().replace(/\s+/g,'-').slice(0,60);
+      el.dataset.editId = `${location.pathname || 'home'}-${label}-${index}`;
+    }
+    if(!el.dataset.editName){
+      el.dataset.editName = (el.textContent || el.alt || el.href || el.src || el.tagName).trim().slice(0,80) || el.tagName;
+    }
+  });
+}
+function applySiteEdits(edits=loadStore(LS_KEYS.siteEdits, {})){
+  initEditableElements();
+  Object.entries(edits || {}).forEach(([id, props]) => {
+    const el = document.querySelector(`[data-edit-id="${CSS.escape(id)}"]`);
+    if(!el) return;
+    Object.entries(props || {}).forEach(([prop, value]) => applyEditProp(el, prop, value));
+  });
+}
+function applyEditProp(el, prop, value){
+  if(prop === 'text' && !['IMG','INPUT','TEXTAREA','SELECT'].includes(el.tagName)) el.textContent = value;
+  if(prop === 'color') el.style.color = value;
+  if(prop === 'background') el.style.background = value;
+  if(prop === 'fontSize') el.style.fontSize = value ? `${parseInt(value,10)}px` : '';
+  if(prop === 'align') el.style.textAlign = value;
+  if(prop === 'src' && el.tagName === 'IMG') el.src = value;
+  if(prop === 'href' && el.tagName === 'A') el.href = value;
+  if(prop === 'hidden') el.style.display = value === 'true' ? 'none' : '';
+}
+async function fetchSiteEdits(){
+  try{
+    const res = await fetch('/api/site-edits', {cache:'no-store'});
+    const data = await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error || 'Erro ao carregar edições.');
+    siteEditsUpdatedAt = data.updatedAt || siteEditsUpdatedAt;
+    localStorage.setItem(LS_KEYS.siteEdits, JSON.stringify(data.edits || {}));
+    localStorage.setItem(LS_KEYS.editHistory, JSON.stringify(data.history || []));
+    applySiteEdits(data.edits || {});
+    if(currentAdminSection === 'edithistory') renderEditHistory();
+  }catch(error){ console.warn('Site edits unavailable:', error.message || error); }
+}
+async function enableEditModeSession(){
+  if(!canManageAdmin()) return showToast('Apenas dono/admin pode ativar o modo edição.','🔒');
+  const password = prompt('Senha do Modo Edição');
+  if(!password) return;
+  const res = await fetch('/api/edit-session', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({password, user:sessionSnapshot(currentUser)})
+  });
+  const data = await res.json().catch(()=>({}));
+  if(!res.ok) return showToast(data.error || 'Não foi possível ativar o modo edição.','⚠️');
+  editModeActive = true;
+  document.body.classList.add('edit-mode-active');
+  initEditableElements();
+  bindEditModeClicks();
+  showToast('Modo edição ativado.','✨');
+}
+function disableEditMode(){
+  editModeActive = false;
+  document.body.classList.remove('edit-mode-active');
+  document.getElementById('edit-panel')?.classList.remove('active');
+  if(editSelectedEl) editSelectedEl.classList.remove('edit-highlight');
+  editSelectedEl = null;
+}
+function bindEditModeClicks(){
+  document.querySelectorAll('[data-edit-id]').forEach(el => {
+    if(el.dataset.editBound) return;
+    el.dataset.editBound = '1';
+    el.addEventListener('click', event => {
+      if(!editModeActive) return;
+      event.preventDefault();
+      event.stopPropagation();
+      selectEditableElement(el);
+    }, true);
+  });
+}
+function selectEditableElement(el){
+  if(editSelectedEl) editSelectedEl.classList.remove('edit-highlight');
+  editSelectedEl = el;
+  editSelectedOriginal = readElementEditValues(el);
+  el.classList.add('edit-highlight');
+  document.getElementById('edit-panel-sub').textContent = el.dataset.editName || el.dataset.editId;
+  document.getElementById('edit-text').value = editSelectedOriginal.text;
+  document.getElementById('edit-color').value = rgbToHex(getComputedStyle(el).color) || '#ffffff';
+  document.getElementById('edit-bg').value = rgbToHex(getComputedStyle(el).backgroundColor) || '#000000';
+  document.getElementById('edit-font').value = parseInt(getComputedStyle(el).fontSize,10) || '';
+  document.getElementById('edit-align').value = getComputedStyle(el).textAlign || '';
+  document.getElementById('edit-url').value = el.tagName === 'IMG' ? el.getAttribute('src') || '' : el.tagName === 'A' ? el.getAttribute('href') || '' : '';
+  document.getElementById('edit-hidden').checked = getComputedStyle(el).display === 'none';
+  document.getElementById('edit-panel').classList.add('active');
+}
+function readElementEditValues(el){
+  return {
+    text: ['IMG','INPUT','TEXTAREA','SELECT'].includes(el.tagName) ? '' : el.textContent,
+    color: el.style.color || '',
+    background: el.style.background || '',
+    fontSize: el.style.fontSize || '',
+    align: el.style.textAlign || '',
+    src: el.tagName === 'IMG' ? el.getAttribute('src') || '' : '',
+    href: el.tagName === 'A' ? el.getAttribute('href') || '' : '',
+    hidden: getComputedStyle(el).display === 'none' ? 'true' : ''
+  };
+}
+function rgbToHex(value){
+  const match = String(value || '').match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  if(!match) return '';
+  return '#' + [match[1],match[2],match[3]].map(n=>Number(n).toString(16).padStart(2,'0')).join('');
+}
+function pendingVisualEdits(){
+  if(!editSelectedEl) return [];
+  const url = document.getElementById('edit-url').value.trim();
+  const next = {
+    text: document.getElementById('edit-text').value,
+    color: document.getElementById('edit-color').value,
+    background: document.getElementById('edit-bg').value,
+    fontSize: document.getElementById('edit-font').value,
+    align: document.getElementById('edit-align').value,
+    hidden: document.getElementById('edit-hidden').checked ? 'true' : ''
+  };
+  if(editSelectedEl.tagName === 'IMG') next.src = url;
+  if(editSelectedEl.tagName === 'A') next.href = url;
+  return Object.entries(next).filter(([prop,value]) => String(value || '') !== String(editSelectedOriginal[prop] || '')).map(([prop,value]) => ({
+    page: location.pathname || 'home',
+    elementId: editSelectedEl.dataset.editId,
+    elementName: editSelectedEl.dataset.editName || editSelectedEl.tagName,
+    type: prop === 'text' ? 'texto' : prop === 'src' ? 'imagem' : prop === 'href' ? 'botao' : prop === 'hidden' ? 'secao' : 'estilo',
+    prop,
+    oldValue: editSelectedOriginal[prop] || '',
+    newValue: value
+  }));
+}
+function previewVisualEdit(){
+  pendingVisualEdits().forEach(edit => applyEditProp(editSelectedEl, edit.prop, edit.newValue));
+  if(document.getElementById('edit-autosave')?.checked) saveVisualEdit();
+}
+function cancelVisualEdit(){
+  if(editSelectedEl) Object.entries(editSelectedOriginal).forEach(([prop,value]) => applyEditProp(editSelectedEl, prop, value));
+  document.getElementById('edit-panel')?.classList.remove('active');
+}
+async function saveVisualEdit(){
+  const edits = pendingVisualEdits();
+  if(!edits.length) return showToast('Nenhuma alteração para salvar.','⚠️');
+  if(edits.length > 3 && !confirm('Publicar várias alterações globalmente para todos os usuários?')) return;
+  const loading = document.getElementById('edit-loading');
+  loading?.classList.add('active');
+  try{
+    for(const edit of edits){
+      const res = await fetch('/api/site-edits', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edit})});
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok) throw new Error(data.error || 'Erro ao salvar edição.');
+      editLastHistoryId = data.edit?.id || editLastHistoryId;
+      localStorage.setItem(LS_KEYS.siteEdits, JSON.stringify(data.edits || {}));
+      localStorage.setItem(LS_KEYS.editHistory, JSON.stringify(data.history || []));
+      applySiteEdits(data.edits || {});
+    }
+    showToast('Alterações salvas globalmente.','✅');
+    if(editSelectedEl) editSelectedOriginal = readElementEditValues(editSelectedEl);
+  }catch(error){ showToast(error.message || 'Erro ao salvar edição.','⚠️'); }
+  finally{ loading?.classList.remove('active'); }
+}
+async function undoLastVisualEdit(){
+  if(!editLastHistoryId) return showToast('Nenhuma alteração recente para desfazer.','⚠️');
+  await revertEditHistory(editLastHistoryId, false);
+}
+async function restoreSelectedEditDefault(){
+  if(!editSelectedEl) return;
+  if(!confirm('Restaurar este elemento para o padrão original globalmente?')) return;
+  const history = loadStore(LS_KEYS.editHistory, [])
+    .filter(item => item.elementId === editSelectedEl.dataset.editId && !item.reverted)
+    .sort((a,b)=>(b.createdAtMs || 0) - (a.createdAtMs || 0));
+  for(const item of history) await revertEditHistory(item.id, false);
+  await fetchSiteEdits();
+  showToast('Elemento restaurado.','✅');
+}
 function renderUsers(){
-  if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="locked-note">Upadores comuns não podem mexer nos usuários do admin.</div>`; return; }
-  document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="admin-card">${loadStore(LS_KEYS.users, []).map(u=>`<div style="display:grid;grid-template-columns:1fr 180px 110px;gap:.8rem;align-items:center;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06)"><span>${u.name}<br/><small style="color:var(--text-muted)">${u.email}</small></span><select class="form-control" id="role-user-${u.id}"><option value="cliente" ${u.role==='cliente'?'selected':''}>Cliente</option><option value="upador" ${u.role==='upador'?'selected':''}>Upador</option><option value="mod" ${u.role==='mod'?'selected':''}>Mod</option><option value="admin" ${u.role==='admin'?'selected':''}>Admin</option><option value="dono" ${u.role==='dono'?'selected':''}>Dono</option></select><button class="btn btn-outline mini-btn" onclick="changeUserRole('${u.id}')">Salvar</button></div>`).join('')}</div>`;
+  if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="locked-note">Apenas dono/admin pode mexer nos usuários.</div>`; return; }
+  const users = allKnownUsers();
+  document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="admin-card"><div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th><th>Código</th><th>Origem</th><th>Perfil</th><th>Ação</th></tr></thead><tbody>${users.map(u=>`<tr><td>${escapeHTML(u.name || '-')}</td><td>${escapeHTML(u.email || '-')}</td><td>${escapeHTML(u.phone || '-')}</td><td style="font-family:monospace;color:var(--neon-cyan)">${escapeHTML(u.customerCode || '-')}</td><td>${u.source === 'pedido' ? 'Pedido' : 'Login'}</td><td>${u.source === 'pedido' ? roleBadge('cliente') : `<select class="form-control" id="role-user-${u.id}"><option value="cliente" ${u.role==='cliente'?'selected':''}>Cliente</option><option value="upador" ${u.role==='upador'?'selected':''}>Upador</option><option value="mod" ${u.role==='mod'?'selected':''}>Mod</option><option value="admin" ${u.role==='admin'?'selected':''}>Admin</option><option value="dono" ${u.role==='dono'?'selected':''}>Dono</option></select>`}</td><td>${u.source === 'pedido' ? '<span style="color:var(--text-muted);font-size:.75rem">Criado por compra</span>' : `<button class="btn btn-outline mini-btn" onclick="changeUserRole('${u.id}')">Salvar</button>`}</td></tr>`).join('')}</tbody></table></div></div>`;
 }
 function changeUserRole(id){
   if(!requireOwner()) return;
@@ -4276,8 +4516,8 @@ function changeUserRole(id){
   renderUsers(); updateAdminMenu(); showToast('Cargo atualizado.','✅');
 }
 function renderLogins(){
-  if(!isOwner()){ document.getElementById('admin-content').innerHTML = ''; return; }
-  const users = loadStore(LS_KEYS.users, []);
+  if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = ''; return; }
+  const users = allKnownUsers();
   const orders = loadStore(LS_KEYS.orders, []);
   document.getElementById('admin-content').innerHTML = `
     <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">🔑 Logins e códigos</h2>
@@ -4316,6 +4556,64 @@ function adminGenerateUserCode(userId){
   renderLogins();
   showToast('Código do cliente atualizado.','✅');
 }
+function renderEditModeAdmin(){
+  if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = ''; return; }
+  document.getElementById('admin-content').innerHTML = `
+    <div class="admin-title-row"><h2>Modo Edição</h2><span class="admin-live-chip"><i class="admin-live-dot"></i>Global</span></div>
+    <div class="admin-card">
+      <div class="locked-note">Ative o editor visual, clique em elementos do site e publique alterações globais. A senha é validada somente no backend por variável de ambiente.</div>
+      <div class="admin-actions" style="margin-top:1rem">
+        <button class="btn btn-primary" onclick="enableEditModeSession()">Ativar modo edição</button>
+        <button class="btn btn-outline" onclick="disableEditMode()">Desativar</button>
+        <button class="btn btn-outline" onclick="fetchSiteEdits()">Recarregar edições globais</button>
+      </div>
+    </div>`;
+}
+function renderEditHistory(){
+  if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = ''; return; }
+  const page = document.getElementById('hist-page')?.value.trim().toLowerCase() || '';
+  const type = document.getElementById('hist-type')?.value.trim().toLowerCase() || '';
+  const user = document.getElementById('hist-user')?.value.trim().toLowerCase() || '';
+  const date = document.getElementById('hist-date')?.value || '';
+  const q = document.getElementById('hist-q')?.value.trim().toLowerCase() || '';
+  const history = loadStore(LS_KEYS.editHistory, []).filter(item => {
+    const dateISO = item.createdAtMs ? new Date(item.createdAtMs).toISOString().slice(0,10) : '';
+    return (!page || String(item.page || '').toLowerCase().includes(page)) &&
+      (!type || String(item.type || '').toLowerCase().includes(type)) &&
+      (!user || String(item.userName || '').toLowerCase().includes(user)) &&
+      (!date || dateISO === date) &&
+      (!q || String(item.elementName || item.elementId || '').toLowerCase().includes(q));
+  });
+  document.getElementById('admin-content').innerHTML = `
+    <div class="admin-title-row"><h2>Histórico de Edições</h2><button class="btn btn-outline mini-btn" onclick="fetchSiteEdits()">Atualizar</button></div>
+    <div class="admin-card"><div class="admin-grid">
+      <input class="form-control" id="hist-page" value="${escapeHTML(page)}" placeholder="Filtrar por página" oninput="renderEditHistory()"/>
+      <input class="form-control" id="hist-type" value="${escapeHTML(type)}" placeholder="Tipo: texto, cor, imagem..." oninput="renderEditHistory()"/>
+      <input class="form-control" id="hist-user" value="${escapeHTML(user)}" placeholder="Usuário/admin" oninput="renderEditHistory()"/>
+      <input class="form-control" id="hist-date" value="${escapeHTML(date)}" type="date" onchange="renderEditHistory()"/>
+      <input class="form-control" id="hist-q" value="${escapeHTML(q)}" placeholder="Buscar elemento" oninput="renderEditHistory()"/>
+    </div></div>
+    <div class="admin-card"><div style="overflow-x:auto"><table class="admin-table edit-history-table">
+      <thead><tr><th>Quem</th><th>Data</th><th>Página</th><th>Elemento</th><th>Tipo</th><th>Valor antigo</th><th>Valor novo</th><th>Status</th><th>Ação</th></tr></thead>
+      <tbody>${history.map(item => `<tr><td>${escapeHTML(item.userName || '-')}<br/><small style="color:var(--text-muted)">${escapeHTML(item.userRole || '')}</small></td><td>${escapeHTML(item.createdAt || '-')}</td><td>${escapeHTML(item.page || '-')}</td><td>${escapeHTML(item.elementName || item.elementId || '-')}</td><td>${escapeHTML(item.type || '-')}</td><td><small>${escapeHTML(item.oldValue || '-')}</small></td><td><small>${escapeHTML(item.newValue || '-')}</small></td><td>${item.reverted ? '<span class="status-badge status-done">Revertida</span>' : '<span class="status-badge status-active">Ativa</span>'}</td><td><button class="btn btn-outline mini-btn" style="border-color:rgba(239,68,68,.5);color:#fecaca" onclick="confirmRevertEdit('${item.id}')">Reverter alteração</button></td></tr>`).join('') || '<tr><td colspan="9" style="color:var(--text-muted)">Nenhuma edição encontrada.</td></tr>'}</tbody>
+    </table></div></div>`;
+}
+function confirmRevertEdit(id){
+  if(!confirm('Tem certeza que deseja reverter esta alteração? Essa ação será aplicada globalmente para todos os usuários, dispositivos e logins.')) return;
+  revertEditHistory(id, true);
+}
+async function revertEditHistory(id, loud=true){
+  try{
+    const res = await fetch('/api/site-edits', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
+    const data = await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error || 'Erro ao reverter alteração.');
+    localStorage.setItem(LS_KEYS.siteEdits, JSON.stringify(data.edits || {}));
+    localStorage.setItem(LS_KEYS.editHistory, JSON.stringify(data.history || []));
+    applySiteEdits(data.edits || {});
+    if(currentAdminSection === 'edithistory') renderEditHistory();
+    if(loud) showToast('Alteração revertida globalmente.','✅');
+  }catch(error){ showToast(error.message || 'Erro ao reverter alteração.','⚠️'); }
+}
 function renderFinance(){
   if(!isOwner()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💰 Financeiro</h2><div class="locked-note">Upadores comuns não podem acessar o financeiro.</div>`; return; }
   const orders = loadStore(LS_KEYS.orders, []);
@@ -4335,6 +4633,8 @@ function adminNav(section, el){
   if(section==='chat') renderChat();
   if(section==='products') renderProducts();
   if(section==='contas') renderContasAdmin();
+  if(section==='editmode') renderEditModeAdmin();
+  if(section==='edithistory') renderEditHistory();
   if(section==='users') renderUsers();
   if(section==='logins') renderLogins();
   if(section==='financeiro') renderFinance();
@@ -4381,6 +4681,10 @@ function handleLiveStoreUpdate(key){
     updateServiceCards();
     refreshAdminSection();
   }
+  if(key === LS_KEYS.siteEdits){
+    applySiteEdits();
+  }
+  if(key === LS_KEYS.editHistory && currentAdminSection === 'edithistory') refreshAdminSection();
 }
 window.addEventListener('storage', e => handleLiveStoreUpdate(e.key));
 window.addEventListener('zsup:store', e => handleLiveStoreUpdate(e.detail?.key));
