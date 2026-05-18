@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190" role="img" aria-labelledby="title desc">
+  <title id="title">Modo de construcao</title>
+  <desc id="desc">Placa amarela de modo de construcao para o editor visual.</desc>
+  <defs>
+    <linearGradient id="plate" x1="36" y1="42" x2="284" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffd84a"/>
+      <stop offset=".55" stop-color="#ffc400"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="20" y1="36" x2="300" y2="160" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffb703"/>
+      <stop offset="1" stop-color="#92400e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-30%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="7" flood-color="#000" flood-opacity=".55"/>
+    </filter>
+    <pattern id="stripe" width="38" height="38" patternUnits="userSpaceOnUse" patternTransform="rotate(24)">
+      <rect width="38" height="38" fill="#2b241e"/>
+      <rect width="17" height="38" fill="#facc15"/>
+    </pattern>
+  </defs>
+  <rect width="320" height="190" fill="none"/>
+  <g filter="url(#shadow)" transform="rotate(-4 160 96)">
+    <path d="M142 43 158 20l20 19" fill="none" stroke="#2b241e" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="158" cy="20" r="12" fill="#d6d3d1" stroke="#2b241e" stroke-width="7"/>
+    <rect x="27" y="54" width="266" height="97" rx="20" fill="url(#edge)" stroke="#221914" stroke-width="8"/>
+    <rect x="39" y="65" width="242" height="75" rx="12" fill="url(#stripe)" stroke="#221914" stroke-width="4"/>
+    <rect x="58" y="78" width="204" height="49" rx="8" fill="url(#plate)" stroke="#221914" stroke-width="5"/>
+    <g fill="#1c1917" font-family="Arial Black, Impact, sans-serif" font-weight="900" text-anchor="middle">
+      <text x="160" y="102" font-size="24" letter-spacing="1">MODO DE</text>
+      <text x="160" y="126" font-size="23" letter-spacing="1">CONSTRUCAO</text>
+    </g>
+    <g fill="#d97706" opacity=".55">
+      <circle cx="74" cy="88" r="3"/>
+      <circle cx="244" cy="95" r="3"/>
+      <circle cx="96" cy="121" r="2"/>
+      <circle cx="221" cy="119" r="2"/>
+    </g>
+  </g>
+</svg>

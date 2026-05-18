@@ -289,7 +289,9 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .feedback-source{display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;padding:.25rem .55rem;border-radius:50px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.24);color:#86efac;font-size:.7rem;font-weight:800}
 
 /* EDIT MODE */
-body.edit-mode-active [data-edit-id]:hover{outline:2px solid rgba(251,191,36,.85);outline-offset:4px;box-shadow:0 0 26px rgba(251,191,36,.24);cursor:crosshair}
+body.edit-mode-active [data-edit-id]:hover{outline:2px solid rgba(251,191,36,.85);outline-offset:4px;box-shadow:0 0 26px rgba(251,191,36,.24);cursor:pointer}
+body.edit-mode-active.edit-drag-tool [data-edit-id]{cursor:grab}
+body.edit-mode-active.edit-drag-tool [data-edit-id]:active{cursor:grabbing}
 body.edit-mode-active{padding-top:42px}
 body.edit-mode-active nav{top:42px}
 .edit-capsule{position:fixed;right:1.15rem;bottom:1.15rem;z-index:12900;display:none;align-items:center;gap:.65rem;border:1px solid rgba(251,191,36,.5);background:linear-gradient(135deg,rgba(251,191,36,.2),rgba(24,18,5,.94));color:#fde68a;border-radius:999px;padding:.7rem 1rem;font-weight:900;font-size:.82rem;box-shadow:0 16px 50px rgba(0,0,0,.55),0 0 35px rgba(251,191,36,.22);cursor:pointer;animation:editCapsuleGlow 2s ease-in-out infinite}
@@ -299,7 +301,8 @@ body.edit-mode-active nav{top:42px}
 @keyframes editCapsuleGlow{0%,100%{filter:saturate(1)}50%{filter:saturate(1.35) brightness(1.08)}}
 .edit-mode-ribbon{position:fixed;top:0;left:0;right:0;height:42px;z-index:13200;display:none;align-items:center;justify-content:center;padding:0 1rem;background:linear-gradient(90deg,rgba(251,191,36,.24),rgba(251,191,36,.1));border-bottom:1px solid rgba(251,191,36,.38);color:#fde68a;font-weight:900;font-size:.82rem;backdrop-filter:blur(14px);box-shadow:0 8px 28px rgba(0,0,0,.35)}
 .edit-mode-ribbon.active{display:flex}
-.edit-ribbon-icon{position:absolute;left:1rem;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(251,191,36,.16);box-shadow:0 0 24px rgba(251,191,36,.22);font-size:1.05rem}
+.edit-ribbon-icon{position:absolute;left:1rem;width:58px;height:32px;border-radius:.6rem;display:grid;place-items:center;background:rgba(251,191,36,.16);box-shadow:0 0 24px rgba(251,191,36,.22);overflow:hidden;padding:.08rem}
+.edit-ribbon-icon img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
 .edit-main-toolbar{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:13250;display:none;align-items:center;gap:.45rem;max-width:min(980px,calc(100vw - 2rem));overflow-x:auto;padding:.55rem;border:1px solid rgba(251,191,36,.42);border-radius:999px;background:linear-gradient(135deg,rgba(31,22,10,.96),rgba(8,8,18,.96));box-shadow:0 20px 70px rgba(0,0,0,.68),0 0 45px rgba(251,191,36,.18);backdrop-filter:blur(18px)}
 .edit-main-toolbar.active{display:flex}
 .edit-tool-btn{white-space:nowrap;border:1px solid rgba(251,191,36,.28);background:rgba(251,191,36,.08);color:#fde68a;border-radius:999px;padding:.48rem .72rem;font-size:.75rem;font-weight:900;cursor:pointer}
@@ -312,6 +315,7 @@ body.edit-mode-active nav{top:42px}
 .edit-toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}
 .edit-move-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem;margin:.75rem 0}
 .edit-highlight{outline:2px solid #fbbf24!important;outline-offset:4px!important}
+.edit-dragging{outline:3px solid #facc15!important;outline-offset:5px!important;box-shadow:0 0 34px rgba(250,204,21,.34)!important;cursor:grabbing!important;z-index:50}
 .edit-loading{display:none;color:#fde68a;font-size:.78rem;margin-top:.5rem}
 .edit-loading.active{display:block}
 .edit-history-table td,.edit-history-table th{vertical-align:top}
@@ -325,6 +329,12 @@ body.edit-mode-active nav{top:42px}
 .edit-inserted-image{cursor:move}
 .edit-password-modal{border-color:rgba(251,191,36,.45);box-shadow:0 30px 110px rgba(0,0,0,.72),0 0 70px rgba(251,191,36,.16)}
 .edit-password-modal h2{color:#fde68a}
+.service-edit-choice-modal .admin-actions{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.admin-filter-row{display:grid;grid-template-columns:minmax(220px,1fr) 180px 180px;gap:.75rem;margin-bottom:1rem}
+.admin-user-state{display:inline-flex;align-items:center;gap:.35rem;border-radius:999px;padding:.25rem .55rem;font-size:.7rem;font-weight:900;border:1px solid rgba(148,163,184,.24);color:#cbd5e1}
+.admin-user-state.active{border-color:rgba(34,197,94,.35);color:#86efac;background:rgba(34,197,94,.08)}
+.admin-user-state.paused{border-color:rgba(239,68,68,.35);color:#fecaca;background:rgba(239,68,68,.08)}
+.password-reset-row{display:grid;grid-template-columns:minmax(150px,1fr) auto;gap:.5rem;align-items:center}
 
 /* ── ORDER NOTIFICATION ── */
 .order-notification{position:fixed;right:1.5rem;bottom:1.5rem;z-index:8600;width:min(390px,calc(100vw - 2rem));display:none;background:linear-gradient(145deg,rgba(12,18,34,.98),rgba(4,5,16,.98));border:1px solid rgba(148,163,184,.22);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 0 1px rgba(255,255,255,.04) inset;backdrop-filter:blur(16px)}
@@ -439,6 +449,7 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
   .admin-sidebar{display:none}
   .admin-content{margin-left:0}
   .admin-live-item{grid-template-columns:1fr}
+  .admin-filter-row{grid-template-columns:1fr}
   .ranks-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
 }
 @media(max-width:540px){
@@ -461,6 +472,8 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
   .feedback-panel.active + .order-notification.active{bottom:19rem}
   .order-uploader-stats{grid-template-columns:1fr}
   .account-panel{position:fixed;top:4.6rem;left:.75rem;right:.75rem;width:auto}
+  .service-edit-choice-modal .admin-actions{grid-template-columns:1fr}
+  .edit-mode-ribbon{justify-content:flex-end;padding-left:5.4rem;text-align:right;font-size:.72rem}
 }
 
 /* ── MERCADO PAGO CHECKOUT STATUS ── */
@@ -553,19 +566,19 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
 <div class="team-task-notification" id="team-task-notification" aria-live="polite"></div>
 <button class="edit-capsule" id="edit-capsule" onclick="openEditPasswordModal()" type="button"><span class="edit-capsule-dot"></span><span>Modo Edição</span></button>
 <div class="edit-mode-ribbon" id="edit-mode-ribbon">
-  <span class="edit-ribbon-icon">✨</span>
+  <span class="edit-ribbon-icon"><img src="/images/site/modo-construcao.svg" alt="Modo de construção"/></span>
   Você está no modo de edição. Para sair, clique no botão Sair do modo de edição.
 </div>
 <div class="edit-main-toolbar" id="edit-main-toolbar" aria-label="Ferramentas do modo edição">
   <button class="edit-tool-btn" type="button" onclick="openSaveEditConfirm()">Salvar alterações</button>
   <button class="edit-tool-btn" type="button" onclick="disableEditMode()">Sair do modo de edição</button>
   <span class="edit-tool-sep"></span>
-  <button class="edit-tool-btn" type="button" onclick="focusEditTool('text')">Texto</button>
-  <button class="edit-tool-btn" type="button" onclick="focusEditTool('color')">Cor</button>
-  <button class="edit-tool-btn" type="button" onclick="focusEditTool('background')">Alterar fundo</button>
-  <button class="edit-tool-btn" type="button" onclick="focusEditTool('image')">Adicionar imagem</button>
-  <button class="edit-tool-btn" type="button" onclick="focusEditTool('move')">Mover X/Y</button>
-  <button class="edit-tool-btn" type="button" onclick="focusEditTool('size')">Tamanho</button>
+  <button class="edit-tool-btn" data-edit-tool="text" type="button" onclick="focusEditTool('text')">Texto</button>
+  <button class="edit-tool-btn" data-edit-tool="color" type="button" onclick="focusEditTool('color')">Cor</button>
+  <button class="edit-tool-btn" data-edit-tool="background" type="button" onclick="focusEditTool('background')">Alterar fundo</button>
+  <button class="edit-tool-btn" data-edit-tool="image" type="button" onclick="focusEditTool('image')">Adicionar imagem</button>
+  <button class="edit-tool-btn" data-edit-tool="drag" type="button" onclick="focusEditTool('drag')">Mover arrastando</button>
+  <button class="edit-tool-btn" data-edit-tool="size" type="button" onclick="focusEditTool('size')">Tamanho</button>
   <button class="edit-tool-btn" type="button" onclick="previewVisualEdit()">Preview</button>
   <button class="edit-tool-btn" type="button" onclick="undoLastVisualEdit()">Desfazer</button>
 </div>
@@ -605,6 +618,17 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
   <button onclick="editContextAction('link')">🔗 Editar botão/link</button>
   <button onclick="editContextAction('hide')">👁 Esconder/mostrar</button>
   <button onclick="editContextAction('restore')">↩ Restaurar padrão</button>
+</div>
+<div class="modal-overlay" id="service-edit-choice-modal">
+  <div class="modal edit-password-modal service-edit-choice-modal">
+    <button class="modal-close" onclick="closeModal('service-edit-choice-modal')">✕</button>
+    <h2>Serviço selecionado</h2>
+    <p class="modal-sub" id="service-edit-choice-sub">Escolha o que deseja fazer com este serviço.</p>
+    <div class="admin-actions">
+      <button class="btn btn-primary" onclick="enterSelectedServiceFromEdit()">Entrar no serviço</button>
+      <button class="btn btn-outline" onclick="editSelectedServiceCard()">Editar card do serviço</button>
+    </div>
+  </div>
 </div>
 <div class="modal-overlay" id="edit-password-modal">
   <div class="modal edit-password-modal">
@@ -684,33 +708,33 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
     <p class="section-sub" data-edit-id="services-subtitle" data-edit-name="Descrição serviços">Todos os serviços são realizados por jogadores profissionais com total segurança.</p>
   </div>
   <div class="services-grid">
-    <div class="service-card" data-edit-id="service-card-trofeu" data-edit-name="Card UP Troféu" onclick="openTrofeu()">
-      <div class="card-arrow">→</div>
-      <div class="service-icon clean"><img id="service-img-trofeu" src="/images/site/icon-trophy.png" alt="Troféus"/></div>
-      <h3>UP Troféu</h3>
-      <p>Suba seus troféus com preço calculado automaticamente. Abaixo de 40k = R$5 por 1.000 troféus.</p>
-      <div class="service-badge badge-purple" id="badge-trofeu">A partir de R$5/1k troféus</div>
+    <div class="service-card" data-service-key="trofeu" data-edit-id="service-card-trofeu" data-edit-name="Card UP Troféu" onclick="handleServiceCardClick(event,'trofeu')">
+      <div class="card-arrow" data-edit-id="service-arrow-trofeu" data-edit-name="Seta UP Troféu">→</div>
+      <div class="service-icon clean" data-edit-id="service-icon-wrap-trofeu" data-edit-name="Fundo do ícone UP Troféu"><img id="service-img-trofeu" data-edit-id="service-img-trofeu" data-edit-name="Imagem UP Troféu" src="/images/site/icon-trophy.png" alt="Troféus"/></div>
+      <h3 data-edit-id="service-title-trofeu" data-edit-name="Título UP Troféu">UP Troféu</h3>
+      <p data-edit-id="service-desc-trofeu" data-edit-name="Descrição UP Troféu">Suba seus troféus com preço calculado automaticamente. Abaixo de 40k = R$5 por 1.000 troféus.</p>
+      <div class="service-badge badge-purple" id="badge-trofeu" data-edit-id="service-badge-trofeu" data-edit-name="Badge UP Troféu">A partir de R$5/1k troféus</div>
     </div>
-    <div class="service-card" data-edit-id="service-card-ranked" data-edit-name="Card UP Ranked" onclick="openRanked()">
-      <div class="card-arrow">→</div>
-      <div class="service-icon clean"><img id="service-img-ranked" src="/images/site/icon-ranked.webp" alt="Ranqueado"/></div>
-      <h3>UP Ranked</h3>
-      <p>Suba de elo no ranked com nossos profissionais. Do Bronze ao Pro sem preocupações.</p>
-      <div class="service-badge badge-blue" id="badge-ranked">Preço por pontos</div>
+    <div class="service-card" data-service-key="ranked" data-edit-id="service-card-ranked" data-edit-name="Card UP Ranked" onclick="handleServiceCardClick(event,'ranked')">
+      <div class="card-arrow" data-edit-id="service-arrow-ranked" data-edit-name="Seta UP Ranked">→</div>
+      <div class="service-icon clean" data-edit-id="service-icon-wrap-ranked" data-edit-name="Fundo do ícone UP Ranked"><img id="service-img-ranked" data-edit-id="service-img-ranked" data-edit-name="Imagem UP Ranked" src="/images/site/icon-ranked.webp" alt="Ranqueado"/></div>
+      <h3 data-edit-id="service-title-ranked" data-edit-name="Título UP Ranked">UP Ranked</h3>
+      <p data-edit-id="service-desc-ranked" data-edit-name="Descrição UP Ranked">Suba de elo no ranked com nossos profissionais. Do Bronze ao Pro sem preocupações.</p>
+      <div class="service-badge badge-blue" id="badge-ranked" data-edit-id="service-badge-ranked" data-edit-name="Badge UP Ranked">Preço por pontos</div>
     </div>
-    <div class="service-card" data-edit-id="service-card-prestigio" data-edit-name="Card UP Prestígio" onclick="openPrestigio()">
-      <div class="card-arrow">→</div>
-      <div class="service-icon clean"><img id="service-img-prestigio" src="/images/site/icon-prestige-3.webp" alt="Prestígio"/></div>
-      <h3>UP Prestígio</h3>
-      <p>Alcance o prestígio desejado em qualquer brawler. 7 raridades com imagens reais.</p>
-      <div class="service-badge badge-purple" id="badge-prestigio">100+ Brawlers disponíveis</div>
+    <div class="service-card" data-service-key="prestigio" data-edit-id="service-card-prestigio" data-edit-name="Card UP Prestígio" onclick="handleServiceCardClick(event,'prestigio')">
+      <div class="card-arrow" data-edit-id="service-arrow-prestigio" data-edit-name="Seta UP Prestígio">→</div>
+      <div class="service-icon clean" data-edit-id="service-icon-wrap-prestigio" data-edit-name="Fundo do ícone UP Prestígio"><img id="service-img-prestigio" data-edit-id="service-img-prestigio" data-edit-name="Imagem UP Prestígio" src="/images/site/icon-prestige-3.webp" alt="Prestígio"/></div>
+      <h3 data-edit-id="service-title-prestigio" data-edit-name="Título UP Prestígio">UP Prestígio</h3>
+      <p data-edit-id="service-desc-prestigio" data-edit-name="Descrição UP Prestígio">Alcance o prestígio desejado em qualquer brawler. 7 raridades com imagens reais.</p>
+      <div class="service-badge badge-purple" id="badge-prestigio" data-edit-id="service-badge-prestigio" data-edit-name="Badge UP Prestígio">100+ Brawlers disponíveis</div>
     </div>
-    <div class="service-card" data-edit-id="service-card-contas" data-edit-name="Card Contas" onclick="openContas()">
-      <div class="card-arrow">→</div>
-      <div class="service-icon clean"><img id="service-img-contas" src="/images/site/icon-account-red.webp" alt="Conta Brawl Stars"/></div>
-      <h3>Contas</h3>
-      <p>Contas premium com brawlers raros, gemas e skins exclusivas. Loja completa.</p>
-      <div class="service-badge badge-pink" id="badge-contas">Loja premium</div>
+    <div class="service-card" data-service-key="contas" data-edit-id="service-card-contas" data-edit-name="Card Contas" onclick="handleServiceCardClick(event,'contas')">
+      <div class="card-arrow" data-edit-id="service-arrow-contas" data-edit-name="Seta Contas">→</div>
+      <div class="service-icon clean" data-edit-id="service-icon-wrap-contas" data-edit-name="Fundo do ícone Contas"><img id="service-img-contas" data-edit-id="service-img-contas" data-edit-name="Imagem Contas" src="/images/site/icon-account-red.webp" alt="Conta Brawl Stars"/></div>
+      <h3 data-edit-id="service-title-contas" data-edit-name="Título Contas">Contas</h3>
+      <p data-edit-id="service-desc-contas" data-edit-name="Descrição Contas">Contas premium com brawlers raros, gemas e skins exclusivas. Loja completa.</p>
+      <div class="service-badge badge-pink" id="badge-contas" data-edit-id="service-badge-contas" data-edit-name="Badge Contas">Loja premium</div>
     </div>
   </div>
 </section>
@@ -1248,7 +1272,8 @@ const SITE_IMAGES = {
   pix:'/images/site/icon-pix.png',
   cards:'/images/site/icon-cards.png',
   orderNotification:'/images/site/icon-order-notification.png',
-  money:'/images/site/dinheiro.gif'
+  money:'/images/site/dinheiro.gif',
+  construction:'/images/site/modo-construcao.svg'
 };
 const REMOTE_IMAGE_MAP = {
   'https://www.brawlstarsdicas.com.br/wp-content/uploads/2019/01/trofeus-brawl-stars-icone-trophy.png':SITE_IMAGES.trophy,
@@ -1451,7 +1476,7 @@ const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const TIME_SLOTS = ['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
 const CARD_MIN_AMOUNT = 10;
 let editModeActive=false, editSelectedEl=null, editSelectedOriginal={}, editLastHistoryId='', siteEditsUpdatedAt=0;
-let editContextTarget=null;
+let editContextTarget=null, editActiveTool='text', editDragState=null, pendingServiceChoice=null;
 const LS_KEYS = {
   users:'zsup_users',
   orders:'zsup_orders',
@@ -1550,6 +1575,9 @@ function defaultServiceImage(slug){
 }
 function escapeHTML(value){
   return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function escapeJS(value){
+  return String(value ?? '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
 }
 async function sha256(text){
   const data = new TextEncoder().encode(text);
@@ -2577,6 +2605,22 @@ function openLogin(){
 }
 function openTrofeu(){ openModal('trofeu-modal'); updateServiceGate('trofeu'); }
 function openContas(){ openPage('contas-page'); }
+function openServiceByKey(key){
+  if(key === 'trofeu') return openTrofeu();
+  if(key === 'ranked') return openRanked();
+  if(key === 'prestigio') return openPrestigio();
+  if(key === 'contas') return openContas();
+}
+function handleServiceCardClick(event, key){
+  if(editModeActive){
+    event?.preventDefault?.();
+    event?.stopPropagation?.();
+    openServiceEditChoice(event?.currentTarget || document.querySelector(`.service-card[data-service-key="${CSS.escape(key)}"]`), key);
+    return false;
+  }
+  openServiceByKey(key);
+  return true;
+}
 function openAdmin(){
   syncCurrentUserFromStore();
   if(!currentUser){
@@ -2595,10 +2639,7 @@ function openAdmin(){
 function openScheduleMain(){ openModal('service-picker-modal'); }
 function chooseScheduleService(type){
   closeModal('service-picker-modal');
-  if(type==='trofeu') return openTrofeu();
-  if(type==='ranked') return openRanked();
-  if(type==='prestigio') return openPrestigio();
-  if(type==='contas') return openContas();
+  return openServiceByKey(type);
 }
 function openPrestigio(){ openPage('brawlers-page'); }
 function openRanked(){ openModal('ranked-modal'); updateServiceGate('ranked'); }
@@ -4425,9 +4466,49 @@ function clearAvailabilityCalendar(){
 function editableSelector(){
   return '[data-edit-id]';
 }
+const AUTO_EDIT_SELECTOR = [
+  'h1','h2','h3','h4','h5','h6','p','a','button','label','span','strong','small','li','img',
+  'input','textarea','.section-tag','.service-badge','.card-arrow','.logo','.stat-num','.stat-label'
+].join(',');
+function shouldSkipEditableElement(el){
+  return Boolean(el?.closest?.('#admin-page,#edit-panel,#edit-main-toolbar,#edit-mode-ribbon,#edit-capsule,#edit-context-menu,#edit-password-modal,#edit-save-confirm-modal,#service-edit-choice-modal,#toast-container,.team-task-notification,.order-notification'));
+}
+function editSlug(value){
+  return String(value || 'item').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9_-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,48) || 'item';
+}
+function sameTagIndex(el){
+  if(!el?.parentElement) return 1;
+  return [...el.parentElement.children].filter(child => child.tagName === el.tagName).indexOf(el) + 1;
+}
+function buildAutoEditId(el){
+  if(el.id) return `auto-${editSlug(el.tagName)}-${editSlug(el.id)}`;
+  const parts = [];
+  let node = el;
+  while(node && node !== document.body && parts.length < 5){
+    const base = node.id || node.dataset?.editId || node.classList?.[0] || node.tagName?.toLowerCase();
+    parts.unshift(`${editSlug(base)}-${sameTagIndex(node)}`);
+    node = node.parentElement;
+  }
+  return `auto-${parts.join('-')}`;
+}
+function editNameForElement(el){
+  if(el.dataset.editName) return el.dataset.editName;
+  if(el.tagName === 'IMG') return el.alt || el.src || 'Imagem';
+  if(['INPUT','TEXTAREA'].includes(el.tagName)) return el.placeholder || el.name || el.id || 'Campo';
+  return (el.textContent || el.href || el.tagName).trim().replace(/\s+/g,' ').slice(0,80) || el.tagName;
+}
 function initEditableElements(){
+  document.querySelectorAll(AUTO_EDIT_SELECTOR).forEach(el => {
+    if(shouldSkipEditableElement(el)) return;
+    const hasVisibleText = (el.textContent || '').trim().length > 0;
+    const hasVisualSource = el.tagName === 'IMG' && el.getAttribute('src');
+    const hasPlaceholder = ['INPUT','TEXTAREA'].includes(el.tagName) && el.getAttribute('placeholder');
+    if(!hasVisibleText && !hasVisualSource && !hasPlaceholder && !el.getAttribute('href')) return;
+    if(!el.dataset.editId) el.dataset.editId = buildAutoEditId(el);
+    if(!el.dataset.editName) el.dataset.editName = editNameForElement(el);
+  });
   document.querySelectorAll(editableSelector()).forEach((el, index) => {
-    if(el.closest('#admin-page,.modal-overlay,.edit-panel,#toast-container,.team-task-notification,.order-notification')) return;
+    if(shouldSkipEditableElement(el)) return;
     if(!el.dataset.editName){
       el.dataset.editName = (el.textContent || el.alt || el.href || el.src || el.tagName).trim().slice(0,80) || el.tagName;
     }
@@ -4454,7 +4535,7 @@ function loadEmbeddedSiteEdits(){
   return {};
 }
 function applyEditProp(el, prop, value){
-  if(prop === 'text' && canEditElementText(el)) el.textContent = value;
+  if(prop === 'text') applyElementText(el, value);
   if(prop === 'color') el.style.color = value;
   if(prop === 'background') el.style.background = value;
   if(prop === 'fontSize') el.style.fontSize = value ? `${parseInt(value,10)}px` : '';
@@ -4468,8 +4549,21 @@ function applyEditProp(el, prop, value){
   if(prop === 'height') el.style.height = value ? `${parseInt(value,10)}px` : '';
   if(prop === 'hidden') el.style.display = value === 'true' ? 'none' : '';
 }
+function editableTextValue(el){
+  if(!el) return '';
+  if(el.tagName === 'IMG') return el.getAttribute('alt') || '';
+  if(['INPUT','TEXTAREA'].includes(el.tagName)) return el.getAttribute('placeholder') || '';
+  return canEditElementText(el) ? el.textContent : '';
+}
+function applyElementText(el, value){
+  if(!el) return;
+  if(el.tagName === 'IMG') el.alt = value;
+  else if(['INPUT','TEXTAREA'].includes(el.tagName)) el.setAttribute('placeholder', value);
+  else if(canEditElementText(el)) el.textContent = value;
+}
 function canEditElementText(el){
-  if(!el || ['IMG','INPUT','TEXTAREA','SELECT'].includes(el.tagName)) return false;
+  if(!el || el.tagName === 'SELECT') return false;
+  if(['IMG','INPUT','TEXTAREA'].includes(el.tagName)) return true;
   const realChildren = [...el.children].filter(child => !child.classList.contains('edit-inserted-image'));
   return realChildren.length === 0;
 }
@@ -4530,6 +4624,7 @@ async function enableEditModeSession(){
   document.getElementById('edit-main-toolbar')?.classList.add('active');
   initEditableElements();
   bindEditModeClicks();
+  focusEditTool(editActiveTool || 'text');
   showToast('Modo edição ativado.','✨');
 }
 function openEditPasswordModal(){
@@ -4555,31 +4650,24 @@ function disableEditMode(){
   document.getElementById('edit-main-toolbar')?.classList.remove('active');
   document.getElementById('edit-panel')?.classList.remove('active');
   closeEditContextMenu();
+  document.body.classList.remove('edit-drag-tool');
   if(editSelectedEl) editSelectedEl.classList.remove('edit-highlight');
   editSelectedEl = null;
   showToast('Modo edição desligado.','✨');
 }
 function bindEditModeClicks(){
-  document.querySelectorAll('[data-edit-id]').forEach(el => {
-    if(el.dataset.editBound) return;
-    el.dataset.editBound = '1';
-    el.addEventListener('click', event => {
-      if(!editModeActive) return;
-      if(isEditNavigationElement(el) && !event.shiftKey){
-        const shouldEdit = confirm('Você quer editar este item? Clique em Cancelar para entrar nele.');
-        if(!shouldEdit) return;
-      }
-      event.preventDefault();
-      event.stopPropagation();
-      selectEditableElement(el);
-    }, true);
-  });
+  initEditableElements();
+  if(!document.body.dataset.editClickBound){
+    document.body.dataset.editClickBound = '1';
+    document.addEventListener('click', handleEditModeDocumentClick, true);
+    document.addEventListener('pointerdown', handleEditDragPointerDown, true);
+  }
   if(!document.body.dataset.editContextBound){
     document.body.dataset.editContextBound = '1';
     document.addEventListener('contextmenu', event => {
       if(!editModeActive || !event.shiftKey) return;
       const target = event.target.closest('[data-edit-id]');
-      if(!target) return;
+      if(!target || shouldSkipEditableElement(target)) return;
       event.preventDefault();
       editContextTarget = target;
       openEditContextMenu(event.clientX, event.clientY);
@@ -4588,6 +4676,66 @@ function bindEditModeClicks(){
       if(!event.target.closest('#edit-context-menu')) closeEditContextMenu();
     });
   }
+}
+function handleEditModeDocumentClick(event){
+  if(!editModeActive) return;
+  if(event.target.closest('#edit-panel,#edit-main-toolbar,#edit-context-menu,#service-edit-choice-modal,#edit-password-modal,#edit-save-confirm-modal,#toast-container')) return;
+  const serviceCard = event.target.closest('.service-card[data-service-key]');
+  if(serviceCard && !event.shiftKey && editActiveTool !== 'drag'){
+    event.preventDefault();
+    event.stopPropagation();
+    openServiceEditChoice(serviceCard, serviceCard.dataset.serviceKey);
+    return;
+  }
+  const target = event.target.closest('[data-edit-id]');
+  if(!target || shouldSkipEditableElement(target)) return;
+  event.preventDefault();
+  event.stopPropagation();
+  if(editActiveTool !== 'drag') selectEditableElement(target);
+}
+function handleEditDragPointerDown(event){
+  if(!editModeActive || editActiveTool !== 'drag' || event.button !== 0) return;
+  if(event.target.closest('#edit-panel,#edit-main-toolbar,#edit-context-menu,#service-edit-choice-modal,#edit-password-modal,#edit-save-confirm-modal,#toast-container')) return;
+  const target = event.target.closest('[data-edit-id]');
+  if(!target || shouldSkipEditableElement(target)) return;
+  event.preventDefault();
+  event.stopPropagation();
+  selectEditableElement(target);
+  startEditDrag(event, target);
+}
+function startEditDrag(event, el){
+  const initialLeft = parseInt(el.style.left,10) || 0;
+  const initialTop = parseInt(el.style.top,10) || 0;
+  if(getComputedStyle(el).position === 'static') el.style.position = 'relative';
+  editDragState = {el, startX:event.clientX, startY:event.clientY, initialLeft, initialTop, moved:false};
+  el.classList.add('edit-dragging');
+  window.addEventListener('pointermove', handleEditDragMove, true);
+  window.addEventListener('pointerup', handleEditDragEnd, true);
+  window.addEventListener('pointercancel', handleEditDragEnd, true);
+}
+function handleEditDragMove(event){
+  if(!editDragState) return;
+  const dx = Math.round(event.clientX - editDragState.startX);
+  const dy = Math.round(event.clientY - editDragState.startY);
+  const nextX = editDragState.initialLeft + dx;
+  const nextY = editDragState.initialTop + dy;
+  editDragState.moved = Math.abs(dx) + Math.abs(dy) > 1;
+  setEditPositionProp(editDragState.el, 'left', String(nextX));
+  setEditPositionProp(editDragState.el, 'top', String(nextY));
+  const x = document.getElementById('edit-x');
+  const y = document.getElementById('edit-y');
+  if(x) x.value = nextX;
+  if(y) y.value = nextY;
+}
+function handleEditDragEnd(){
+  if(!editDragState) return;
+  editDragState.el.classList.remove('edit-dragging');
+  const shouldSave = editDragState.moved && document.getElementById('edit-autosave')?.checked;
+  editDragState = null;
+  window.removeEventListener('pointermove', handleEditDragMove, true);
+  window.removeEventListener('pointerup', handleEditDragEnd, true);
+  window.removeEventListener('pointercancel', handleEditDragEnd, true);
+  if(shouldSave) saveVisualEdit();
 }
 function isEditNavigationElement(el){
   return Boolean(el?.closest?.('a,button,[onclick]') || el?.matches?.('a,button,[onclick]'));
@@ -4601,6 +4749,24 @@ function openEditContextMenu(x, y){
 }
 function closeEditContextMenu(){
   document.getElementById('edit-context-menu')?.classList.remove('active');
+}
+function openServiceEditChoice(card, key){
+  if(!card) return;
+  pendingServiceChoice = {card, key};
+  const title = card.querySelector('h3')?.textContent?.trim() || card.dataset.editName || 'serviço';
+  const sub = document.getElementById('service-edit-choice-sub');
+  if(sub) sub.textContent = `Você clicou em ${title}.`;
+  openModal('service-edit-choice-modal');
+}
+function enterSelectedServiceFromEdit(){
+  const key = pendingServiceChoice?.key;
+  closeModal('service-edit-choice-modal');
+  if(key) openServiceByKey(key);
+}
+function editSelectedServiceCard(){
+  const card = pendingServiceChoice?.card;
+  closeModal('service-edit-choice-modal');
+  if(card) selectEditableElement(card);
 }
 function editContextAction(action){
   const target = editContextTarget || editSelectedEl;
@@ -4638,7 +4804,7 @@ function selectEditableElement(el){
   const textField = document.getElementById('edit-text');
   textField.value = editSelectedOriginal.text;
   textField.disabled = !canEditElementText(el);
-  textField.placeholder = canEditElementText(el) ? '' : 'Selecione um texto simples dentro do bloco para editar o texto.';
+  textField.placeholder = canEditElementText(el) ? '' : 'Selecione um texto, botão, imagem ou campo separado.';
   document.getElementById('edit-color').value = rgbToHex(getComputedStyle(el).color) || '#ffffff';
   document.getElementById('edit-bg').value = rgbToHex(getComputedStyle(el).backgroundColor) || '#000000';
   document.getElementById('edit-font').value = parseInt(getComputedStyle(el).fontSize,10) || '';
@@ -4653,12 +4819,13 @@ function selectEditableElement(el){
   document.getElementById('edit-panel').classList.add('active');
 }
 function readElementEditValues(el){
+  const style = getComputedStyle(el);
   return {
-    text: canEditElementText(el) ? el.textContent : '',
-    color: el.style.color || '',
-    background: el.style.background || '',
-    fontSize: el.style.fontSize || '',
-    align: el.style.textAlign || '',
+    text: editableTextValue(el),
+    color: rgbToHex(style.color) || '',
+    background: rgbToHex(style.backgroundColor) || '',
+    fontSize: parseInt(style.fontSize,10) || '',
+    align: style.textAlign || '',
     src: el.tagName === 'IMG' ? el.getAttribute('src') || '' : '',
     href: el.tagName === 'A' ? el.getAttribute('href') || '' : '',
     insertImage: el.querySelector(':scope > .edit-inserted-image')?.getAttribute('src') || '',
@@ -4690,6 +4857,7 @@ function rgbToHex(value){
 }
 function pendingVisualEdits(){
   if(!editSelectedEl) return [];
+  initEditableElements();
   const url = document.getElementById('edit-url').value.trim();
   const next = {
     color: document.getElementById('edit-color').value,
@@ -4729,8 +4897,15 @@ async function confirmSaveVisualEdit(){
   await saveVisualEdit();
 }
 function focusEditTool(tool){
-  if(!editSelectedEl) return showToast('Clique em uma parte editável do site primeiro.','✨');
+  editActiveTool = tool;
+  document.body.classList.toggle('edit-drag-tool', tool === 'drag');
+  document.querySelectorAll('[data-edit-tool]').forEach(btn => btn.classList.toggle('active', btn.dataset.editTool === tool));
+  if(!editSelectedEl) return;
   document.getElementById('edit-panel')?.classList.add('active');
+  if(tool === 'drag'){
+    showToast('Arraste qualquer elemento editável com o mouse e salve quando ficar no lugar.','↔️');
+    return;
+  }
   const map = {text:'edit-text', color:'edit-color', background:'edit-bg', image:'edit-url', move:'edit-x', size:'edit-width'};
   const field = document.getElementById(map[tool]);
   field?.focus();
@@ -4778,28 +4953,172 @@ async function restoreSelectedEditDefault(){
 }
 function renderUsers(){
   if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="locked-note">Apenas dono/admin pode mexer nos usuários.</div>`; return; }
-  const users = allKnownUsers();
-  document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">👥 Usuários</h2><div class="admin-card"><div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th><th>Código</th><th>Origem</th><th>Perfil</th><th>Ação</th></tr></thead><tbody>${users.map(u=>`<tr><td>${escapeHTML(u.name || '-')}</td><td>${escapeHTML(u.email || '-')}</td><td>${escapeHTML(u.phone || '-')}</td><td style="font-family:monospace;color:var(--neon-cyan)">${escapeHTML(u.customerCode || '-')}</td><td>${u.source === 'pedido' ? 'Pedido' : 'Login'}</td><td>${u.source === 'pedido' ? roleBadge('cliente') : `<select class="form-control" id="role-user-${u.id}"><option value="cliente" ${u.role==='cliente'?'selected':''}>Cliente</option><option value="upador" ${u.role==='upador'?'selected':''}>Upador</option><option value="mod" ${u.role==='mod'?'selected':''}>Mod</option><option value="admin" ${u.role==='admin'?'selected':''}>Admin</option><option value="dono" ${u.role==='dono'?'selected':''}>Dono</option></select>`}</td><td>${u.source === 'pedido' ? '<span style="color:var(--text-muted);font-size:.75rem">Criado por compra</span>' : `<button class="btn btn-outline mini-btn" onclick="changeUserRole('${u.id}')">Salvar</button>`}</td></tr>`).join('')}</tbody></table></div></div>`;
+  const all = allKnownUsers();
+  const users = filterAdminUsers(all, 'users');
+  const loginCount = all.filter(u => u.source !== 'pedido').length;
+  const teamCount = all.filter(u => ['dono','admin','mod','upador'].includes(u.role)).length;
+  const orderOnly = all.filter(u => u.source === 'pedido').length;
+  document.getElementById('admin-content').innerHTML = `
+    <div class="admin-title-row"><h2>👥 Usuários</h2><button class="btn btn-outline mini-btn" onclick="renderUsers()">Atualizar</button></div>
+    <div class="admin-lite-grid">
+      <div class="admin-lite-card"><strong>${all.length}</strong><span>Usuários conhecidos no site</span></div>
+      <div class="admin-lite-card"><strong>${loginCount}</strong><span>Logins cadastrados</span></div>
+      <div class="admin-lite-card"><strong>${teamCount}</strong><span>Perfis da equipe</span></div>
+      <div class="admin-lite-card"><strong>${orderOnly}</strong><span>Clientes vindos só de pedidos</span></div>
+    </div>
+    <div class="admin-card">
+      <div class="admin-filter-row">
+        <input class="form-control" id="users-search" value="${escapeHTML(document.getElementById('users-search')?.value || '')}" placeholder="Buscar por nome, email, telefone ou código" oninput="renderUsers()"/>
+        <select class="form-control" id="users-role" onchange="renderUsers()">${adminRoleFilterOptions(document.getElementById('users-role')?.value || '')}</select>
+        <select class="form-control" id="users-source" onchange="renderUsers()"><option value="">Todas as origens</option><option value="login" ${(document.getElementById('users-source')?.value || '')==='login'?'selected':''}>Logins</option><option value="pedido" ${(document.getElementById('users-source')?.value || '')==='pedido'?'selected':''}>Pedidos</option></select>
+      </div>
+      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Dados</th><th>Contato</th><th>Código</th><th>Origem</th><th>Perfil</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+        ${users.map(u => adminUserRow(u)).join('') || '<tr><td colspan="7" style="color:var(--text-muted)">Nenhum usuário encontrado.</td></tr>'}
+      </tbody></table></div>
+    </div>`;
+}
+function adminRoleFilterOptions(selected=''){
+  const roles = [['','Todos os perfis'],['cliente','Clientes'],['upador','Upadores'],['mod','Mods'],['admin','Admins'],['dono','Donos']];
+  return roles.map(([value,label]) => `<option value="${value}" ${selected===value?'selected':''}>${label}</option>`).join('');
+}
+function adminRoleOptions(current='cliente'){
+  const roles = ['cliente','upador','mod','admin'];
+  if(isOwner() || current === 'dono') roles.push('dono');
+  return roles.map(role => `<option value="${role}" ${current===role?'selected':''}>${role === 'dono' ? 'Dono' : role === 'admin' ? 'Admin' : role === 'mod' ? 'Mod' : role === 'upador' ? 'Upador' : 'Cliente'}</option>`).join('');
+}
+function filterAdminUsers(users, prefix){
+  const q = String(document.getElementById(`${prefix}-search`)?.value || '').trim().toLowerCase();
+  const role = document.getElementById(`${prefix}-role`)?.value || '';
+  const source = document.getElementById(`${prefix}-source`)?.value || '';
+  return users.filter(u => {
+    const text = [u.name,u.email,u.phone,u.customerCode,u.role,u.source].join(' ').toLowerCase();
+    return (!q || text.includes(q)) && (!role || u.role === role) && (!source || u.source === source);
+  });
+}
+function adminStatusPill(active){
+  return `<span class="admin-user-state ${active === false ? 'paused' : 'active'}">${active === false ? 'Pausado' : 'Ativo'}</span>`;
+}
+function adminUserRow(u){
+  const id = escapeHTML(u.id);
+  const sid = escapeJS(u.id);
+  if(u.source === 'pedido'){
+    return `<tr>
+      <td><strong>${escapeHTML(u.name || 'Cliente')}</strong><br/><small style="color:var(--text-muted)">Sem login cadastrado</small></td>
+      <td>${escapeHTML(u.email || '-')}<br/><small style="color:var(--text-muted)">${escapeHTML(u.phone || '-')}</small></td>
+      <td style="font-family:monospace;color:var(--neon-cyan)">${escapeHTML(u.customerCode || '-')}</td>
+      <td><span class="admin-user-state">Pedido</span></td>
+      <td>${roleBadge('cliente')}</td>
+      <td>${adminStatusPill(true)}</td>
+      <td><button class="btn btn-primary mini-btn" onclick="adminCreateLoginFromOrderUser('${sid}')">Criar login</button></td>
+    </tr>`;
+  }
+  const lockedOwner = u.role === 'dono' && !isOwner();
+  return `<tr>
+    <td><input class="form-control" id="user-name-${id}" value="${escapeHTML(u.name || '')}" ${lockedOwner?'disabled':''}/></td>
+    <td><input class="form-control" id="user-email-${id}" value="${escapeHTML(u.email || '')}" ${lockedOwner?'disabled':''}/><input class="form-control" style="margin-top:.4rem" id="user-phone-${id}" value="${escapeHTML(u.phone || '')}" placeholder="WhatsApp" ${lockedOwner?'disabled':''}/></td>
+    <td style="font-family:monospace;color:var(--neon-cyan)">${escapeHTML(u.customerCode || '-')}<br/><button class="btn btn-outline mini-btn" onclick="adminGenerateUserCode('${sid}')" ${lockedOwner?'disabled':''}>Gerar código</button></td>
+    <td><span class="admin-user-state">Login</span></td>
+    <td><select class="form-control" id="role-user-${id}" ${lockedOwner?'disabled':''}>${adminRoleOptions(u.role || 'cliente')}</select></td>
+    <td><select class="form-control" id="active-user-${id}" ${lockedOwner?'disabled':''}><option value="true" ${u.active!==false?'selected':''}>Ativo</option><option value="false" ${u.active===false?'selected':''}>Pausado</option></select></td>
+    <td><div class="admin-actions"><button class="btn btn-outline mini-btn" onclick="adminSaveUser('${sid}')" ${lockedOwner?'disabled':''}>Salvar</button><button class="btn btn-outline mini-btn" onclick="adminRemoveUser('${sid}')" ${lockedOwner?'disabled':''}>Pausar</button></div></td>
+  </tr>`;
+}
+function canEditStoredUser(user, nextRole=user?.role){
+  if(!user) return false;
+  if(isOwner()) return true;
+  if(user.role === 'dono' || nextRole === 'dono') return false;
+  return canManageAdmin();
 }
 function changeUserRole(id){
-  if(!requireOwner()) return;
+  adminSaveUser(id);
+}
+function adminSaveUser(id){
   const users = loadStore(LS_KEYS.users, []);
   const user = users.find(u=>u.id===id);
   if(!user) return;
-  user.role = document.getElementById(`role-user-${id}`).value;
+  const nextRole = document.getElementById(`role-user-${id}`)?.value || user.role || 'cliente';
+  if(!canEditStoredUser(user, nextRole)) return showToast('Você não pode alterar este perfil.','🔒');
+  const name = document.getElementById(`user-name-${id}`)?.value.trim() || '';
+  const email = document.getElementById(`user-email-${id}`)?.value.trim().toLowerCase() || '';
+  const phone = document.getElementById(`user-phone-${id}`)?.value.trim() || '';
+  if(!name || !email) return showToast('Nome e email são obrigatórios.','⚠️');
+  if(users.some(u => u.id !== id && String(u.email || '').toLowerCase() === email)) return showToast('Já existe um login com esse email.','⚠️');
+  user.name = name;
+  user.email = email;
+  user.phone = phone;
+  user.role = nextRole;
+  user.active = (document.getElementById(`active-user-${id}`)?.value || 'true') === 'true';
+  ensureCustomerCode(user);
   saveStore(LS_KEYS.users, users);
-  renderUsers(); updateAdminMenu(); showToast('Cargo atualizado.','✅');
+  if(currentUser?.id === user.id){
+    currentUser = {...currentUser, ...user};
+    saveCurrentSession(currentUser);
+  }
+  renderUsers(); updateAdminMenu(); updateAuthUI(); showToast('Usuário atualizado.','✅');
+}
+async function adminCreateLoginFromOrderUser(id){
+  const source = allKnownUsers().find(u => u.id === id);
+  if(!source) return showToast('Cliente não encontrado.','⚠️');
+  if(!source.email) return showToast('Este pedido não tem email para criar login.','⚠️');
+  const users = loadStore(LS_KEYS.users, []);
+  if(users.some(u => String(u.email || '').toLowerCase() === String(source.email || '').toLowerCase())) return showToast('Esse email já possui login.','⚠️');
+  const password = prompt('Digite uma senha inicial para este cliente:');
+  if(!password) return;
+  users.push({id:uid('USR-'),name:source.name || 'Cliente',email:String(source.email).toLowerCase(),phone:source.phone || '',passwordHash:await sha256(password),role:'cliente',active:true,customerCode:source.customerCode || generateCustomerCode()});
+  saveStore(LS_KEYS.users, users);
+  renderUsers();
+  showToast('Login criado para o cliente.','✅');
+}
+function adminRemoveUser(id){
+  const users = loadStore(LS_KEYS.users, []);
+  const user = users.find(u => u.id === id);
+  if(!canEditStoredUser(user)) return showToast('Você não pode pausar este perfil.','🔒');
+  if(currentUser?.id === id) return showToast('Você não pode pausar seu próprio login ativo.','⚠️');
+  if(!confirm('Pausar este login? Ele não conseguirá entrar até ser ativado novamente.')) return;
+  user.active = false;
+  saveStore(LS_KEYS.users, users);
+  renderUsers();
+  showToast('Login pausado.','✅');
 }
 function renderLogins(){
   if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = ''; return; }
-  const users = allKnownUsers();
+  const all = loadStore(LS_KEYS.users, []);
+  const users = filterAdminUsers(all.map(u => ({...u, source:'login'})), 'logins');
   const orders = loadStore(LS_KEYS.orders, []);
   document.getElementById('admin-content').innerHTML = `
-    <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">🔑 Logins e códigos</h2>
+    <div class="admin-title-row"><h2>🔑 Logins e senhas</h2><button class="btn btn-outline mini-btn" onclick="renderLogins()">Atualizar</button></div>
+    <div class="admin-lite-grid">
+      <div class="admin-lite-card"><strong>${all.length}</strong><span>Logins salvos</span></div>
+      <div class="admin-lite-card"><strong>${all.filter(u=>u.active!==false).length}</strong><span>Ativos</span></div>
+      <div class="admin-lite-card"><strong>${all.filter(u=>u.needsPasswordReset).length}</strong><span>Pedindo nova senha</span></div>
+    </div>
+    <div class="admin-card">
+      <h4 style="margin-bottom:.8rem">Criar login</h4>
+      <div class="admin-grid">
+        <input class="form-control" id="login-new-name" placeholder="Nome"/>
+        <input class="form-control" id="login-new-email" placeholder="Email"/>
+        <input class="form-control" id="login-new-phone" placeholder="WhatsApp"/>
+        <input class="form-control" id="login-new-password" placeholder="Senha inicial"/>
+        <select class="form-control" id="login-new-role">${adminRoleOptions('cliente')}</select>
+        <button class="btn btn-primary" onclick="adminCreateUser()">Cadastrar login</button>
+      </div>
+    </div>
     <div class="admin-card">
       <h4 style="margin-bottom:.8rem">Contas cadastradas</h4>
-      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Nome</th><th>Email</th><th>Código</th><th>Senha</th><th>Número</th><th>Perfil</th></tr></thead><tbody>
-        ${users.map(u=>`<tr><td>${u.name}</td><td>${u.email}</td><td style="font-family:monospace;color:var(--neon-cyan)">${u.customerCode || '-'}<br/><button class="btn btn-outline mini-btn" onclick="adminGenerateUserCode('${u.id}')">Gerar outro código</button></td><td style="font-family:monospace">${u.passwordHash ? 'protegida por hash' : (u.needsPasswordReset ? 'redefinir' : '-')}</td><td>${u.phone || '-'}</td><td>${roleBadge(u.role)}</td></tr>`).join('')}
+      <div class="admin-filter-row">
+        <input class="form-control" id="logins-search" value="${escapeHTML(document.getElementById('logins-search')?.value || '')}" placeholder="Buscar login" oninput="renderLogins()"/>
+        <select class="form-control" id="logins-role" onchange="renderLogins()">${adminRoleFilterOptions(document.getElementById('logins-role')?.value || '')}</select>
+        <select class="form-control" id="logins-source" onchange="renderLogins()"><option value="">Todos</option><option value="login" selected>Logins</option></select>
+      </div>
+      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Login</th><th>Código</th><th>Senha</th><th>Perfil</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+        ${users.map(u=>`<tr>
+          <td><strong>${escapeHTML(u.name || '-')}</strong><br/><small>${escapeHTML(u.email || '-')}</small><br/><small style="color:var(--text-muted)">${escapeHTML(u.phone || '-')}</small></td>
+          <td style="font-family:monospace;color:var(--neon-cyan)">${escapeHTML(u.customerCode || '-')}<br/><button class="btn btn-outline mini-btn" onclick="adminGenerateUserCode('${escapeJS(u.id)}')">Gerar outro código</button></td>
+          <td><div style="font-family:monospace;margin-bottom:.45rem">${u.passwordHash ? 'hash protegido' : (u.needsPasswordReset ? 'precisa redefinir' : 'sem senha')}</div><div class="password-reset-row"><input class="form-control" id="reset-pass-${escapeHTML(u.id)}" placeholder="Nova senha"/><button class="btn btn-outline mini-btn" onclick="adminResetUserPassword('${escapeJS(u.id)}')">Redefinir</button></div></td>
+          <td>${roleBadge(u.role)}</td>
+          <td>${adminStatusPill(u.active !== false)}</td>
+          <td><div class="admin-actions"><button class="btn btn-outline mini-btn" onclick="adminToggleUserActive('${escapeJS(u.id)}')">${u.active===false?'Ativar':'Pausar'}</button><button class="btn btn-outline mini-btn" onclick="quickAdminNav('users')">Editar dados</button></div></td>
+        </tr>`).join('') || '<tr><td colspan="6" style="color:var(--text-muted)">Nenhum login encontrado.</td></tr>'}
       </tbody></table></div>
     </div>
     <div class="admin-card">
@@ -4809,11 +5128,46 @@ function renderLogins(){
       </tbody></table></div>
     </div>`;
 }
+async function adminCreateUser(){
+  if(!canManageAdmin()) return;
+  const users = loadStore(LS_KEYS.users, []);
+  const name = document.getElementById('login-new-name')?.value.trim() || '';
+  const email = document.getElementById('login-new-email')?.value.trim().toLowerCase() || '';
+  const phone = document.getElementById('login-new-phone')?.value.trim() || '';
+  const password = document.getElementById('login-new-password')?.value || '';
+  const role = document.getElementById('login-new-role')?.value || 'cliente';
+  if(!name || !email || !password) return showToast('Preencha nome, email e senha.','⚠️');
+  if(role === 'dono' && !isOwner()) return showToast('Apenas dono pode criar outro dono.','🔒');
+  if(users.some(u => String(u.email || '').toLowerCase() === email)) return showToast('Já existe login com esse email.','⚠️');
+  users.push({id:uid('USR-'),name,email,phone,passwordHash:await sha256(password),role,active:true,customerCode:generateCustomerCode()});
+  saveStore(LS_KEYS.users, users);
+  renderLogins(); updateAdminMenu(); showToast('Login cadastrado.','✅');
+}
+async function adminResetUserPassword(id){
+  const users = loadStore(LS_KEYS.users, []);
+  const user = users.find(u => u.id === id);
+  if(!canEditStoredUser(user)) return showToast('Você não pode redefinir esta senha.','🔒');
+  const password = document.getElementById(`reset-pass-${id}`)?.value || '';
+  if(password.length < 4) return showToast('Use uma senha com pelo menos 4 caracteres.','⚠️');
+  user.passwordHash = await sha256(password);
+  delete user.needsPasswordReset;
+  saveStore(LS_KEYS.users, users);
+  renderLogins(); showToast('Senha redefinida.','✅');
+}
+function adminToggleUserActive(id){
+  const users = loadStore(LS_KEYS.users, []);
+  const user = users.find(u => u.id === id);
+  if(!canEditStoredUser(user)) return showToast('Você não pode alterar este login.','🔒');
+  if(currentUser?.id === id && user.active !== false) return showToast('Você não pode pausar seu próprio login ativo.','⚠️');
+  user.active = user.active === false;
+  saveStore(LS_KEYS.users, users);
+  renderLogins(); updateAuthUI(); showToast(user.active ? 'Login ativado.' : 'Login pausado.','✅');
+}
 function adminGenerateUserCode(userId){
-  if(!requireOwner()) return;
+  if(!canManageAdmin()) return;
   const users = loadStore(LS_KEYS.users, []);
   const user = users.find(u => u.id === userId);
-  if(!user) return;
+  if(!canEditStoredUser(user)) return showToast('Você não pode alterar este código.','🔒');
   const oldCode = user.customerCode;
   user.customerCode = generateCustomerCode();
   const orders = loadStore(LS_KEYS.orders, []);
@@ -4828,7 +5182,8 @@ function adminGenerateUserCode(userId){
     currentUser.customerCode = user.customerCode;
     saveCurrentSession(currentUser);
   }
-  renderLogins();
+  if(currentAdminSection === 'users') renderUsers();
+  else renderLogins();
   showToast('Código do cliente atualizado.','✅');
 }
 function renderEditModeAdmin(){
