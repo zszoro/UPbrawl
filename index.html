@@ -236,6 +236,7 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .admin-content{margin-left:230px;padding:2rem;min-height:100vh;background:#000}
 .admin-nav-item{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;border-radius:.55rem;cursor:pointer;color:var(--text-muted);font-size:.88rem;transition:.25s;margin-bottom:.2rem}
 .admin-nav-item:hover,.admin-nav-item.active{background:rgba(168,85,247,.14);color:var(--neon-purple)}
+.admin-nav-badge{margin-left:auto;min-width:18px;height:18px;border-radius:999px;background:#ef4444;color:#fff;font-size:.64rem;font-weight:900;display:inline-grid;place-items:center;padding:0 .3rem;border:1px solid rgba(255,255,255,.22)}
 .admin-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:1rem;margin-bottom:2rem}
 .admin-stat-card{background:rgba(13,13,31,.9);border:1px solid var(--border-glow);border-radius:1rem;padding:1.4rem}
 .admin-stat-val{font-family:'Orbitron',sans-serif;font-size:1.7rem;font-weight:900;background:linear-gradient(135deg,var(--neon-purple),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -256,6 +257,7 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .chat-message{max-width:78%;padding:.7rem .85rem;border-radius:.8rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
 .chat-message.mine{align-self:flex-end;background:rgba(168,85,247,.16);border-color:rgba(168,85,247,.3)}
 .chat-meta{font-size:.68rem;color:var(--text-muted);margin-bottom:.25rem;font-weight:700}
+.chat-mention{display:inline-block;color:#93c5fd;background:rgba(59,130,246,.14);border:1px solid rgba(59,130,246,.24);border-radius:.35rem;padding:0 .25rem;font-weight:800}
 .brand-icon{width:1.1em;height:1.1em;display:inline-block;vertical-align:-.18em;fill:currentColor;flex-shrink:0}
 .icon-btn-content{display:inline-flex;align-items:center;justify-content:center;gap:.45rem}
 .code-box{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.35);border-radius:.8rem;padding:1rem;text-align:center;margin:1rem 0}
@@ -286,6 +288,8 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 /* ── ORDER NOTIFICATION ── */
 .order-notification{position:fixed;right:1.5rem;bottom:1.5rem;z-index:8600;width:min(390px,calc(100vw - 2rem));display:none;background:linear-gradient(145deg,rgba(12,18,34,.98),rgba(4,5,16,.98));border:1px solid rgba(148,163,184,.22);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 0 1px rgba(255,255,255,.04) inset;backdrop-filter:blur(16px)}
 .order-notification.active{display:block;animation:toastIn .25s ease}
+.team-task-notification{position:fixed;left:1.5rem;bottom:1.5rem;z-index:8700;width:min(390px,calc(100vw - 2rem));display:none;background:linear-gradient(145deg,rgba(24,16,34,.98),rgba(5,5,14,.98));border:1px solid rgba(248,113,113,.28);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62);backdrop-filter:blur(16px)}
+.team-task-notification.active{display:block;animation:toastIn .25s ease}
 .order-head{display:grid;grid-template-columns:48px 1fr auto;gap:.75rem;align-items:center;margin-bottom:.8rem}
 .order-head img{width:48px;height:48px;border-radius:.85rem;object-fit:contain;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:.25rem}
 .order-title{font-weight:900;font-size:.94rem}
@@ -505,6 +509,7 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
   <button class="btn btn-primary" style="width:100%;padding:.72rem;margin-top:.75rem" onclick="submitFeedback()">Enviar feedback</button>
 </div>
 <div class="order-notification" id="order-notification" aria-live="polite"></div>
+<div class="team-task-notification" id="team-task-notification" aria-live="polite"></div>
 <div class="owner-welcome-overlay" id="owner-welcome-overlay" aria-live="polite">
   <div class="owner-welcome-card">
     <img class="owner-welcome-gif" src="/images/site/dinheiro.gif" alt="Dinheiro"/>
@@ -1340,7 +1345,9 @@ const LS_KEYS = {
   ownerDismissed:'zsup_owner_dismissed_notices',
   ownerLastSeen:'zsup_owner_last_seen',
   cart:'zsup_cart',
-  availability:'zsup_availability'
+  availability:'zsup_availability',
+  teamDismissed:'zsup_team_task_dismissed',
+  chatRead:'zsup_chat_mentions_read'
 };
 const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks','zsup_owner_dismissed_notices','zsup_availability'];
 
@@ -1745,6 +1752,7 @@ function handlePaymentReturn(){
 window.onload = async () => {
   await pullGlobalState({initial:true});
   ensureSeedData(); ensureTeamTaskNotices(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications();
+  renderTeamTaskNotification(); updateAdminBadges();
 };
 
 function animateStats(){
@@ -2261,7 +2269,9 @@ function upsertCartItem(order){
     price: order.paymentAmount || order.price,
     status: order.paymentStatus || 'checkout_aberto',
     orderStatus: order.status || 'pendente',
-    createdAt: order.createdAt || todayLabel()
+    createdAt: order.createdAt || todayLabel(),
+    order,
+    servicePayment: embeddedPaymentService || order.servicePayment || null
   });
   saveCart(items);
 }
@@ -2273,6 +2283,7 @@ function updateCartItemFromOrder(order){
     item.status = order.paymentStatus || item.status;
     item.orderStatus = order.status || item.orderStatus;
     item.price = order.paymentAmount || order.price || item.price;
+    item.order = {...(item.order || {}), ...order};
     saveCart(items);
   } else if(order?.id) upsertCartItem(order);
 }
@@ -2280,10 +2291,27 @@ function removeCartItem(id){
   saveCart(cartItems().filter(i => i.id !== id));
   renderCartModal();
 }
+function cartItemPending(item){
+  return !['approved','realizado'].includes(item.status) && item.orderStatus !== 'realizado';
+}
 function updateCartCount(){
-  const count = cartItems().filter(i => !['approved','realizado'].includes(i.status) && i.orderStatus !== 'realizado').length;
+  const count = cartItems().filter(cartItemPending).length;
   const el = document.getElementById('cart-count');
   if(el) el.textContent = String(count);
+}
+function resumeCartCheckout(id){
+  const item = cartItems().find(i => i.id === id);
+  if(!item) return showToast('Pedido não encontrado no carrinho.','⚠️');
+  const stored = loadStore(LS_KEYS.orders, []).find(o => o.id === id);
+  currentOrder = stored || item.order || null;
+  embeddedPaymentService = item.servicePayment || currentOrder?.servicePayment || null;
+  if(!currentOrder || !embeddedPaymentService?.amount){
+    showToast('Não foi possível retomar essa compra. Refaça o agendamento.','⚠️');
+    return;
+  }
+  paymentInProgress = true;
+  closeModal('cart-modal');
+  openEmbeddedCheckout();
 }
 function renderCartModal(){
   const el = document.getElementById('cart-content');
@@ -2305,7 +2333,10 @@ function renderCartModal(){
       </div>
       <div style="display:flex;justify-content:space-between;gap:.7rem;align-items:center;margin-top:.75rem">
         <span class="status-badge ${item.orderStatus === 'realizado' ? 'status-done' : item.status === 'approved' ? 'status-active' : 'status-pending'}">${item.status === 'approved' ? 'Pago' : item.orderStatus === 'realizado' ? 'Finalizado' : 'No carrinho'}</span>
-        <button class="btn btn-outline mini-btn" onclick="removeCartItem('${escapeHTML(item.id)}')">Remover</button>
+        <div class="admin-actions">
+          ${cartItemPending(item) ? `<button class="btn btn-primary mini-btn" onclick="resumeCartCheckout('${escapeHTML(item.id)}')">Prosseguir compra</button>` : ''}
+          <button class="btn btn-outline mini-btn" onclick="removeCartItem('${escapeHTML(item.id)}')">Remover</button>
+        </div>
       </div>
     </div>`).join('')}</div>`;
 }
@@ -2316,6 +2347,11 @@ function openCart(){
 
 function isOrderPaid(order){
   return order?.paymentStatus === 'approved' || order?.paidAt || order?.status === 'realizado' || order?.uploaderId;
+}
+function availableTaskOrders(){
+  return loadStore(LS_KEYS.orders, [])
+    .filter(o => isOrderPaid(o) && !o.accountProductId && o.status !== 'realizado' && !o.uploaderId)
+    .sort((a,b)=>(b.approvedAtMs || b.createdAtMs || 0) - (a.approvedAtMs || a.createdAtMs || 0));
 }
 function latestOrderForNotification(){
   const lastOrderId = localStorage.getItem(LS_KEYS.lastOrder);
@@ -2920,6 +2956,51 @@ function setPixStatus(message, state=''){
   }
 }
 
+function renderTeamTaskNotification(){
+  const el = document.getElementById('team-task-notification');
+  if(!el) return;
+  if(!canUseTeamChat()){
+    el.classList.remove('active');
+    el.innerHTML = '';
+    return;
+  }
+  const dismissed = loadStore(LS_KEYS.teamDismissed, []);
+  const order = availableTaskOrders().find(o => !dismissed.includes(o.id));
+  if(!order){
+    el.classList.remove('active');
+    el.innerHTML = '';
+    return;
+  }
+  el.innerHTML = `
+    <div class="order-head">
+      <img src="${SITE_IMAGES.order}" alt=""/>
+      <div>
+        <div class="order-title">Novo agendamento disponível</div>
+        <div class="order-sub">${escapeHTML(order.id)} · ${escapeHTML(order.date || '')} ${escapeHTML(order.time || '')}</div>
+      </div>
+      <span class="order-dot red"></span>
+    </div>
+    <p style="color:var(--text-muted);font-size:.84rem;line-height:1.55;margin:.4rem 0 .8rem">
+      O cliente <strong style="color:#fff">${escapeHTML(order.client || order.owner || 'Cliente')}</strong> acabou de agendar <strong style="color:#fff">${escapeHTML(order.service || 'um serviço')}</strong>. Corra para pegar antes de outros upadores.
+    </p>
+    <div class="admin-actions">
+      <button class="btn btn-primary mini-btn" onclick="goToTaskSchedule()">Ir para agendamentos</button>
+      <button class="btn btn-outline mini-btn" onclick="dismissTeamTaskNotice('${escapeHTML(order.id)}')">Deixar passar</button>
+    </div>`;
+  el.classList.add('active');
+}
+function dismissTeamTaskNotice(id){
+  const dismissed = loadStore(LS_KEYS.teamDismissed, []);
+  if(!dismissed.includes(id)) dismissed.push(id);
+  localStorage.setItem(LS_KEYS.teamDismissed, JSON.stringify(dismissed.slice(-100)));
+  renderTeamTaskNotification();
+}
+function goToTaskSchedule(){
+  openAdmin();
+  setTimeout(()=>quickAdminNav('schedule'), 0);
+  document.getElementById('team-task-notification')?.classList.remove('active');
+}
+
 function renderPixCheckout(payment){
   currentPixPayment = payment;
   const tx = payment.point_of_interaction?.transaction_data || {};
@@ -3359,6 +3440,8 @@ function updateAuthUI(){
   renderAccountPanel();
   updateCartCount();
   renderOrderNotification();
+  renderTeamTaskNotification();
+  updateAdminBadges();
 }
 function updateAdminMenu(){
   const ownerOnly = ['users','logins','financeiro'];
@@ -3374,6 +3457,33 @@ function updateAdminMenu(){
       (currentUser?.role === 'mod' && !modAllowed.includes(getSection));
     item.style.display = hidden ? 'none' : '';
   });
+  updateAdminBadges();
+}
+function setAdminNavBadge(section, count){
+  const item = [...document.querySelectorAll('.admin-nav-item')].find(nav => (nav.getAttribute('onclick') || '').includes(`'${section}'`));
+  if(!item) return;
+  item.querySelector('.admin-nav-badge')?.remove();
+  if(count > 0 && item.style.display !== 'none'){
+    item.insertAdjacentHTML('beforeend', `<span class="admin-nav-badge">${count > 99 ? '99+' : count}</span>`);
+  }
+}
+function mentionMatchesCurrentUser(message){
+  if(!currentUser || message.author === currentUser.name) return false;
+  const mentions = message.mentions || [];
+  const role = currentUser.role || '';
+  return mentions.includes('todos') || mentions.includes('equipe') || mentions.includes(role) || mentions.includes(currentUser.id);
+}
+function chatMentionCount(){
+  const lastRead = Number(localStorage.getItem(`${LS_KEYS.chatRead}_${currentUser?.id || 'anon'}`) || 0);
+  return loadStore(LS_KEYS.chat, []).filter(m => mentionMatchesCurrentUser(m) && (m.createdAtMs || 0) > lastRead).length;
+}
+function markChatMentionsRead(){
+  if(currentUser) localStorage.setItem(`${LS_KEYS.chatRead}_${currentUser.id}`, String(Date.now()));
+  updateAdminBadges();
+}
+function updateAdminBadges(){
+  setAdminNavBadge('schedule', availableTaskOrders().length);
+  setAdminNavBadge('chat', chatMentionCount());
 }
 function loginSocial(p){
   showToast(`Login com ${p} ainda não está conectado. Use email e senha.`, '🔒');
@@ -3627,6 +3737,7 @@ function confirmTakeTask(){
   o.takenAtMs = Date.now();
   saveStore(LS_KEYS.orders, orders);
   ensureTeamTaskNotices();
+  renderTeamTaskNotification();
   updateCartItemFromOrder(o);
   currentTaskFlowOrderId = o.id;
   closeTaskConfirmModal();
@@ -3643,6 +3754,7 @@ function completeTask(id){
   o.status='realizado'; o.completedAt = todayLabel(); o.completedAtMs = Date.now();
   saveStore(LS_KEYS.orders, orders);
   ensureTeamTaskNotices();
+  renderTeamTaskNotification();
   updateCartItemFromOrder(o);
   refreshAdminSection();
   renderOrderNotification();
@@ -3812,8 +3924,10 @@ function ensureTeamTaskNotices(){
         role:'dono',
         kind:'task_available',
         taskId:order.id,
-        text:`Nova tarefa aprovada: ${order.service} para ${order.client || order.owner || 'cliente'} no valor ${order.paymentAmount || order.price || ''}.`,
-        createdAt:todayLabel()
+        text:`@upador O cliente ${order.client || order.owner || 'cliente'} acabou de agendar ${order.service}. Corra para pegar antes de outros upadores.`,
+        mentions:['upador'],
+        createdAt:todayLabel(),
+        createdAtMs:Date.now()
       });
       changed = true;
     }
@@ -3827,7 +3941,8 @@ function ensureTeamTaskNotices(){
           kind:'task_taken',
           taskId:order.id,
           text:`${order.uploaderName || 'Um upador'} pegou a tarefa ${order.id}.`,
-          createdAt:todayLabel()
+          createdAt:todayLabel(),
+          createdAtMs:Date.now()
         });
         changed = true;
       }
@@ -3835,6 +3950,8 @@ function ensureTeamTaskNotices(){
   });
   if(changed) saveStore(LS_KEYS.chat, messages.slice(-180));
   applyingTaskNotices = false;
+  renderTeamTaskNotification();
+  updateAdminBadges();
 }
 function renderChatTaskAction(taskId){
   const order = loadStore(LS_KEYS.orders, []).find(o => o.id === taskId);
@@ -3845,11 +3962,30 @@ function renderChatTaskAction(taskId){
   }
   return `<div class="chat-task-card"><button class="btn btn-primary mini-btn" onclick="takeTask('${escapeHTML(order.id)}')">Realizar tarefa</button></div>`;
 }
+function normalizeMention(value=''){
+  return String(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/^@/,'').replace(/[^\w.-]+/g,'');
+}
+function chatMentionTargets(){
+  const users = loadStore(LS_KEYS.users, []).filter(u => ['dono','admin','mod','upador'].includes(u.role));
+  const people = users.map(u => ({token:u.id, label:u.name, aliases:[u.id, normalizeMention(u.name), normalizeMention(u.email || '')]}));
+  const roles = ['todos','equipe','dono','admin','mod','upador'].map(role => ({token:role, label:'@'+role, aliases:[role]}));
+  return [...roles, ...people];
+}
+function parseMentions(text=''){
+  const tags = [...String(text).matchAll(/@([\p{L}\p{N}_.-]+)/gu)].map(m => normalizeMention(m[1]));
+  const targets = chatMentionTargets();
+  const found = new Set();
+  tags.forEach(tag => targets.forEach(target => { if(target.aliases.includes(tag)) found.add(target.token); }));
+  return [...found];
+}
+function renderMentionText(text=''){
+  return escapeHTML(text).replace(/@([\p{L}\p{N}_.-]+)/gu, '<span class="chat-mention">@$1</span>');
+}
 function renderChatMessage(message){
   const mine = message.author === currentUser?.name ? 'mine' : '';
   return `<div class="chat-message ${mine}">
     <div class="chat-meta">${escapeHTML(message.author || 'Sistema')} · ${escapeHTML(message.createdAt || '')}</div>
-    <div>${escapeHTML(message.text || '')}</div>
+    <div>${renderMentionText(message.text || '')}</div>
     ${message.taskId ? renderChatTaskAction(message.taskId) : ''}
   </div>`;
 }
@@ -3862,16 +3998,18 @@ function renderChat(){
     <div class="admin-card">
       ${isOwner() ? '<div style="display:flex;justify-content:flex-end;margin-bottom:.75rem"><button class="btn btn-outline mini-btn" onclick="clearChat()">Limpar chat</button></div>' : ''}
       <div class="chat-box" id="chat-box">${messages.map(renderChatMessage).join('')}</div>
-      <div style="display:flex;gap:.7rem;margin-top:1rem"><input class="form-control" id="chat-input" placeholder="Mensagem para donos e upadores" onkeydown="if(event.key==='Enter') sendChat()"/><button class="btn btn-primary" onclick="sendChat()">Enviar</button></div>
+      <div style="font-size:.72rem;color:var(--text-muted);margin-top:.75rem">Use @todos, @upador, @admin, @mod, @dono ou @nome da pessoa.</div>
+      <div style="display:flex;gap:.7rem;margin-top:.55rem"><input class="form-control" id="chat-input" placeholder="Mensagem para donos e upadores" list="chat-mentions" onkeydown="if(event.key==='Enter') sendChat()"/><datalist id="chat-mentions">${chatMentionTargets().map(t=>`<option value="@${escapeHTML(t.label.replace(/^@/,''))}"></option>`).join('')}</datalist><button class="btn btn-primary" onclick="sendChat()">Enviar</button></div>
     </div>`;
   const box = document.getElementById('chat-box'); if(box) box.scrollTop = box.scrollHeight;
+  markChatMentionsRead();
 }
 function sendChat(){
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if(!text) return;
   const messages = loadStore(LS_KEYS.chat, []);
-  messages.push({id:uid('MSG-'),author:currentUser?.name || 'Equipe',role:currentUser?.role || 'dono',text,createdAt:todayLabel()});
+  messages.push({id:uid('MSG-'),author:currentUser?.name || 'Equipe',role:currentUser?.role || 'dono',text,mentions:parseMentions(text),createdAt:todayLabel(),createdAtMs:Date.now()});
   saveStore(LS_KEYS.chat, messages); renderChat();
 }
 function clearChat(){
@@ -4200,6 +4338,7 @@ function adminNav(section, el){
   if(section==='users') renderUsers();
   if(section==='logins') renderLogins();
   if(section==='financeiro') renderFinance();
+  updateAdminBadges();
 }
 function isEditingAdmin(){
   const active = document.activeElement;
@@ -4221,6 +4360,7 @@ function handleLiveStoreUpdate(key){
     updateAuthUI();
     renderAccountPanel();
     renderOrderNotification();
+    renderTeamTaskNotification();
     notifyOwnerApprovedPurchases();
     if(key === LS_KEYS.orders && document.getElementById('schedule-modal')?.classList.contains('active')) renderScheduleStep();
     refreshAdminSection();
@@ -4230,6 +4370,7 @@ function handleLiveStoreUpdate(key){
     if(document.getElementById('cart-modal')?.classList.contains('active')) renderCartModal();
   }
   if(key === LS_KEYS.chat && currentAdminSection === 'chat') refreshAdminSection();
+  if(key === LS_KEYS.chat) updateAdminBadges();
   if(key === LS_KEYS.ownerDismissed) renderAccountPanel();
   if(key === LS_KEYS.availability){
     if(document.getElementById('schedule-modal')?.classList.contains('active')) renderScheduleStep();
