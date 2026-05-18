@@ -34,7 +34,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:1rem 2rem;display:fl
 .nav-cta{display:flex;gap:.75rem;align-items:center}
 .account-menu{position:relative}
 .account-trigger{min-width:112px;display:inline-flex;align-items:center;justify-content:center;gap:.45rem;white-space:nowrap}
-.account-panel{position:absolute;top:calc(100% + .7rem);right:0;width:min(360px,calc(100vw - 2rem));background:linear-gradient(145deg,rgba(14,14,34,.98),rgba(3,6,18,.98));border:1px solid rgba(168,85,247,.35);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.04) inset;display:none;backdrop-filter:blur(18px)}
+.account-panel{position:absolute;top:calc(100% + .7rem);right:0;width:min(360px,calc(100vw - 2rem));max-height:min(74vh,640px);overflow-y:auto;overscroll-behavior:contain;background:linear-gradient(145deg,rgba(14,14,34,.98),rgba(3,6,18,.98));border:1px solid rgba(168,85,247,.35);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.04) inset;display:none;backdrop-filter:blur(18px)}
 .account-panel.active{display:block;animation:fadeIn .18s ease}
 .account-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.9rem}
 .account-name{font-weight:900;font-size:.95rem}
@@ -290,20 +290,39 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 
 /* EDIT MODE */
 body.edit-mode-active [data-edit-id]:hover{outline:2px solid rgba(251,191,36,.85);outline-offset:4px;box-shadow:0 0 26px rgba(251,191,36,.24);cursor:crosshair}
+body.edit-mode-active{padding-top:42px}
+body.edit-mode-active nav{top:42px}
 .edit-capsule{position:fixed;right:1.15rem;bottom:1.15rem;z-index:12900;display:none;align-items:center;gap:.65rem;border:1px solid rgba(251,191,36,.5);background:linear-gradient(135deg,rgba(251,191,36,.2),rgba(24,18,5,.94));color:#fde68a;border-radius:999px;padding:.7rem 1rem;font-weight:900;font-size:.82rem;box-shadow:0 16px 50px rgba(0,0,0,.55),0 0 35px rgba(251,191,36,.22);cursor:pointer;animation:editCapsuleGlow 2s ease-in-out infinite}
 .edit-capsule.visible{display:flex}
 .edit-capsule:hover{transform:translateY(-2px);box-shadow:0 20px 64px rgba(0,0,0,.62),0 0 48px rgba(251,191,36,.34)}
 .edit-capsule-dot{width:10px;height:10px;border-radius:50%;background:#fbbf24;box-shadow:0 0 18px rgba(251,191,36,.9)}
 @keyframes editCapsuleGlow{0%,100%{filter:saturate(1)}50%{filter:saturate(1.35) brightness(1.08)}}
-.edit-panel{position:fixed;right:1rem;top:5rem;z-index:13000;width:min(390px,calc(100vw - 2rem));max-height:calc(100vh - 6rem);overflow:auto;background:linear-gradient(145deg,rgba(31,22,10,.98),rgba(8,8,18,.98));border:1px solid rgba(251,191,36,.42);border-radius:1rem;padding:1rem;box-shadow:0 24px 80px rgba(0,0,0,.68),0 0 60px rgba(251,191,36,.15);display:none}
+.edit-mode-ribbon{position:fixed;top:0;left:0;right:0;height:42px;z-index:13200;display:none;align-items:center;justify-content:center;padding:0 1rem;background:linear-gradient(90deg,rgba(251,191,36,.24),rgba(251,191,36,.1));border-bottom:1px solid rgba(251,191,36,.38);color:#fde68a;font-weight:900;font-size:.82rem;backdrop-filter:blur(14px);box-shadow:0 8px 28px rgba(0,0,0,.35)}
+.edit-mode-ribbon.active{display:flex}
+.edit-ribbon-icon{position:absolute;left:1rem;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(251,191,36,.16);box-shadow:0 0 24px rgba(251,191,36,.22);font-size:1.05rem}
+.edit-main-toolbar{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:13250;display:none;align-items:center;gap:.45rem;max-width:min(980px,calc(100vw - 2rem));overflow-x:auto;padding:.55rem;border:1px solid rgba(251,191,36,.42);border-radius:999px;background:linear-gradient(135deg,rgba(31,22,10,.96),rgba(8,8,18,.96));box-shadow:0 20px 70px rgba(0,0,0,.68),0 0 45px rgba(251,191,36,.18);backdrop-filter:blur(18px)}
+.edit-main-toolbar.active{display:flex}
+.edit-tool-btn{white-space:nowrap;border:1px solid rgba(251,191,36,.28);background:rgba(251,191,36,.08);color:#fde68a;border-radius:999px;padding:.48rem .72rem;font-size:.75rem;font-weight:900;cursor:pointer}
+.edit-tool-btn:hover,.edit-tool-btn.active{background:rgba(251,191,36,.2);box-shadow:0 0 22px rgba(251,191,36,.22)}
+.edit-tool-sep{width:1px;align-self:stretch;background:rgba(251,191,36,.22);margin:0 .2rem;flex:0 0 auto}
+.edit-panel{position:fixed;right:1rem;top:5.75rem;z-index:13000;width:min(420px,calc(100vw - 2rem));max-height:calc(100vh - 8rem);overflow:auto;background:linear-gradient(145deg,rgba(31,22,10,.98),rgba(8,8,18,.98));border:1px solid rgba(251,191,36,.42);border-radius:1rem;padding:1rem;box-shadow:0 24px 80px rgba(0,0,0,.68),0 0 60px rgba(251,191,36,.15);display:none}
 .edit-panel.active{display:block;animation:toastIn .25s ease}
 .edit-panel h3{font-family:'Orbitron',sans-serif;margin:0 0 .35rem;color:#fde68a}
 .edit-panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin:.75rem 0}
 .edit-toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}
+.edit-move-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem;margin:.75rem 0}
 .edit-highlight{outline:2px solid #fbbf24!important;outline-offset:4px!important}
 .edit-loading{display:none;color:#fde68a;font-size:.78rem;margin-top:.5rem}
 .edit-loading.active{display:block}
 .edit-history-table td,.edit-history-table th{vertical-align:top}
+.edit-url-row{display:grid;grid-template-columns:1fr 74px;gap:.65rem;align-items:end}
+.edit-url-preview{width:74px;height:58px;border:1px solid rgba(251,191,36,.34);border-radius:.65rem;background:rgba(251,191,36,.08);display:grid;place-items:center;overflow:hidden;color:#fde68a;font-size:.68rem;text-align:center}
+.edit-url-preview img{width:100%;height:100%;object-fit:cover}
+.edit-context-menu{position:fixed;z-index:14000;display:none;min-width:230px;background:linear-gradient(145deg,rgba(31,22,10,.98),rgba(8,8,18,.98));border:1px solid rgba(251,191,36,.48);border-radius:.85rem;padding:.45rem;box-shadow:0 24px 70px rgba(0,0,0,.66),0 0 42px rgba(251,191,36,.18)}
+.edit-context-menu.active{display:block;animation:fadeIn .12s ease}
+.edit-context-menu button{width:100%;display:flex;align-items:center;gap:.5rem;background:transparent;border:0;color:#fde68a;text-align:left;border-radius:.55rem;padding:.65rem .7rem;cursor:pointer;font-family:'Inter',sans-serif;font-size:.82rem}
+.edit-context-menu button:hover{background:rgba(251,191,36,.12)}
+.edit-inserted-image{cursor:move}
 .edit-password-modal{border-color:rgba(251,191,36,.45);box-shadow:0 30px 110px rgba(0,0,0,.72),0 0 70px rgba(251,191,36,.16)}
 .edit-password-modal h2{color:#fde68a}
 
@@ -533,6 +552,23 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
 <div class="order-notification" id="order-notification" aria-live="polite"></div>
 <div class="team-task-notification" id="team-task-notification" aria-live="polite"></div>
 <button class="edit-capsule" id="edit-capsule" onclick="openEditPasswordModal()" type="button"><span class="edit-capsule-dot"></span><span>Modo Edição</span></button>
+<div class="edit-mode-ribbon" id="edit-mode-ribbon">
+  <span class="edit-ribbon-icon">✨</span>
+  Você está no modo de edição. Para sair, clique no botão Sair do modo de edição.
+</div>
+<div class="edit-main-toolbar" id="edit-main-toolbar" aria-label="Ferramentas do modo edição">
+  <button class="edit-tool-btn" type="button" onclick="openSaveEditConfirm()">Salvar alterações</button>
+  <button class="edit-tool-btn" type="button" onclick="disableEditMode()">Sair do modo de edição</button>
+  <span class="edit-tool-sep"></span>
+  <button class="edit-tool-btn" type="button" onclick="focusEditTool('text')">Texto</button>
+  <button class="edit-tool-btn" type="button" onclick="focusEditTool('color')">Cor</button>
+  <button class="edit-tool-btn" type="button" onclick="focusEditTool('background')">Alterar fundo</button>
+  <button class="edit-tool-btn" type="button" onclick="focusEditTool('image')">Adicionar imagem</button>
+  <button class="edit-tool-btn" type="button" onclick="focusEditTool('move')">Mover X/Y</button>
+  <button class="edit-tool-btn" type="button" onclick="focusEditTool('size')">Tamanho</button>
+  <button class="edit-tool-btn" type="button" onclick="previewVisualEdit()">Preview</button>
+  <button class="edit-tool-btn" type="button" onclick="undoLastVisualEdit()">Desfazer</button>
+</div>
 <div class="edit-panel" id="edit-panel">
   <h3>Editor visual</h3>
   <p class="modal-sub" id="edit-panel-sub">Selecione um elemento editável.</p>
@@ -543,17 +579,32 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
     <div class="form-group"><label>Fonte px</label><input class="form-control" id="edit-font" type="number" min="8" max="96"/></div>
     <div class="form-group"><label>Alinhar</label><select class="form-control" id="edit-align"><option value="">Padrão</option><option value="left">Esquerda</option><option value="center">Centro</option><option value="right">Direita</option></select></div>
   </div>
-  <div class="form-group"><label>Imagem ou link</label><input class="form-control" id="edit-url" placeholder="/images/site/... ou https://"/></div>
+  <div class="edit-url-row">
+    <div class="form-group"><label>Imagem ou link</label><input class="form-control" id="edit-url" placeholder="/images/site/... ou https://" oninput="updateEditUrlPreview()"/></div>
+    <div class="edit-url-preview" id="edit-url-preview">preview</div>
+  </div>
+  <div class="edit-move-grid">
+    <div class="form-group"><label>X px</label><input class="form-control" id="edit-x" type="number" placeholder="0"/></div>
+    <div class="form-group"><label>Y px</label><input class="form-control" id="edit-y" type="number" placeholder="0"/></div>
+    <div class="form-group"><label>Largura</label><input class="form-control" id="edit-width" type="number" min="10" placeholder="auto"/></div>
+    <div class="form-group"><label>Altura</label><input class="form-control" id="edit-height" type="number" min="10" placeholder="auto"/></div>
+  </div>
   <label style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-muted)"><input type="checkbox" id="edit-hidden"/> Esconder elemento</label>
   <label style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-muted);margin-top:.4rem"><input type="checkbox" id="edit-autosave"/> Salvamento automático</label>
   <div class="edit-loading" id="edit-loading">Salvando alterações...</div>
   <div class="edit-toolbar">
-    <button class="btn btn-primary mini-btn" onclick="saveVisualEdit()">Salvar alterações</button>
     <button class="btn btn-outline mini-btn" onclick="previewVisualEdit()">Preview</button>
     <button class="btn btn-outline mini-btn" onclick="undoLastVisualEdit()">Desfazer última alteração</button>
     <button class="btn btn-outline mini-btn" onclick="restoreSelectedEditDefault()">Restaurar padrão</button>
     <button class="btn btn-outline mini-btn" onclick="cancelVisualEdit()">Cancelar</button>
   </div>
+</div>
+<div class="edit-context-menu" id="edit-context-menu">
+  <button onclick="editContextAction('edit')">✏️ Editar este elemento</button>
+  <button onclick="editContextAction('image')">🖼 Adicionar imagem por URL</button>
+  <button onclick="editContextAction('link')">🔗 Editar botão/link</button>
+  <button onclick="editContextAction('hide')">👁 Esconder/mostrar</button>
+  <button onclick="editContextAction('restore')">↩ Restaurar padrão</button>
 </div>
 <div class="modal-overlay" id="edit-password-modal">
   <div class="modal edit-password-modal">
@@ -563,6 +614,17 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
     <div class="form-group"><label>Senha do editor</label><input type="password" class="form-control" id="edit-mode-password" placeholder="Senha do modo edição"/></div>
     <div class="danger-text" id="edit-mode-error"></div>
     <button class="btn btn-primary" style="width:100%;padding:.82rem" onclick="submitEditPassword()">Ativar editor</button>
+  </div>
+</div>
+<div class="modal-overlay" id="edit-save-confirm-modal">
+  <div class="modal edit-password-modal">
+    <button class="modal-close" onclick="closeModal('edit-save-confirm-modal')">×</button>
+    <h2>Salvar alterações?</h2>
+    <p class="modal-sub">As alterações serão publicadas globalmente para todos os usuários, dispositivos e logins. O site também tentará gravar um snapshot direto no HTML local quando o servidor permitir.</p>
+    <div class="admin-actions" style="margin-top:1rem">
+      <button class="btn btn-primary" onclick="confirmSaveVisualEdit()">Sim, salvar globalmente</button>
+      <button class="btn btn-outline" onclick="closeModal('edit-save-confirm-modal')">Cancelar</button>
+    </div>
   </div>
 </div>
 <div class="owner-welcome-overlay" id="owner-welcome-overlay" aria-live="polite">
@@ -595,11 +657,11 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
 </nav>
 
 <!-- ═══ HERO ═══ -->
-<section id="hero">
+<section id="hero" data-edit-id="home-hero-section" data-edit-name="Seção inicial">
   <div class="hero-bg"></div>
   <div style="position:relative;z-index:2;max-width:800px">
-    <div class="hero-badge">⚡ O MELHOR ELOJOB DO BRASIL</div>
-    <h1><span class="gradient-text">ZS UpBrawl</span></h1>
+    <div class="hero-badge" data-edit-id="home-hero-badge" data-edit-name="Selo inicial">⚡ O MELHOR ELOJOB DO BRASIL</div>
+    <h1 data-edit-id="home-hero-title" data-edit-name="Título inicial"><span class="gradient-text">ZS UpBrawl</span></h1>
     <div class="hero-btns">
       <button class="btn btn-primary btn-lg" onclick="openScheduleMain()">🗓 Agendar Agora</button>
       <button class="btn btn-outline btn-lg" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Ver Serviços</button>
@@ -615,35 +677,35 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
 <div class="sep"></div>
 
 <!-- ═══ SERVICES ═══ -->
-<section id="services">
+<section id="services" data-edit-id="home-services-section" data-edit-name="Seção serviços">
   <div class="section-header">
-    <div class="section-tag">🎮 SERVIÇOS</div>
-    <h2 class="section-title">Escolha seu <span class="gradient-text">Serviço</span></h2>
-    <p class="section-sub">Todos os serviços são realizados por jogadores profissionais com total segurança.</p>
+    <div class="section-tag" data-edit-id="services-tag" data-edit-name="Etiqueta serviços">🎮 SERVIÇOS</div>
+    <h2 class="section-title" data-edit-id="services-title" data-edit-name="Título serviços">Escolha seu <span class="gradient-text">Serviço</span></h2>
+    <p class="section-sub" data-edit-id="services-subtitle" data-edit-name="Descrição serviços">Todos os serviços são realizados por jogadores profissionais com total segurança.</p>
   </div>
   <div class="services-grid">
-    <div class="service-card" onclick="openTrofeu()">
+    <div class="service-card" data-edit-id="service-card-trofeu" data-edit-name="Card UP Troféu" onclick="openTrofeu()">
       <div class="card-arrow">→</div>
       <div class="service-icon clean"><img id="service-img-trofeu" src="/images/site/icon-trophy.png" alt="Troféus"/></div>
       <h3>UP Troféu</h3>
       <p>Suba seus troféus com preço calculado automaticamente. Abaixo de 40k = R$5 por 1.000 troféus.</p>
       <div class="service-badge badge-purple" id="badge-trofeu">A partir de R$5/1k troféus</div>
     </div>
-    <div class="service-card" onclick="openRanked()">
+    <div class="service-card" data-edit-id="service-card-ranked" data-edit-name="Card UP Ranked" onclick="openRanked()">
       <div class="card-arrow">→</div>
       <div class="service-icon clean"><img id="service-img-ranked" src="/images/site/icon-ranked.webp" alt="Ranqueado"/></div>
       <h3>UP Ranked</h3>
       <p>Suba de elo no ranked com nossos profissionais. Do Bronze ao Pro sem preocupações.</p>
       <div class="service-badge badge-blue" id="badge-ranked">Preço por pontos</div>
     </div>
-    <div class="service-card" onclick="openPrestigio()">
+    <div class="service-card" data-edit-id="service-card-prestigio" data-edit-name="Card UP Prestígio" onclick="openPrestigio()">
       <div class="card-arrow">→</div>
       <div class="service-icon clean"><img id="service-img-prestigio" src="/images/site/icon-prestige-3.webp" alt="Prestígio"/></div>
       <h3>UP Prestígio</h3>
       <p>Alcance o prestígio desejado em qualquer brawler. 7 raridades com imagens reais.</p>
       <div class="service-badge badge-purple" id="badge-prestigio">100+ Brawlers disponíveis</div>
     </div>
-    <div class="service-card" onclick="openContas()">
+    <div class="service-card" data-edit-id="service-card-contas" data-edit-name="Card Contas" onclick="openContas()">
       <div class="card-arrow">→</div>
       <div class="service-icon clean"><img id="service-img-contas" src="/images/site/icon-account-red.webp" alt="Conta Brawl Stars"/></div>
       <h3>Contas</h3>
@@ -1389,6 +1451,7 @@ const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const TIME_SLOTS = ['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
 const CARD_MIN_AMOUNT = 10;
 let editModeActive=false, editSelectedEl=null, editSelectedOriginal={}, editLastHistoryId='', siteEditsUpdatedAt=0;
+let editContextTarget=null;
 const LS_KEYS = {
   users:'zsup_users',
   orders:'zsup_orders',
@@ -1809,7 +1872,7 @@ function handlePaymentReturn(){
 // ═══ INIT ═══
 window.onload = async () => {
   await pullGlobalState({initial:true});
-  ensureSeedData(); ensureTeamTaskNotices(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications(); fetchSiteEdits(); initMicroInteractions();
+  ensureSeedData(); ensureTeamTaskNotices(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications(); applySiteEdits(loadEmbeddedSiteEdits()); fetchSiteEdits(); initMicroInteractions();
   renderTeamTaskNotification(); updateAdminBadges();
 };
 
@@ -4360,15 +4423,11 @@ function clearAvailabilityCalendar(){
   showToast('Calendário de disponibilidade limpo.','✅');
 }
 function editableSelector(){
-  return 'h1,h2,h3,h4,p,a,button,img,.service-card,.hero-content,.stat-card,.product-card,.account-card,.testimonial-card,.faq-item,[data-edit-id]';
+  return '[data-edit-id]';
 }
 function initEditableElements(){
   document.querySelectorAll(editableSelector()).forEach((el, index) => {
     if(el.closest('#admin-page,.modal-overlay,.edit-panel,#toast-container,.team-task-notification,.order-notification')) return;
-    if(!el.dataset.editId){
-      const label = (el.id || el.className || el.tagName || 'el').toString().replace(/\s+/g,'-').slice(0,60);
-      el.dataset.editId = `${location.pathname || 'home'}-${label}-${index}`;
-    }
     if(!el.dataset.editName){
       el.dataset.editName = (el.textContent || el.alt || el.href || el.src || el.tagName).trim().slice(0,80) || el.tagName;
     }
@@ -4382,15 +4441,60 @@ function applySiteEdits(edits=loadStore(LS_KEYS.siteEdits, {})){
     Object.entries(props || {}).forEach(([prop, value]) => applyEditProp(el, prop, value));
   });
 }
+function loadEmbeddedSiteEdits(){
+  const node = document.getElementById('site-edits-snapshot');
+  if(!node?.textContent) return {};
+  try{
+    const edits = JSON.parse(node.textContent);
+    if(edits && typeof edits === 'object'){
+      localStorage.setItem(LS_KEYS.siteEdits, JSON.stringify(edits));
+      return edits;
+    }
+  }catch{}
+  return {};
+}
 function applyEditProp(el, prop, value){
-  if(prop === 'text' && !['IMG','INPUT','TEXTAREA','SELECT'].includes(el.tagName)) el.textContent = value;
+  if(prop === 'text' && canEditElementText(el)) el.textContent = value;
   if(prop === 'color') el.style.color = value;
   if(prop === 'background') el.style.background = value;
   if(prop === 'fontSize') el.style.fontSize = value ? `${parseInt(value,10)}px` : '';
   if(prop === 'align') el.style.textAlign = value;
   if(prop === 'src' && el.tagName === 'IMG') el.src = value;
+  if(prop === 'insertImage') setInsertedImage(el, value);
   if(prop === 'href' && el.tagName === 'A') el.href = value;
+  if(prop === 'x') setEditPositionProp(el, 'left', value);
+  if(prop === 'y') setEditPositionProp(el, 'top', value);
+  if(prop === 'width') el.style.width = value ? `${parseInt(value,10)}px` : '';
+  if(prop === 'height') el.style.height = value ? `${parseInt(value,10)}px` : '';
   if(prop === 'hidden') el.style.display = value === 'true' ? 'none' : '';
+}
+function canEditElementText(el){
+  if(!el || ['IMG','INPUT','TEXTAREA','SELECT'].includes(el.tagName)) return false;
+  const realChildren = [...el.children].filter(child => !child.classList.contains('edit-inserted-image'));
+  return realChildren.length === 0;
+}
+function setEditPositionProp(el, prop, value){
+  if(!value){
+    el.style[prop] = '';
+    if(!el.style.left && !el.style.top && el.style.position === 'relative') el.style.position = '';
+    return;
+  }
+  if(getComputedStyle(el).position === 'static') el.style.position = 'relative';
+  el.style[prop] = `${parseInt(value,10)}px`;
+}
+function setInsertedImage(el, value){
+  let holder = el.querySelector(':scope > .edit-inserted-image');
+  if(!value){
+    holder?.remove();
+    return;
+  }
+  if(!holder){
+    holder = document.createElement('img');
+    holder.className = 'edit-inserted-image';
+    holder.style.cssText = 'display:block;width:min(100%,220px);max-height:160px;object-fit:contain;margin:.75rem auto;border-radius:.75rem;border:1px solid rgba(251,191,36,.32)';
+    el.appendChild(holder);
+  }
+  holder.src = value;
 }
 async function fetchSiteEdits(){
   try{
@@ -4402,7 +4506,11 @@ async function fetchSiteEdits(){
     localStorage.setItem(LS_KEYS.editHistory, JSON.stringify(data.history || []));
     applySiteEdits(data.edits || {});
     if(currentAdminSection === 'edithistory') renderEditHistory();
-  }catch(error){ console.warn('Site edits unavailable:', error.message || error); }
+  }catch(error){
+    const embedded = loadEmbeddedSiteEdits();
+    if(Object.keys(embedded).length) applySiteEdits(embedded);
+    console.warn('Site edits unavailable:', error.message || error);
+  }
 }
 async function enableEditModeSession(){
   if(!canManageAdmin()) return showToast('Apenas dono/admin pode ativar o modo edição.','🔒');
@@ -4418,6 +4526,8 @@ async function enableEditModeSession(){
   closeModal('edit-password-modal');
   editModeActive = true;
   document.body.classList.add('edit-mode-active');
+  document.getElementById('edit-mode-ribbon')?.classList.add('active');
+  document.getElementById('edit-main-toolbar')?.classList.add('active');
   initEditableElements();
   bindEditModeClicks();
   showToast('Modo edição ativado.','✨');
@@ -4441,9 +4551,13 @@ async function submitEditPassword(){
 function disableEditMode(){
   editModeActive = false;
   document.body.classList.remove('edit-mode-active');
+  document.getElementById('edit-mode-ribbon')?.classList.remove('active');
+  document.getElementById('edit-main-toolbar')?.classList.remove('active');
   document.getElementById('edit-panel')?.classList.remove('active');
+  closeEditContextMenu();
   if(editSelectedEl) editSelectedEl.classList.remove('edit-highlight');
   editSelectedEl = null;
+  showToast('Modo edição desligado.','✨');
 }
 function bindEditModeClicks(){
   document.querySelectorAll('[data-edit-id]').forEach(el => {
@@ -4451,11 +4565,69 @@ function bindEditModeClicks(){
     el.dataset.editBound = '1';
     el.addEventListener('click', event => {
       if(!editModeActive) return;
+      if(isEditNavigationElement(el) && !event.shiftKey){
+        const shouldEdit = confirm('Você quer editar este item? Clique em Cancelar para entrar nele.');
+        if(!shouldEdit) return;
+      }
       event.preventDefault();
       event.stopPropagation();
       selectEditableElement(el);
     }, true);
   });
+  if(!document.body.dataset.editContextBound){
+    document.body.dataset.editContextBound = '1';
+    document.addEventListener('contextmenu', event => {
+      if(!editModeActive || !event.shiftKey) return;
+      const target = event.target.closest('[data-edit-id]');
+      if(!target) return;
+      event.preventDefault();
+      editContextTarget = target;
+      openEditContextMenu(event.clientX, event.clientY);
+    });
+    document.addEventListener('click', event => {
+      if(!event.target.closest('#edit-context-menu')) closeEditContextMenu();
+    });
+  }
+}
+function isEditNavigationElement(el){
+  return Boolean(el?.closest?.('a,button,[onclick]') || el?.matches?.('a,button,[onclick]'));
+}
+function openEditContextMenu(x, y){
+  const menu = document.getElementById('edit-context-menu');
+  if(!menu) return;
+  menu.style.left = `${Math.min(x, window.innerWidth - 250)}px`;
+  menu.style.top = `${Math.min(y, window.innerHeight - 240)}px`;
+  menu.classList.add('active');
+}
+function closeEditContextMenu(){
+  document.getElementById('edit-context-menu')?.classList.remove('active');
+}
+function editContextAction(action){
+  const target = editContextTarget || editSelectedEl;
+  closeEditContextMenu();
+  if(!target) return;
+  selectEditableElement(target);
+  if(action === 'image'){
+    const field = document.getElementById('edit-url');
+    if(field){
+      field.placeholder = 'Cole a URL da imagem aqui';
+      field.focus();
+      field.select?.();
+    }
+    showToast('Cole a URL da imagem no campo e veja o preview ao lado.','🖼️');
+    return;
+  }
+  if(action === 'link'){
+    document.getElementById('edit-url')?.focus();
+    return;
+  }
+  if(action === 'hide'){
+    const box = document.getElementById('edit-hidden');
+    box.checked = !box.checked;
+    previewVisualEdit();
+    return;
+  }
+  if(action === 'restore') return restoreSelectedEditDefault();
 }
 function selectEditableElement(el){
   if(editSelectedEl) editSelectedEl.classList.remove('edit-highlight');
@@ -4463,26 +4635,53 @@ function selectEditableElement(el){
   editSelectedOriginal = readElementEditValues(el);
   el.classList.add('edit-highlight');
   document.getElementById('edit-panel-sub').textContent = el.dataset.editName || el.dataset.editId;
-  document.getElementById('edit-text').value = editSelectedOriginal.text;
+  const textField = document.getElementById('edit-text');
+  textField.value = editSelectedOriginal.text;
+  textField.disabled = !canEditElementText(el);
+  textField.placeholder = canEditElementText(el) ? '' : 'Selecione um texto simples dentro do bloco para editar o texto.';
   document.getElementById('edit-color').value = rgbToHex(getComputedStyle(el).color) || '#ffffff';
   document.getElementById('edit-bg').value = rgbToHex(getComputedStyle(el).backgroundColor) || '#000000';
   document.getElementById('edit-font').value = parseInt(getComputedStyle(el).fontSize,10) || '';
   document.getElementById('edit-align').value = getComputedStyle(el).textAlign || '';
-  document.getElementById('edit-url').value = el.tagName === 'IMG' ? el.getAttribute('src') || '' : el.tagName === 'A' ? el.getAttribute('href') || '' : '';
+  document.getElementById('edit-url').value = el.tagName === 'IMG' ? el.getAttribute('src') || '' : el.tagName === 'A' ? el.getAttribute('href') || '' : editSelectedOriginal.insertImage || '';
+  document.getElementById('edit-x').value = parseInt(el.style.left,10) || '';
+  document.getElementById('edit-y').value = parseInt(el.style.top,10) || '';
+  document.getElementById('edit-width').value = parseInt(el.style.width,10) || '';
+  document.getElementById('edit-height').value = parseInt(el.style.height,10) || '';
+  updateEditUrlPreview();
   document.getElementById('edit-hidden').checked = getComputedStyle(el).display === 'none';
   document.getElementById('edit-panel').classList.add('active');
 }
 function readElementEditValues(el){
   return {
-    text: ['IMG','INPUT','TEXTAREA','SELECT'].includes(el.tagName) ? '' : el.textContent,
+    text: canEditElementText(el) ? el.textContent : '',
     color: el.style.color || '',
     background: el.style.background || '',
     fontSize: el.style.fontSize || '',
     align: el.style.textAlign || '',
     src: el.tagName === 'IMG' ? el.getAttribute('src') || '' : '',
     href: el.tagName === 'A' ? el.getAttribute('href') || '' : '',
+    insertImage: el.querySelector(':scope > .edit-inserted-image')?.getAttribute('src') || '',
+    x: parseInt(el.style.left,10) || '',
+    y: parseInt(el.style.top,10) || '',
+    width: parseInt(el.style.width,10) || '',
+    height: parseInt(el.style.height,10) || '',
     hidden: getComputedStyle(el).display === 'none' ? 'true' : ''
   };
+}
+function updateEditUrlPreview(){
+  const preview = document.getElementById('edit-url-preview');
+  const value = document.getElementById('edit-url')?.value.trim() || '';
+  if(!preview) return;
+  if(!value){
+    preview.textContent = 'preview';
+    return;
+  }
+  if(/\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(value) || value.startsWith('data:image/')){
+    preview.innerHTML = `<img src="${escapeHTML(value)}" alt="Preview da imagem"/>`;
+  }else{
+    preview.textContent = 'link';
+  }
 }
 function rgbToHex(value){
   const match = String(value || '').match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
@@ -4493,20 +4692,25 @@ function pendingVisualEdits(){
   if(!editSelectedEl) return [];
   const url = document.getElementById('edit-url').value.trim();
   const next = {
-    text: document.getElementById('edit-text').value,
     color: document.getElementById('edit-color').value,
     background: document.getElementById('edit-bg').value,
     fontSize: document.getElementById('edit-font').value,
     align: document.getElementById('edit-align').value,
+    x: document.getElementById('edit-x').value,
+    y: document.getElementById('edit-y').value,
+    width: document.getElementById('edit-width').value,
+    height: document.getElementById('edit-height').value,
     hidden: document.getElementById('edit-hidden').checked ? 'true' : ''
   };
+  if(canEditElementText(editSelectedEl)) next.text = document.getElementById('edit-text').value;
   if(editSelectedEl.tagName === 'IMG') next.src = url;
   if(editSelectedEl.tagName === 'A') next.href = url;
+  if(url && editSelectedEl.tagName !== 'IMG' && editSelectedEl.tagName !== 'A') next.insertImage = url;
   return Object.entries(next).filter(([prop,value]) => String(value || '') !== String(editSelectedOriginal[prop] || '')).map(([prop,value]) => ({
     page: location.pathname || 'home',
     elementId: editSelectedEl.dataset.editId,
     elementName: editSelectedEl.dataset.editName || editSelectedEl.tagName,
-    type: prop === 'text' ? 'texto' : prop === 'src' ? 'imagem' : prop === 'href' ? 'botao' : prop === 'hidden' ? 'secao' : 'estilo',
+    type: prop === 'text' ? 'texto' : ['src','insertImage'].includes(prop) ? 'imagem' : prop === 'href' ? 'botao' : prop === 'hidden' ? 'secao' : ['x','y','width','height'].includes(prop) ? 'layout' : 'estilo',
     prop,
     oldValue: editSelectedOriginal[prop] || '',
     newValue: value
@@ -4514,7 +4718,24 @@ function pendingVisualEdits(){
 }
 function previewVisualEdit(){
   pendingVisualEdits().forEach(edit => applyEditProp(editSelectedEl, edit.prop, edit.newValue));
-  if(document.getElementById('edit-autosave')?.checked) saveVisualEdit();
+}
+function openSaveEditConfirm(){
+  if(!editSelectedEl) return showToast('Selecione um elemento antes de salvar.','⚠️');
+  if(!pendingVisualEdits().length) return showToast('Nenhuma alteração para salvar.','⚠️');
+  openModal('edit-save-confirm-modal');
+}
+async function confirmSaveVisualEdit(){
+  closeModal('edit-save-confirm-modal');
+  await saveVisualEdit();
+}
+function focusEditTool(tool){
+  if(!editSelectedEl) return showToast('Clique em uma parte editável do site primeiro.','✨');
+  document.getElementById('edit-panel')?.classList.add('active');
+  const map = {text:'edit-text', color:'edit-color', background:'edit-bg', image:'edit-url', move:'edit-x', size:'edit-width'};
+  const field = document.getElementById(map[tool]);
+  field?.focus();
+  field?.select?.();
+  if(tool === 'image') showToast('Cole a URL da imagem. O preview aparece ao lado do campo.','🖼️');
 }
 function cancelVisualEdit(){
   if(editSelectedEl) Object.entries(editSelectedOriginal).forEach(([prop,value]) => applyEditProp(editSelectedEl, prop, value));
@@ -4523,12 +4744,12 @@ function cancelVisualEdit(){
 async function saveVisualEdit(){
   const edits = pendingVisualEdits();
   if(!edits.length) return showToast('Nenhuma alteração para salvar.','⚠️');
-  if(edits.length > 3 && !confirm('Publicar várias alterações globalmente para todos os usuários?')) return;
   const loading = document.getElementById('edit-loading');
   loading?.classList.add('active');
   try{
-    for(const edit of edits){
-      const res = await fetch('/api/site-edits', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edit})});
+    for(let index=0; index<edits.length; index++){
+      const edit = edits[index];
+      const res = await fetch('/api/site-edits', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edit, materialize:index === edits.length - 1})});
       const data = await res.json().catch(()=>({}));
       if(!res.ok) throw new Error(data.error || 'Erro ao salvar edição.');
       editLastHistoryId = data.edit?.id || editLastHistoryId;

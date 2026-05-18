@@ -1,4 +1,6 @@
 const { verifyEditSession } = require('./edit-session.js');
+const fs = require('fs');
+const path = require('path');
 
 const STORE_KEY = 'zsup:global-state:v1';
 const EDITS_KEY = 'zsup_site_edits';
@@ -73,6 +75,33 @@ function historyItem({ edit, user, reverted = false }) {
   };
 }
 
+function htmlEscape(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function tryMaterializeHtml(edits) {
+  const file = path.join(process.cwd(), 'index.html');
+  if (!fs.existsSync(file)) return false;
+  const markerStart = '<script id="site-edits-snapshot" type="application/json">';
+  const markerEnd = '</script>';
+  const payload = `${markerStart}${htmlEscape(JSON.stringify(edits || {}))}${markerEnd}`;
+  let html = fs.readFileSync(file, 'utf8');
+  const start = html.indexOf(markerStart);
+  if (start >= 0) {
+    const end = html.indexOf(markerEnd, start);
+    if (end >= 0) {
+      html = `${html.slice(0, start)}${payload}${html.slice(end + markerEnd.length)}`;
+    }
+  } else {
+    html = html.replace('</body>', `${payload}\n</body>`);
+  }
+  fs.writeFileSync(file, html, 'utf8');
+  return true;
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
 
@@ -107,7 +136,11 @@ module.exports = async function handler(req, res) {
       state[EDITS_KEY] = edits;
       state[HISTORY_KEY] = [item, ...history].slice(0, 500);
       const saved = await writeGlobal(state);
-      res.status(200).json({ ok: true, edit: item, edits: state[EDITS_KEY], history: state[HISTORY_KEY], updatedAt: saved.updatedAt });
+      let htmlMaterialized = false;
+      if (body.materialize) {
+        try { htmlMaterialized = tryMaterializeHtml(state[EDITS_KEY]); } catch {}
+      }
+      res.status(200).json({ ok: true, edit: item, edits: state[EDITS_KEY], history: state[HISTORY_KEY], updatedAt: saved.updatedAt, htmlMaterialized });
       return;
     }
 
