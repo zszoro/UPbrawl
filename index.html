@@ -1041,14 +1041,12 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
   <div class="admin-sidebar">
     <div class="logo" style="margin-bottom:2rem;font-size:1.1rem">⚡ Admin Panel</div>
     <div class="admin-nav-item active" onclick="adminNav('dashboard',this)">📊 Dashboard</div>
-    <div class="admin-nav-item" onclick="adminNav('orders',this)">📋 Pedidos</div>
     <div class="admin-nav-item" onclick="adminNav('schedule',this)">🗓 Agendamentos</div>
     <div class="admin-nav-item" onclick="adminNav('availability',this)">📅 Disponibilidade</div>
     <div class="admin-nav-item" onclick="adminNav('performance',this)">📣 Meu desempenho</div>
     <div class="admin-nav-item" onclick="adminNav('uploaders',this)">⚡ Upadores</div>
     <div class="admin-nav-item" onclick="adminNav('chat',this)">💬 Chat Upador</div>
     <div class="admin-nav-item" onclick="adminNav('products',this)">🛒 Produtos</div>
-    <div class="admin-nav-item" onclick="adminNav('editmode',this)">✨ Modo Edição</div>
     <div class="admin-nav-item" onclick="adminNav('edithistory',this)">🕘 Histórico de Edições</div>
     <div class="admin-nav-item" onclick="adminNav('users',this)">👥 Usuários</div>
     <div class="admin-nav-item" onclick="adminNav('logins',this)">🔑 Logins</div>
@@ -3523,7 +3521,7 @@ function updateEditCapsule(){
 }
 function updateAdminMenu(){
   const ownerOnly = ['financeiro'];
-  const managerOnly = ['uploaders','products','contas','users','logins','editmode','edithistory'];
+  const managerOnly = ['uploaders','products','contas','users','logins','edithistory'];
   const modAllowed = ['dashboard','orders','schedule','availability','performance','chat'];
   document.querySelectorAll('.admin-nav-item').forEach(item => {
     const attr = item.getAttribute('onclick') || '';
@@ -4689,7 +4687,6 @@ function adminNav(section, el){
   if(section==='chat') renderChat();
   if(section==='products') renderProducts();
   if(section==='contas') renderContasAdmin();
-  if(section==='editmode') renderEditModeAdmin();
   if(section==='edithistory') renderEditHistory();
   if(section==='users') renderUsers();
   if(section==='logins') renderLogins();
