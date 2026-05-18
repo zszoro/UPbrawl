@@ -56,6 +56,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:1rem 2rem;display:fl
 .btn-outline:hover{background:var(--neon-purple);color:#fff;box-shadow:0 0 20px rgba(168,85,247,.5)}
 .btn-primary{background:linear-gradient(135deg,var(--neon-purple),var(--neon-blue));color:#fff;box-shadow:0 0 18px rgba(168,85,247,.35)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 32px rgba(168,85,247,.6)}
+.btn:active,.service-card:active,.account-card:active{transform:scale(.985)}
+.micro-pop{animation:microPop .34s ease}
+@keyframes microPop{0%{transform:scale(1)}45%{transform:scale(1.045)}100%{transform:scale(1)}}
 .btn-lg{padding:.85rem 2rem;font-size:1rem;border-radius:.75rem}
 .btn:disabled{opacity:.45;cursor:not-allowed;filter:saturate(.65)}
 .btn:disabled:hover{transform:none;box-shadow:none}
@@ -287,6 +290,11 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 
 /* EDIT MODE */
 body.edit-mode-active [data-edit-id]:hover{outline:2px solid rgba(251,191,36,.85);outline-offset:4px;box-shadow:0 0 26px rgba(251,191,36,.24);cursor:crosshair}
+.edit-capsule{position:fixed;right:1.15rem;bottom:1.15rem;z-index:12900;display:none;align-items:center;gap:.65rem;border:1px solid rgba(251,191,36,.5);background:linear-gradient(135deg,rgba(251,191,36,.2),rgba(24,18,5,.94));color:#fde68a;border-radius:999px;padding:.7rem 1rem;font-weight:900;font-size:.82rem;box-shadow:0 16px 50px rgba(0,0,0,.55),0 0 35px rgba(251,191,36,.22);cursor:pointer;animation:editCapsuleGlow 2s ease-in-out infinite}
+.edit-capsule.visible{display:flex}
+.edit-capsule:hover{transform:translateY(-2px);box-shadow:0 20px 64px rgba(0,0,0,.62),0 0 48px rgba(251,191,36,.34)}
+.edit-capsule-dot{width:10px;height:10px;border-radius:50%;background:#fbbf24;box-shadow:0 0 18px rgba(251,191,36,.9)}
+@keyframes editCapsuleGlow{0%,100%{filter:saturate(1)}50%{filter:saturate(1.35) brightness(1.08)}}
 .edit-panel{position:fixed;right:1rem;top:5rem;z-index:13000;width:min(390px,calc(100vw - 2rem));max-height:calc(100vh - 6rem);overflow:auto;background:linear-gradient(145deg,rgba(31,22,10,.98),rgba(8,8,18,.98));border:1px solid rgba(251,191,36,.42);border-radius:1rem;padding:1rem;box-shadow:0 24px 80px rgba(0,0,0,.68),0 0 60px rgba(251,191,36,.15);display:none}
 .edit-panel.active{display:block;animation:toastIn .25s ease}
 .edit-panel h3{font-family:'Orbitron',sans-serif;margin:0 0 .35rem;color:#fde68a}
@@ -296,6 +304,8 @@ body.edit-mode-active [data-edit-id]:hover{outline:2px solid rgba(251,191,36,.85
 .edit-loading{display:none;color:#fde68a;font-size:.78rem;margin-top:.5rem}
 .edit-loading.active{display:block}
 .edit-history-table td,.edit-history-table th{vertical-align:top}
+.edit-password-modal{border-color:rgba(251,191,36,.45);box-shadow:0 30px 110px rgba(0,0,0,.72),0 0 70px rgba(251,191,36,.16)}
+.edit-password-modal h2{color:#fde68a}
 
 /* ── ORDER NOTIFICATION ── */
 .order-notification{position:fixed;right:1.5rem;bottom:1.5rem;z-index:8600;width:min(390px,calc(100vw - 2rem));display:none;background:linear-gradient(145deg,rgba(12,18,34,.98),rgba(4,5,16,.98));border:1px solid rgba(148,163,184,.22);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 0 1px rgba(255,255,255,.04) inset;backdrop-filter:blur(16px)}
@@ -522,6 +532,7 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
 </div>
 <div class="order-notification" id="order-notification" aria-live="polite"></div>
 <div class="team-task-notification" id="team-task-notification" aria-live="polite"></div>
+<button class="edit-capsule" id="edit-capsule" onclick="openEditPasswordModal()" type="button"><span class="edit-capsule-dot"></span><span>Modo Edição</span></button>
 <div class="edit-panel" id="edit-panel">
   <h3>Editor visual</h3>
   <p class="modal-sub" id="edit-panel-sub">Selecione um elemento editável.</p>
@@ -542,6 +553,16 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
     <button class="btn btn-outline mini-btn" onclick="undoLastVisualEdit()">Desfazer última alteração</button>
     <button class="btn btn-outline mini-btn" onclick="restoreSelectedEditDefault()">Restaurar padrão</button>
     <button class="btn btn-outline mini-btn" onclick="cancelVisualEdit()">Cancelar</button>
+  </div>
+</div>
+<div class="modal-overlay" id="edit-password-modal">
+  <div class="modal edit-password-modal">
+    <button class="modal-close" onclick="closeModal('edit-password-modal')">✕</button>
+    <h2>Modo Edição</h2>
+    <p class="modal-sub">Digite a senha segura do editor visual. A validação acontece no servidor.</p>
+    <div class="form-group"><label>Senha do editor</label><input type="password" class="form-control" id="edit-mode-password" placeholder="Senha do modo edição"/></div>
+    <div class="danger-text" id="edit-mode-error"></div>
+    <button class="btn btn-primary" style="width:100%;padding:.82rem" onclick="submitEditPassword()">Ativar editor</button>
   </div>
 </div>
 <div class="owner-welcome-overlay" id="owner-welcome-overlay" aria-live="polite">
@@ -1790,7 +1811,7 @@ function handlePaymentReturn(){
 // ═══ INIT ═══
 window.onload = async () => {
   await pullGlobalState({initial:true});
-  ensureSeedData(); ensureTeamTaskNotices(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications(); fetchSiteEdits();
+  ensureSeedData(); ensureTeamTaskNotices(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications(); fetchSiteEdits(); initMicroInteractions();
   renderTeamTaskNotification(); updateAdminBadges();
 };
 
@@ -3468,6 +3489,19 @@ function showToast(msg, icon){
   setTimeout(()=>t.remove(), 3300);
 }
 
+function initMicroInteractions(){
+  document.addEventListener('pointerdown', e => {
+    const el = e.target.closest?.('.btn,.service-card,.account-card,.brawler-card,.mp-method-btn');
+    if(!el) return;
+    el.classList.remove('micro-pop');
+    void el.offsetWidth;
+    el.classList.add('micro-pop');
+  });
+  document.querySelectorAll('.service-card,.account-card,.testimonial-card,.faq-item').forEach((el, i) => {
+    el.style.transitionDelay = `${Math.min(i * 18, 160)}ms`;
+  });
+}
+
 // Overrides funcionais para login, admin, upadores, chat e produtos
 function updateAuthUI(){
   syncCurrentUserFromStore();
@@ -3481,6 +3515,11 @@ function updateAuthUI(){
   renderOrderNotification();
   renderTeamTaskNotification();
   updateAdminBadges();
+  updateEditCapsule();
+}
+function updateEditCapsule(){
+  const capsule = document.getElementById('edit-capsule');
+  if(capsule) capsule.classList.toggle('visible', canManageAdmin());
 }
 function updateAdminMenu(){
   const ownerOnly = ['financeiro'];
@@ -4369,7 +4408,7 @@ async function fetchSiteEdits(){
 }
 async function enableEditModeSession(){
   if(!canManageAdmin()) return showToast('Apenas dono/admin pode ativar o modo edição.','🔒');
-  const password = prompt('Senha do Modo Edição');
+  const password = document.getElementById('edit-mode-password')?.value || '';
   if(!password) return;
   const res = await fetch('/api/edit-session', {
     method:'POST',
@@ -4378,11 +4417,28 @@ async function enableEditModeSession(){
   });
   const data = await res.json().catch(()=>({}));
   if(!res.ok) return showToast(data.error || 'Não foi possível ativar o modo edição.','⚠️');
+  closeModal('edit-password-modal');
   editModeActive = true;
   document.body.classList.add('edit-mode-active');
   initEditableElements();
   bindEditModeClicks();
   showToast('Modo edição ativado.','✨');
+}
+function openEditPasswordModal(){
+  if(!canManageAdmin()) return showToast('Apenas dono/admin pode ativar o modo edição.','🔒');
+  const input = document.getElementById('edit-mode-password');
+  const err = document.getElementById('edit-mode-error');
+  if(input) input.value = '';
+  if(err){ err.textContent=''; err.style.display='none'; }
+  openModal('edit-password-modal');
+}
+async function submitEditPassword(){
+  const err = document.getElementById('edit-mode-error');
+  try{
+    await enableEditModeSession();
+  }catch(error){
+    if(err){ err.textContent = error.message || 'Erro ao ativar editor.'; err.style.display='block'; }
+  }
 }
 function disableEditMode(){
   editModeActive = false;
@@ -4563,7 +4619,7 @@ function renderEditModeAdmin(){
     <div class="admin-card">
       <div class="locked-note">Ative o editor visual, clique em elementos do site e publique alterações globais. A senha é validada somente no backend por variável de ambiente.</div>
       <div class="admin-actions" style="margin-top:1rem">
-        <button class="btn btn-primary" onclick="enableEditModeSession()">Ativar modo edição</button>
+        <button class="btn btn-primary" onclick="openEditPasswordModal()">Ativar modo edição no site</button>
         <button class="btn btn-outline" onclick="disableEditMode()">Desativar</button>
         <button class="btn btn-outline" onclick="fetchSiteEdits()">Recarregar edições globais</button>
       </div>
