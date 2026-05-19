@@ -335,12 +335,25 @@ body.edit-mode-active nav{top:42px}
 .admin-user-state.active{border-color:rgba(34,197,94,.35);color:#86efac;background:rgba(34,197,94,.08)}
 .admin-user-state.paused{border-color:rgba(239,68,68,.35);color:#fecaca;background:rgba(239,68,68,.08)}
 .password-reset-row{display:grid;grid-template-columns:minmax(150px,1fr) auto;gap:.5rem;align-items:center}
+.pix-input-wrap{display:grid;grid-template-columns:46px 1fr;gap:.65rem;align-items:center}
+.pix-input-icon{width:46px;height:46px;border-radius:.75rem;border:1px solid rgba(0,200,100,.28);background:linear-gradient(135deg,rgba(0,180,100,.14),rgba(6,182,212,.1));display:grid;place-items:center}
+.pix-input-icon img{width:28px;height:28px;object-fit:contain}
+.payment-ledger-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:1rem}
+.payment-ledger-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:.9rem;padding:1rem;display:flex;flex-direction:column;gap:.75rem}
+.payment-money-row{display:flex;justify-content:space-between;gap:.75rem;color:var(--text-muted);font-size:.82rem}
+.payment-money-row strong{color:var(--text-primary);font-family:'Orbitron',sans-serif}
+.payment-net{font-size:1.45rem;color:#86efac;font-family:'Orbitron',sans-serif;font-weight:900}
+.payment-pix-line{display:grid;grid-template-columns:32px 1fr auto auto;gap:.5rem;align-items:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:.7rem;padding:.55rem}
+.payment-pix-line img{width:24px;height:24px;object-fit:contain}
+.payment-pix-key{font-family:monospace;color:#ccfbf1;word-break:break-all;font-size:.8rem}
 
 /* ── ORDER NOTIFICATION ── */
 .order-notification{position:fixed;right:1.5rem;bottom:1.5rem;z-index:8600;width:min(390px,calc(100vw - 2rem));display:none;background:linear-gradient(145deg,rgba(12,18,34,.98),rgba(4,5,16,.98));border:1px solid rgba(148,163,184,.22);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 0 1px rgba(255,255,255,.04) inset;backdrop-filter:blur(16px)}
 .order-notification.active{display:block;animation:toastIn .25s ease}
 .team-task-notification{position:fixed;left:1.5rem;bottom:1.5rem;z-index:8700;width:min(390px,calc(100vw - 2rem));display:none;background:linear-gradient(145deg,rgba(24,16,34,.98),rgba(5,5,14,.98));border:1px solid rgba(248,113,113,.28);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62);backdrop-filter:blur(16px)}
 .team-task-notification.active{display:block;animation:toastIn .25s ease}
+.payment-notification{position:fixed;right:1.5rem;bottom:13.2rem;z-index:8750;width:min(390px,calc(100vw - 2rem));display:none;background:linear-gradient(145deg,rgba(8,34,28,.98),rgba(4,8,18,.98));border:1px solid rgba(45,212,191,.28);border-radius:1rem;padding:1rem;box-shadow:0 24px 70px rgba(0,0,0,.62);backdrop-filter:blur(16px)}
+.payment-notification.active{display:block;animation:toastIn .25s ease}
 .order-head{display:grid;grid-template-columns:48px 1fr auto;gap:.75rem;align-items:center;margin-bottom:.8rem}
 .order-head img{width:48px;height:48px;border-radius:.85rem;object-fit:contain;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:.25rem}
 .order-title{font-weight:900;font-size:.94rem}
@@ -365,6 +378,15 @@ body.edit-mode-active nav{top:42px}
 .owner-notice-close{position:absolute;top:.5rem;right:.5rem;width:24px;height:24px;border-radius:50%;border:1px solid rgba(251,191,36,.26);background:rgba(0,0,0,.22);color:#fde68a;cursor:pointer;display:grid;place-items:center;font-weight:900}
 .chat-task-card{margin-top:.6rem;border:1px solid rgba(251,191,36,.2);background:rgba(251,191,36,.07);border-radius:.7rem;padding:.65rem}
 .chat-task-card.locked{border-color:rgba(148,163,184,.22);background:rgba(148,163,184,.07)}
+.chat-message.private{border-color:rgba(45,212,191,.28);background:rgba(45,212,191,.08)}
+.chat-bot-card{margin-top:.65rem;border:1px solid rgba(45,212,191,.28);background:linear-gradient(135deg,rgba(45,212,191,.12),rgba(59,130,246,.08));border-radius:.8rem;padding:.75rem}
+.chat-pix-grid{display:grid;grid-template-columns:46px 1fr;gap:.65rem;align-items:start}
+.chat-bot-pix-icon{width:46px;height:46px;border-radius:.75rem;border:1px solid rgba(45,212,191,.32);background:rgba(0,0,0,.22);display:grid;place-items:center}
+.chat-bot-pix-icon img{width:28px;height:28px;object-fit:contain}
+.chat-bot-actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.65rem}
+.chat-bot-warning{color:#f87171;font-size:.68rem;line-height:1.4;margin-top:.45rem}
+.chat-delete-link{display:inline-block;margin-top:.45rem;color:#94a3b8;font-size:.67rem;text-decoration:underline;cursor:pointer}
+.chat-delete-link:hover{color:#fff}
 .performance-list{display:flex;flex-direction:column;gap:.75rem}
 .performance-item{display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:center;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:.8rem;padding:.85rem}
 .sold-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .65rem;border-radius:50px;background:rgba(100,116,139,.16);border:1px solid rgba(148,163,184,.28);color:#cbd5e1;font-size:.72rem;font-weight:900}
@@ -469,6 +491,7 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
   .toast{min-width:0;width:100%}
   .feedback-panel{left:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}
   .order-notification{right:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}
+  .payment-notification{right:.75rem;bottom:13rem;width:calc(100vw - 1.5rem)}
   .feedback-panel.active + .order-notification.active{bottom:19rem}
   .order-uploader-stats{grid-template-columns:1fr}
   .account-panel{position:fixed;top:4.6rem;left:.75rem;right:.75rem;width:auto}
@@ -565,6 +588,7 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
 </div>
 <div class="order-notification" id="order-notification" aria-live="polite"></div>
 <div class="team-task-notification" id="team-task-notification" aria-live="polite"></div>
+<div class="payment-notification" id="payment-notification" aria-live="polite"></div>
 <button class="edit-capsule" id="edit-capsule" onclick="openEditPasswordModal()" type="button"><span class="edit-capsule-dot"></span><span>Modo Edição</span></button>
 <div class="edit-mode-ribbon" id="edit-mode-ribbon">
   <span class="edit-ribbon-icon"><img src="/images/site/modo-construcao.svg" alt="Modo de construção"/></span>
@@ -1030,13 +1054,40 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
 
 <!-- GORJETA -->
 <div class="modal-overlay" id="tip-modal">
-  <div class="modal" style="max-width:420px;text-align:center">
+  <div class="modal" style="max-width:440px">
     <button class="modal-close" onclick="closeModal('tip-modal')">✕</button>
-    <div class="tip-heart">♥</div>
-    <h2>Enviar gorjeta</h2>
-    <p class="modal-sub">Obrigado por apoiar o upador.</p>
-    <div class="copy-box" id="tip-pix-key">12992025025</div>
-    <button class="btn btn-primary" style="width:100%;padding:.78rem;margin-top:1rem" onclick="copyTipPix()">Copiar</button>
+    <div style="text-align:center">
+      <div class="tip-heart">♥</div>
+      <h2>Enviar gorjeta</h2>
+      <p class="modal-sub" id="tip-modal-sub">A gorjeta vira um pagamento seguro e entra no repasse do upador.</p>
+    </div>
+    <div class="pix-input-wrap" style="margin:1rem 0">
+      <div class="pix-input-icon"><img src="/images/site/icon-pix.png" alt="Pix"/></div>
+      <input class="form-control" id="tip-amount" placeholder="Valor da gorjeta. Ex: 10,00" inputmode="decimal"/>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:.78rem" onclick="startTipPayment()">Pagar gorjeta</button>
+    <div class="locked-note" style="margin-top:1rem;margin-bottom:0">A chave Pix do upador nao fica exposta. O pagamento e registrado como compra e entra no acerto da equipe.</div>
+  </div>
+</div>
+
+<!-- CADASTRO DE EQUIPE -->
+<div class="modal-overlay" id="team-user-modal">
+  <div class="modal" style="max-width:640px">
+    <button class="modal-close" onclick="closeModal('team-user-modal')">✕</button>
+    <h2>Cadastrar login da equipe</h2>
+    <p class="modal-sub">Crie o login do upador/admin e salve a chave Pix usada nos pagamentos.</p>
+    <div class="admin-grid">
+      <input class="form-control" id="up-name" placeholder="Nome"/>
+      <input class="form-control" id="up-email" placeholder="Email"/>
+      <input class="form-control" id="up-phone" placeholder="WhatsApp"/>
+      <input class="form-control" id="up-pass" placeholder="Senha inicial"/>
+      <select class="form-control" id="up-role"><option value="upador">Upador</option><option value="mod">Mod</option><option value="admin">Admin</option></select>
+      <div class="pix-input-wrap">
+        <div class="pix-input-icon"><img src="/images/site/icon-pix.png" alt="Pix"/></div>
+        <input class="form-control" id="up-pix" placeholder="Chave Pix do upador"/>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:.82rem;margin-top:1rem" onclick="createTeamUser()">Salvar login da equipe</button>
   </div>
 </div>
 
@@ -1137,6 +1188,7 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
     <div class="admin-nav-item" onclick="adminNav('edithistory',this)">🕘 Histórico de Edições</div>
     <div class="admin-nav-item" onclick="adminNav('users',this)">👥 Usuários</div>
     <div class="admin-nav-item" onclick="adminNav('logins',this)">🔑 Logins</div>
+    <div class="admin-nav-item" onclick="adminNav('payments',this)">💸 Pagamentos</div>
     <div class="admin-nav-item" onclick="adminNav('contas',this)">👑 Contas</div>
     <div class="admin-nav-item" onclick="adminNav('financeiro',this)">💰 Financeiro</div>
     <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border-glow)">
@@ -1473,6 +1525,7 @@ let embeddedPaymentService=null, mercadoPagoPublicKey='', mpSelectedMethod='', c
 let selectedFeedbackRating=0;
 let currentAdminSection='dashboard', pendingTaskId='', taskFlowStep=1, currentTaskFlowOrderId='', orderNotificationTimer=null;
 let globalSyncTimer=null, globalStateUpdatedAt=0, applyingRemoteState=false, remoteStateHasData=false, syncWarned=false, applyingTaskNotices=false, ownerKnownApprovedOrders=new Set();
+let pendingTipOrderId='';
 const WHATSAPP_URL = 'https://wa.me/5512992025025';
 const TIME_SLOTS = ['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
 const CARD_MIN_AMOUNT = 10;
@@ -1494,9 +1547,11 @@ const LS_KEYS = {
   teamDismissed:'zsup_team_task_dismissed',
   chatRead:'zsup_chat_mentions_read',
   siteEdits:'zsup_site_edits',
-  editHistory:'zsup_edit_history'
+  editHistory:'zsup_edit_history',
+  uploaderPayments:'zsup_uploader_payments',
+  paymentSeen:'zsup_payment_seen'
 };
-const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks','zsup_owner_dismissed_notices','zsup_availability','zsup_site_edits','zsup_edit_history'];
+const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks','zsup_owner_dismissed_notices','zsup_availability','zsup_site_edits','zsup_edit_history','zsup_uploader_payments'];
 
 function loadStore(key, fallback){
   try{ return JSON.parse(localStorage.getItem(key)) || fallback; }catch(e){ return fallback; }
@@ -1604,7 +1659,8 @@ function sessionSnapshot(user){
     active:user.active !== false,
     source:user.source || '',
     customerCode:user.customerCode || '',
-    passwordHash:user.passwordHash || ''
+    passwordHash:user.passwordHash || '',
+    pixKey:user.pixKey || ''
   };
 }
 function readSessionSnapshot(){
@@ -1650,7 +1706,7 @@ async function loginOwnerViaServer(email, password){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({email,password})
     });
-    if(res.status === 404) return null;
+    if([401,404,503].includes(res.status)) return null;
     const data = await res.json().catch(()=>({}));
     if(!res.ok) return {error:data.error || 'Login do dono inválido.'};
     return data.user;
@@ -1871,17 +1927,22 @@ function handlePaymentReturn(){
     orders[idx].paymentStatus = status;
     orders[idx].paidAt = status === 'approved' ? todayLabel() : orders[idx].paidAt;
     orders[idx].approvedAtMs = status === 'approved' ? Date.now() : orders[idx].approvedAtMs;
-    orders[idx].status = status === 'approved' ? (orders[idx].accountProductId ? 'realizado' : orders[idx].uploaderId ? 'andamento' : 'pendente') : 'pendente';
+    orders[idx].status = status === 'approved' ? (isTipOrder(orders[idx]) || orders[idx].accountProductId ? 'realizado' : orders[idx].uploaderId ? 'andamento' : 'pendente') : 'pendente';
     saveStore(LS_KEYS.orders, orders);
-    if(status === 'approved') ensureTeamTaskNotices();
+    if(status === 'approved' && !isTipOrder(orders[idx])) ensureTeamTaskNotices();
     currentOrder = orders[idx];
+    if(status === 'approved' && isTipOrder(currentOrder)) notifyTipApproved(currentOrder);
     updateCartItemFromOrder(currentOrder);
   }
 
   if(status === 'approved'){
-    showToast('Pagamento aprovado! Pedido liberado para a equipe.','✅');
+    showToast(isTipOrder(currentOrder) ? 'Gorjeta aprovada e adicionada ao repasse.' : 'Pagamento aprovado! Pedido liberado para a equipe.','✅');
     if(currentOrder){
-      sendWhatsAppNotification(currentOrder);
+      if(isTipOrder(currentOrder)){
+        renderOrderNotification();
+      } else {
+        sendWhatsAppNotification(currentOrder);
+      }
       if(currentOrder.accountProductId){
         markAccountSold(currentOrder.accountProductId);
         showAccountDeliveryModal(currentOrder);
@@ -1901,7 +1962,7 @@ function handlePaymentReturn(){
 // ═══ INIT ═══
 window.onload = async () => {
   await pullGlobalState({initial:true});
-  ensureSeedData(); ensureTeamTaskNotices(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications(); applySiteEdits(loadEmbeddedSiteEdits()); fetchSiteEdits(); initMicroInteractions();
+  ensureSeedData(); ensureTeamTaskNotices(); animateStats(); renderFAQ(); renderTestimonials(); buildBrawlers(); buildRanks(); buildContas(); updateServiceCards(); updateAuthUI(); updateCartCount(); renderOrderNotification(); renderUploaderPaymentNotification(); handlePaymentReturn(); restoreFeedbackPrompt(); startLiveOrderTimer(); startGlobalSync(); seedOwnerApprovedNotifications(); applySiteEdits(loadEmbeddedSiteEdits()); fetchSiteEdits(); initMicroInteractions();
   renderTeamTaskNotification(); updateAdminBadges();
 };
 
@@ -2498,16 +2559,21 @@ function openCart(){
 function isOrderPaid(order){
   return order?.paymentStatus === 'approved' || order?.paidAt || order?.status === 'realizado' || order?.uploaderId;
 }
+function isTipOrder(order){
+  return order?.kind === 'tip' || order?.isTip === true;
+}
 function availableTaskOrders(){
   return loadStore(LS_KEYS.orders, [])
-    .filter(o => isOrderPaid(o) && !o.accountProductId && o.status !== 'realizado' && !o.uploaderId)
+    .filter(o => isOrderPaid(o) && !isTipOrder(o) && !o.accountProductId && o.status !== 'realizado' && !o.uploaderId)
     .sort((a,b)=>(b.approvedAtMs || b.createdAtMs || 0) - (a.approvedAtMs || a.createdAtMs || 0));
 }
 function latestOrderForNotification(){
-  const lastOrderId = localStorage.getItem(LS_KEYS.lastOrder);
-  const storedOrders = loadStore(LS_KEYS.orders, []);
-  const fallbackOrder = lastOrderId ? storedOrders.find(o => o.id === lastOrderId) : currentOrder;
-  const orders = currentUser ? ordersForUser(currentUser) : (fallbackOrder ? [fallbackOrder] : []);
+  if(!currentUser) return null;
+  const storedOrders = loadStore(LS_KEYS.orders, []).filter(o => !isTipOrder(o));
+  if(['dono','admin','mod'].includes(currentUser.role)) return null;
+  const orders = currentUser.role === 'upador'
+    ? storedOrders.filter(o => o.uploaderId === currentUser.id)
+    : storedOrders.filter(o => userMatchesOrder(currentUser, o));
   const paid = orders.filter(isOrderPaid).sort((a,b)=>(b.createdAtMs || 0) - (a.createdAtMs || 0));
   return paid.find(o => o.status !== 'realizado') || paid[0] || null;
 }
@@ -2534,11 +2600,14 @@ function renderOrderNotification(){
   const stats = hasUploader ? getUploaderStats(order.uploaderId) : null;
   const deadline = (order.approvedAtMs || order.createdAtMs || Date.now()) + 48 * 60 * 60 * 1000;
   const timer = formatCountdown(deadline - Date.now());
-  const message = isDone
-    ? 'Sua conta foi upada com sucesso.'
-    : hasUploader
-      ? `Sua conta será upada por <strong>${escapeHTML(order.uploaderName || 'um upador')}</strong>.`
-      : 'Nenhum upador pegou seu pedido ainda. Aguarde. Se ultrapassar o tempo de espera, você será reembolsado.';
+  const isUploaderView = currentUser?.role === 'upador' && order.uploaderId === currentUser.id;
+  const message = isUploaderView
+    ? (isDone ? `Voce finalizou o pedido de <strong>${escapeHTML(order.client || order.owner || 'cliente')}</strong>.` : `Voce esta responsavel por <strong>${escapeHTML(order.client || order.owner || 'cliente')}</strong>.`)
+    : isDone
+      ? 'Sua conta foi upada com sucesso.'
+      : hasUploader
+        ? `Sua conta sera upada por <strong>${escapeHTML(order.uploaderName || 'um upador')}</strong>.`
+        : 'Nenhum upador pegou seu pedido ainda. Aguarde. Se ultrapassar o tempo de espera, voce sera reembolsado.';
   el.innerHTML = `
     <div class="order-head">
       <img src="${SITE_IMAGES.orderNotification}" alt="Pedido"/>
@@ -2555,9 +2624,9 @@ function renderOrderNotification(){
       <div><strong>${stats.done}</strong><span>pedidos finalizados</span></div>
       <div><strong>${stats.taken}</strong><span>tarefas pegas</span></div>
     </div>` : ''}
-    ${isDone ? `<div class="order-actions">
+    ${isDone && !isUploaderView ? `<div class="order-actions">
       <button class="btn btn-primary mini-btn" onclick="openFeedbackForOrder('${escapeHTML(order.id)}')">Dar feedback</button>
-      <button class="btn btn-outline mini-btn" onclick="openTipModal()">Enviar gorjeta para upador</button>
+      <button class="btn btn-outline mini-btn" onclick="openTipModal('${escapeHTML(order.id)}')">Enviar gorjeta para upador</button>
     </div>` : ''}
   `;
   el.classList.add('active');
@@ -2571,6 +2640,7 @@ function notifyOwnerApprovedPurchases(){
   approved.forEach(order => {
     if(!ownerKnownApprovedOrders.has(order.id)){
       ownerKnownApprovedOrders.add(order.id);
+      showToast(`Compra de ${order.client || order.owner || 'cliente'} foi aprovada: ${order.service || order.id}.`,'✅');
       renderAccountPanel();
     }
   });
@@ -2584,11 +2654,87 @@ function openFeedbackForOrder(id){
   if(!order) return;
   queueFeedbackPrompt({orderId:order.id, service:order.service, product:order.details, client:order.client});
 }
-function openTipModal(){ openModal('tip-modal'); }
-function copyTipPix(){
-  const key = document.getElementById('tip-pix-key')?.textContent || '12992025025';
-  if(navigator.clipboard) navigator.clipboard.writeText(key).catch(()=>{});
-  showToast('Chave Pix copiada.','📋');
+function tipSourceOrder(id=''){
+  const orders = loadStore(LS_KEYS.orders, []);
+  return orders.find(o => o.id === id) || latestOrderForNotification() || null;
+}
+function openTipModal(orderId=''){
+  const order = tipSourceOrder(orderId);
+  if(!order?.uploaderId){
+    showToast('A gorjeta fica disponivel depois que um upador pegar o pedido.','⚠️');
+    return;
+  }
+  pendingTipOrderId = order.id;
+  const sub = document.getElementById('tip-modal-sub');
+  if(sub) sub.textContent = `Gorjeta para ${order.uploaderName || 'upador'}. Ela entra no pagamento seguro e no repasse da equipe.`;
+  const input = document.getElementById('tip-amount');
+  if(input) input.value = '';
+  openModal('tip-modal');
+}
+function startTipPayment(){
+  if(paymentInProgress) return;
+  const source = tipSourceOrder(pendingTipOrderId);
+  if(!source?.uploaderId) return showToast('Pedido sem upador para receber gorjeta.','⚠️');
+  const amount = moneyFromText(document.getElementById('tip-amount')?.value || '');
+  if(amount <= 0) return showToast('Informe o valor da gorjeta.','⚠️');
+  currentOrder = {
+    id: uid('TIP-'),
+    kind:'tip',
+    isTip:true,
+    sourceOrderId:source.id,
+    client: currentUser?.name || source.client || source.owner || 'Cliente',
+    owner: currentUser?.name || source.client || source.owner || 'Cliente',
+    clientUserId: currentUser?.id || source.clientUserId || '',
+    customerCode: currentUser?.customerCode || source.customerCode || generateCustomerCode(),
+    email: currentUser?.email || source.email || '',
+    whatsapp: currentUser?.phone || source.whatsapp || '',
+    service:'Gorjeta para upador',
+    details:`Gorjeta para ${source.uploaderName || 'upador'} pelo pedido ${source.id}`,
+    price:formatBRL(amount),
+    paymentAmount:formatBRL(amount),
+    date:todayLabel(),
+    time:'',
+    payment:'Mercado Pago',
+    paymentStatus:'checkout_aberto',
+    status:'pendente',
+    uploaderId:source.uploaderId,
+    uploaderName:source.uploaderName,
+    tipForUploaderId:source.uploaderId,
+    tipForUploaderName:source.uploaderName,
+    tipClientName: currentUser?.name || source.client || source.owner || 'Cliente',
+    createdAt:todayLabel(),
+    createdAtMs:Date.now()
+  };
+  embeddedPaymentService = {
+    id:'tip',
+    slug:'tip',
+    name:'Gorjeta para upador',
+    description:currentOrder.details,
+    amount
+  };
+  paymentInProgress = true;
+  upsertCartItem(currentOrder);
+  closeModal('tip-modal');
+  openEmbeddedCheckout();
+}
+function notifyTipApproved(order){
+  if(!order?.id || !order?.tipForUploaderId) return;
+  const messages = loadStore(LS_KEYS.chat, []);
+  const noticeId = `TIP-CHAT-${order.id}`;
+  if(messages.some(m => m.id === noticeId)) return;
+  const uploaderName = order.tipForUploaderName || order.uploaderName || 'upador';
+  const clientName = order.tipClientName || order.client || order.owner || 'cliente';
+  messages.push({
+    id:noticeId,
+    author:'Sistema',
+    role:'bot',
+    kind:'tip_notice',
+    text:`@${uploaderName} voce recebeu uma gorjeta do cliente ${clientName} no valor de ${order.paymentAmount || order.price}. No dia do seu pagamento ela sera adicionada.`,
+    mentions:[order.tipForUploaderId],
+    createdAt:todayLabel(),
+    createdAtMs:Date.now()
+  });
+  saveStore(LS_KEYS.chat, messages.slice(-220));
 }
 
 // ═══ MODALS ═══
@@ -3030,6 +3176,7 @@ function savePaymentOrder(payment){
   const orders = loadStore(LS_KEYS.orders, []);
   const idx = orders.findIndex(o => o.id === currentOrder.id);
   const approved = payment.status === 'approved';
+  const tip = isTipOrder(currentOrder);
   const updated = {
     ...currentOrder,
     mercadoPagoPaymentId: payment.id || currentOrder.mercadoPagoPaymentId || '',
@@ -3038,14 +3185,15 @@ function savePaymentOrder(payment){
     paymentStatusDetail: payment.status_detail || '',
     paidAt: approved ? todayLabel() : currentOrder.paidAt,
     approvedAtMs: approved ? Date.now() : currentOrder.approvedAtMs,
-    status: approved ? (currentOrder.accountProductId ? 'realizado' : currentOrder.uploaderId ? 'andamento' : 'pendente') : 'pendente'
+    status: approved ? (tip || currentOrder.accountProductId ? 'realizado' : currentOrder.uploaderId ? 'andamento' : 'pendente') : 'pendente'
   };
   if(idx >= 0) orders[idx] = updated;
   else orders.unshift(updated);
   saveStore(LS_KEYS.orders, orders);
-  if(approved) ensureTeamTaskNotices();
+  if(approved && !tip) ensureTeamTaskNotices();
   currentOrder = updated;
   updateCartItemFromOrder(updated);
+  if(approved && tip) notifyTipApproved(updated);
 }
 
 function renderPaymentResult(payment){
@@ -3066,7 +3214,9 @@ function renderPaymentResult(payment){
   }
 
   if(payment.status === 'approved'){
-    box.innerHTML = `<strong>Pagamento aprovado.</strong><br/>Pedido ${escapeHTML(currentOrder?.id || '')} liberado para a equipe.`;
+    box.innerHTML = isTipOrder(currentOrder)
+      ? `<strong>Gorjeta aprovada.</strong><br/>Ela entrou no repasse do upador.`
+      : `<strong>Pagamento aprovado.</strong><br/>Pedido ${escapeHTML(currentOrder?.id || '')} liberado para a equipe.`;
     return;
   }
 
@@ -3088,6 +3238,11 @@ function finishEmbeddedPayment(payment){
     setPixStatus('Pagamento aprovado. Pedido liberado para a equipe.', 'approved');
     closeModal('mp-pix-modal');
     closeModal('mp-checkout-modal');
+    if(isTipOrder(currentOrder)){
+      showToast('Gorjeta aprovada e adicionada ao repasse do upador.','✅');
+      renderOrderNotification();
+      return;
+    }
     sendWhatsAppNotification(currentOrder);
     if(currentOrder.accountProductId){
       markAccountSold(currentOrder.accountProductId);
@@ -3136,7 +3291,7 @@ function renderTeamTaskNotification(){
   }
   el.innerHTML = `
     <div class="order-head">
-      <img src="${SITE_IMAGES.order}" alt=""/>
+      <img src="${SITE_IMAGES.orderNotification}" alt=""/>
       <div>
         <div class="order-title">Novo agendamento disponível</div>
         <div class="order-sub">${escapeHTML(order.id)} · ${escapeHTML(order.date || '')} ${escapeHTML(order.time || '')}</div>
@@ -3617,6 +3772,7 @@ function updateAuthUI(){
   updateCartCount();
   renderOrderNotification();
   renderTeamTaskNotification();
+  renderUploaderPaymentNotification();
   updateAdminBadges();
   updateEditCapsule();
 }
@@ -3626,7 +3782,7 @@ function updateEditCapsule(){
 }
 function updateAdminMenu(){
   const ownerOnly = ['financeiro'];
-  const managerOnly = ['uploaders','products','contas','users','logins','edithistory'];
+  const managerOnly = ['uploaders','products','contas','users','logins','payments','edithistory'];
   const modAllowed = ['dashboard','orders','schedule','availability','performance','chat'];
   document.querySelectorAll('.admin-nav-item').forEach(item => {
     const attr = item.getAttribute('onclick') || '';
@@ -3650,13 +3806,19 @@ function setAdminNavBadge(section, count){
 }
 function mentionMatchesCurrentUser(message){
   if(!currentUser || message.author === currentUser.name) return false;
+  if(message.privateTo && message.privateTo !== currentUser.id) return false;
+  if(message.privateTo === currentUser.id) return true;
   const mentions = message.mentions || [];
   const role = currentUser.role || '';
   return mentions.includes('todos') || mentions.includes('equipe') || mentions.includes(role) || mentions.includes(currentUser.id);
 }
+function canSeeChatMessage(message){
+  if(!message?.privateTo) return true;
+  return Boolean(currentUser?.id && message.privateTo === currentUser.id);
+}
 function chatMentionCount(){
   const lastRead = Number(localStorage.getItem(`${LS_KEYS.chatRead}_${currentUser?.id || 'anon'}`) || 0);
-  return loadStore(LS_KEYS.chat, []).filter(m => mentionMatchesCurrentUser(m) && (m.createdAtMs || 0) > lastRead).length;
+  return loadStore(LS_KEYS.chat, []).filter(m => canSeeChatMessage(m) && mentionMatchesCurrentUser(m) && (m.createdAtMs || 0) > lastRead).length;
 }
 function markChatMentionsRead(){
   if(currentUser) localStorage.setItem(`${LS_KEYS.chatRead}_${currentUser.id}`, String(Date.now()));
@@ -3665,6 +3827,10 @@ function markChatMentionsRead(){
 function updateAdminBadges(){
   setAdminNavBadge('schedule', availableTaskOrders().length);
   setAdminNavBadge('chat', chatMentionCount());
+  if(canManageAdmin()){
+    const dueCount = loadStore(LS_KEYS.users, []).filter(u => payoutLedgerForUploader(u).dueNet > 0).length;
+    setAdminNavBadge('payments', dueCount);
+  }
 }
 function loginSocial(p){
   showToast(`Login com ${p} ainda não está conectado. Use email e senha.`, '🔒');
@@ -3782,8 +3948,8 @@ async function signupUser(){
 function renderAdminDashboard(){
   if(currentUser?.role === 'upador'){
     const orders = loadStore(LS_KEYS.orders, []);
-    const visible = orders.filter(o => !o.uploaderId || o.uploaderId === currentUser.id);
-    const minePending = orders.filter(o => o.uploaderId === currentUser.id && o.status !== 'realizado');
+    const visible = orders.filter(o => !isTipOrder(o) && (!o.uploaderId || o.uploaderId === currentUser.id));
+    const minePending = orders.filter(o => !isTipOrder(o) && o.uploaderId === currentUser.id && o.status !== 'realizado');
     const stats = getUploaderStats(currentUser.id);
     document.getElementById('admin-content').innerHTML = `
       <div class="admin-title-row"><h2>Painel do upador</h2><span class="admin-live-chip"><i class="admin-live-dot"></i>Live</span></div>
@@ -3819,6 +3985,7 @@ function renderAdminDashboard(){
         <div class="admin-owner-actions">
           <button class="btn btn-primary mini-btn" onclick="quickAdminNav('logins')">Logins e códigos</button>
           <button class="btn btn-outline mini-btn" onclick="quickAdminNav('users')">Usuários</button>
+          <button class="btn btn-outline mini-btn" onclick="quickAdminNav('payments')">Pagamentos</button>
           <button class="btn btn-outline mini-btn" onclick="quickAdminNav('financeiro')">Financeiro</button>
           <button class="btn btn-outline mini-btn" onclick="resetFinanceAndOrders()">Zerar pedidos</button>
         </div>
@@ -4031,7 +4198,7 @@ function resetFinanceAndOrders(){
 }
 function renderAdminOrders(){
   const orders = loadStore(LS_KEYS.orders, []);
-  const visible = currentUser?.role === 'upador' ? orders.filter(o => !o.uploaderId || o.uploaderId === currentUser.id) : canModerate() ? orders : [];
+  const visible = currentUser?.role === 'upador' ? orders.filter(o => !isTipOrder(o) && (!o.uploaderId || o.uploaderId === currentUser.id)) : canModerate() ? orders.filter(o => !isTipOrder(o)) : [];
   document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">📋 Pedidos e agendamentos</h2><div class="admin-card">${ordersTable(visible)}</div>`;
 }
 function renderMyPerformance(){
@@ -4071,22 +4238,29 @@ function renderUploaders(){
       <select class="form-control" id="team-role"><option value="upador">Upador</option><option value="mod">Mod</option><option value="admin">Admin</option>${isOwner()?'<option value="dono">Dono</option>':''}</select>
       <button class="btn btn-primary" onclick="setExistingUserRole()">Alterar cargo</button>
     </div></div>
-    <div class="admin-card"><div class="admin-grid">
-      <input class="form-control" id="up-name" placeholder="Nome"/>
-      <input class="form-control" id="up-email" placeholder="Email"/>
-      <input class="form-control" id="up-phone" placeholder="WhatsApp"/>
-      <input class="form-control" id="up-pass" placeholder="Senha inicial"/>
-      <select class="form-control" id="up-role"><option value="upador">Upador</option><option value="mod">Mod</option><option value="admin">Admin</option></select>
-      <button class="btn btn-primary" onclick="createTeamUser()">Cadastrar login da equipe</button>
-    </div></div>
+    <div class="admin-card">
+      <div style="display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap">
+        <div><strong>Cadastrar novo upador/admin</strong><div style="color:var(--text-muted);font-size:.82rem;margin-top:.25rem">Abre um modal com login, senha e chave Pix do upador.</div></div>
+        <button class="btn btn-primary" onclick="openTeamUserModal()">Novo login da equipe</button>
+      </div>
+    </div>
     <div class="admin-grid">${users.map(u=>{
       const mine = orders.filter(o=>o.uploaderId===u.id);
       const owners = [...new Set(mine.map(o=>o.owner || o.client))].join(', ') || 'Nenhum';
-      return `<div class="admin-card"><div style="display:flex;justify-content:space-between;gap:1rem"><strong>${u.name}</strong>${roleBadge(u.role)}</div><div style="color:var(--text-muted);font-size:.82rem;margin:.5rem 0">${u.email}</div><div>${mine.length} pedidos realizados/pegos</div><div style="color:var(--text-muted);font-size:.78rem;margin-top:.35rem">Donos/clientes: ${owners}</div></div>`;
+      return `<div class="admin-card"><div style="display:flex;justify-content:space-between;gap:1rem"><strong>${u.name}</strong>${roleBadge(u.role)}</div><div style="color:var(--text-muted);font-size:.82rem;margin:.5rem 0">${u.email}</div><div>${mine.length} pedidos realizados/pegos</div><div style="color:var(--text-muted);font-size:.78rem;margin-top:.35rem">Donos/clientes: ${owners}</div><div style="color:#99f6e4;font-size:.76rem;margin-top:.45rem">Pix: ${escapeHTML(u.pixKey || 'nao cadastrado')}</div></div>`;
     }).join('')}</div>`;
 }
 function createUploader(){
   createTeamUser();
+}
+function openTeamUserModal(){
+  ['up-name','up-email','up-phone','up-pass','up-pix'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  const role = document.getElementById('up-role');
+  if(role) role.value = 'upador';
+  openModal('team-user-modal');
 }
 async function createTeamUser(){
   if(!canManageAdmin()) return;
@@ -4096,9 +4270,11 @@ async function createTeamUser(){
   const phone = document.getElementById('up-phone').value.trim();
   const password = document.getElementById('up-pass').value.trim();
   const role = document.getElementById('up-role').value;
+  const pixKey = document.getElementById('up-pix')?.value.trim() || '';
   if(!name || !email || !password) return showToast('Preencha nome, email e senha.','⚠️');
-  users.push({id:uid('USR-'),name,email,phone,passwordHash:await sha256(password),role,active:true,customerCode:generateCustomerCode()});
-  saveStore(LS_KEYS.users, users); renderUploaders(); showToast('Login da equipe cadastrado.','✅');
+  if(users.some(u => String(u.email || '').toLowerCase() === email.toLowerCase())) return showToast('Ja existe login com esse email.','⚠️');
+  users.push({id:uid('USR-'),name,email:email.toLowerCase(),phone,passwordHash:await sha256(password),role,active:true,customerCode:generateCustomerCode(),pixKey});
+  saveStore(LS_KEYS.users, users); closeModal('team-user-modal'); renderUploaders(); showToast('Login da equipe cadastrado.','✅');
 }
 function setExistingUserRole(){
   if(!canManageAdmin()) return;
@@ -4117,7 +4293,7 @@ function ensureTeamTaskNotices(){
   const orders = loadStore(LS_KEYS.orders, []);
   const messages = loadStore(LS_KEYS.chat, []);
   let changed = false;
-  orders.filter(o => isOrderPaid(o) && !o.accountProductId && o.status !== 'realizado').forEach(order => {
+  orders.filter(o => isOrderPaid(o) && !isTipOrder(o) && !o.accountProductId && o.status !== 'realizado').forEach(order => {
     const availableId = `TASK-NEW-${order.id}`;
     if(!messages.some(m => m.id === availableId)){
       messages.push({
@@ -4183,18 +4359,47 @@ function parseMentions(text=''){
 function renderMentionText(text=''){
   return escapeHTML(text).replace(/@([\p{L}\p{N}_.-]+)/gu, '<span class="chat-mention">@$1</span>');
 }
+function renderPixCommandCard(message){
+  if(message.status === 'success'){
+    return `<div class="chat-bot-card"><div class="chat-pix-grid"><div class="chat-bot-pix-icon"><img src="${SITE_IMAGES.pix}" alt="Pix"/></div><div><strong>Chave Pix cadastrada com sucesso ✅</strong><div style="color:var(--text-muted);font-size:.78rem;margin-top:.25rem">Para alterar use o comando !cadastrar pix.</div>${renderDeleteBotMessageLink(message)}</div></div></div>`;
+  }
+  if(message.status === 'cancelled'){
+    return `<div class="chat-bot-card"><div class="chat-pix-grid"><div class="chat-bot-pix-icon"><img src="${SITE_IMAGES.pix}" alt="Pix"/></div><div><strong>Comando cancelado.</strong><div style="color:var(--text-muted);font-size:.78rem;margin-top:.25rem">Nada foi alterado.</div>${renderDeleteBotMessageLink(message)}</div></div></div>`;
+  }
+  const inputId = `chat-pix-${message.id}`;
+  return `<div class="chat-bot-card">
+    <div class="chat-pix-grid">
+      <div class="chat-bot-pix-icon"><img src="${SITE_IMAGES.pix}" alt="Pix"/></div>
+      <div>
+        <strong>Cadastrar chave Pix</strong>
+        <input class="form-control" id="${escapeHTML(inputId)}" placeholder="coloque sua chave pix aqui" style="margin-top:.55rem"/>
+        <div class="chat-bot-actions">
+          <button class="btn btn-primary mini-btn" onclick="submitChatPixKey('${escapeJS(message.id)}')">Enviar chave</button>
+          <button class="btn btn-outline mini-btn" onclick="cancelChatPixCommand('${escapeJS(message.id)}')">Cancelar</button>
+        </div>
+        <div class="chat-bot-warning">essa chave pix sera usada para realizazr o pgamento de seus servicos + gorjetas</div>
+        ${renderDeleteBotMessageLink(message)}
+      </div>
+    </div>
+  </div>`;
+}
+function renderDeleteBotMessageLink(message){
+  return `<span class="chat-delete-link" onclick="deleteChatMessage('${escapeJS(message.id)}')">apagar mensagem</span>`;
+}
 function renderChatMessage(message){
   const mine = message.author === currentUser?.name ? 'mine' : '';
-  return `<div class="chat-message ${mine}">
+  const privateClass = message.privateTo ? 'private' : '';
+  return `<div class="chat-message ${mine} ${privateClass}">
     <div class="chat-meta">${escapeHTML(message.author || 'Sistema')} · ${escapeHTML(message.createdAt || '')}</div>
     <div>${renderMentionText(message.text || '')}</div>
+    ${message.kind === 'pix_command' ? renderPixCommandCard(message) : ''}
     ${message.taskId ? renderChatTaskAction(message.taskId) : ''}
   </div>`;
 }
 function renderChat(){
   if(!canUseTeamChat()){ document.getElementById('admin-content').innerHTML = ''; return; }
   ensureTeamTaskNotices();
-  const messages = loadStore(LS_KEYS.chat, []);
+  const messages = loadStore(LS_KEYS.chat, []).filter(canSeeChatMessage);
   document.getElementById('admin-content').innerHTML = `
     <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💬 Chat Upador</h2>
     <div class="admin-card">
@@ -4210,9 +4415,76 @@ function sendChat(){
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if(!text) return;
+  if(normalizeMention(text) === 'cadastrarpix'){
+    input.value = '';
+    sendPixCommandBotMessage();
+    return;
+  }
   const messages = loadStore(LS_KEYS.chat, []);
   messages.push({id:uid('MSG-'),author:currentUser?.name || 'Equipe',role:currentUser?.role || 'dono',text,mentions:parseMentions(text),createdAt:todayLabel(),createdAtMs:Date.now()});
   saveStore(LS_KEYS.chat, messages); renderChat();
+}
+function sendPixCommandBotMessage(){
+  if(!currentUser?.id) return;
+  const messages = loadStore(LS_KEYS.chat, []);
+  messages.push({
+    id:uid('BOT-'),
+    author:'Bot ZS',
+    role:'bot',
+    kind:'pix_command',
+    privateTo:currentUser.id,
+    text:'Comando privado: !cadastrar pix',
+    mentions:[currentUser.id],
+    status:'pending',
+    createdAt:todayLabel(),
+    createdAtMs:Date.now()
+  });
+  saveStore(LS_KEYS.chat, messages.slice(-220));
+  renderChat();
+}
+function updateChatMessage(messageId, updater){
+  const messages = loadStore(LS_KEYS.chat, []);
+  const msg = messages.find(m => m.id === messageId && (!m.privateTo || m.privateTo === currentUser?.id || isOwner()));
+  if(!msg) return null;
+  updater(msg);
+  saveStore(LS_KEYS.chat, messages.slice(-220));
+  return msg;
+}
+function submitChatPixKey(messageId){
+  const input = document.getElementById(`chat-pix-${messageId}`);
+  const pixKey = input?.value.trim() || '';
+  if(!pixKey) return showToast('Digite uma chave Pix.','⚠️');
+  const users = loadStore(LS_KEYS.users, []);
+  const user = users.find(u => u.id === currentUser?.id);
+  if(!user) return showToast('Login nao encontrado.','⚠️');
+  user.pixKey = pixKey;
+  currentUser.pixKey = pixKey;
+  saveStore(LS_KEYS.users, users);
+  saveCurrentSession(currentUser);
+  updateChatMessage(messageId, msg => {
+    msg.status = 'success';
+    msg.text = 'Chave Pix cadastrada com sucesso ✅ Para alterar use o comando !cadastrar pix.';
+    msg.updatedAt = todayLabel();
+    msg.updatedAtMs = Date.now();
+  });
+  renderChat();
+  if(currentAdminSection === 'payments') renderPaymentsAdmin();
+  showToast('Chave Pix atualizada.','✅');
+}
+function cancelChatPixCommand(messageId){
+  updateChatMessage(messageId, msg => {
+    msg.status = 'cancelled';
+    msg.text = 'Comando cancelado. Nada foi alterado.';
+    msg.updatedAt = todayLabel();
+    msg.updatedAtMs = Date.now();
+  });
+  renderChat();
+}
+function deleteChatMessage(messageId){
+  const messages = loadStore(LS_KEYS.chat, []);
+  const next = messages.filter(m => !(m.id === messageId && (m.privateTo === currentUser?.id || isOwner())));
+  saveStore(LS_KEYS.chat, next);
+  renderChat();
 }
 function clearChat(){
   if(!requireOwner()) return;
@@ -4472,7 +4744,7 @@ const AUTO_EDIT_SELECTOR = [
   'input','textarea','.section-tag','.service-badge','.card-arrow','.logo','.stat-num','.stat-label'
 ].join(',');
 function shouldSkipEditableElement(el){
-  return Boolean(el?.closest?.('#admin-page,#edit-panel,#edit-main-toolbar,#edit-mode-ribbon,#edit-capsule,#edit-context-menu,#edit-password-modal,#edit-save-confirm-modal,#service-edit-choice-modal,#toast-container,.team-task-notification,.order-notification'));
+  return Boolean(el?.closest?.('#admin-page,#edit-panel,#edit-main-toolbar,#edit-mode-ribbon,#edit-capsule,#edit-context-menu,#edit-password-modal,#edit-save-confirm-modal,#service-edit-choice-modal,#toast-container,.team-task-notification,.order-notification,.payment-notification'));
 }
 function editSlug(value){
   return String(value || 'item').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9_-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,48) || 'item';
@@ -4680,7 +4952,7 @@ function bindEditModeClicks(){
 }
 function handleEditModeDocumentClick(event){
   if(!editModeActive) return;
-  if(event.target.closest('#edit-panel,#edit-main-toolbar,#edit-context-menu,#service-edit-choice-modal,#edit-password-modal,#edit-save-confirm-modal,#toast-container')) return;
+  if(event.target.closest('#edit-panel,#edit-main-toolbar,#edit-context-menu,#service-edit-choice-modal,#edit-password-modal,#edit-save-confirm-modal,#toast-container,.payment-notification')) return;
   const serviceCard = event.target.closest('.service-card[data-service-key]');
   if(serviceCard && !event.shiftKey && editActiveTool !== 'drag'){
     event.preventDefault();
@@ -4696,7 +4968,7 @@ function handleEditModeDocumentClick(event){
 }
 function handleEditDragPointerDown(event){
   if(!editModeActive || editActiveTool !== 'drag' || event.button !== 0) return;
-  if(event.target.closest('#edit-panel,#edit-main-toolbar,#edit-context-menu,#service-edit-choice-modal,#edit-password-modal,#edit-save-confirm-modal,#toast-container')) return;
+  if(event.target.closest('#edit-panel,#edit-main-toolbar,#edit-context-menu,#service-edit-choice-modal,#edit-password-modal,#edit-save-confirm-modal,#toast-container,.payment-notification')) return;
   const target = event.target.closest('[data-edit-id]');
   if(!target || shouldSkipEditableElement(target)) return;
   event.preventDefault();
@@ -5016,7 +5288,7 @@ function adminUserRow(u){
   const lockedOwner = u.role === 'dono' && !isOwner();
   return `<tr>
     <td><input class="form-control" id="user-name-${id}" value="${escapeHTML(u.name || '')}" ${lockedOwner?'disabled':''}/></td>
-    <td><input class="form-control" id="user-email-${id}" value="${escapeHTML(u.email || '')}" ${lockedOwner?'disabled':''}/><input class="form-control" style="margin-top:.4rem" id="user-phone-${id}" value="${escapeHTML(u.phone || '')}" placeholder="WhatsApp" ${lockedOwner?'disabled':''}/></td>
+    <td><input class="form-control" id="user-email-${id}" value="${escapeHTML(u.email || '')}" ${lockedOwner?'disabled':''}/><input class="form-control" style="margin-top:.4rem" id="user-phone-${id}" value="${escapeHTML(u.phone || '')}" placeholder="WhatsApp" ${lockedOwner?'disabled':''}/><div class="pix-input-wrap" style="grid-template-columns:32px 1fr;margin-top:.4rem"><div class="pix-input-icon" style="width:32px;height:32px;border-radius:.55rem"><img src="${SITE_IMAGES.pix}" alt="Pix" style="width:20px;height:20px"/></div><input class="form-control" id="user-pix-${id}" value="${escapeHTML(u.pixKey || '')}" placeholder="Chave Pix" ${lockedOwner?'disabled':''}/></div></td>
     <td style="font-family:monospace;color:var(--neon-cyan)">${escapeHTML(u.customerCode || '-')}<br/><button class="btn btn-outline mini-btn" onclick="adminGenerateUserCode('${sid}')" ${lockedOwner?'disabled':''}>Gerar código</button></td>
     <td><span class="admin-user-state">Login</span></td>
     <td><select class="form-control" id="role-user-${id}" ${lockedOwner?'disabled':''}>${adminRoleOptions(u.role || 'cliente')}</select></td>
@@ -5042,11 +5314,13 @@ function adminSaveUser(id){
   const name = document.getElementById(`user-name-${id}`)?.value.trim() || '';
   const email = document.getElementById(`user-email-${id}`)?.value.trim().toLowerCase() || '';
   const phone = document.getElementById(`user-phone-${id}`)?.value.trim() || '';
+  const pixKey = document.getElementById(`user-pix-${id}`)?.value.trim() || '';
   if(!name || !email) return showToast('Nome e email são obrigatórios.','⚠️');
   if(users.some(u => u.id !== id && String(u.email || '').toLowerCase() === email)) return showToast('Já existe um login com esse email.','⚠️');
   user.name = name;
   user.email = email;
   user.phone = phone;
+  user.pixKey = pixKey;
   user.role = nextRole;
   user.active = (document.getElementById(`active-user-${id}`)?.value || 'true') === 'true';
   ensureCustomerCode(user);
@@ -5101,6 +5375,7 @@ function renderLogins(){
         <input class="form-control" id="login-new-phone" placeholder="WhatsApp"/>
         <input class="form-control" id="login-new-password" placeholder="Senha inicial"/>
         <select class="form-control" id="login-new-role">${adminRoleOptions('cliente')}</select>
+        <div class="pix-input-wrap"><div class="pix-input-icon"><img src="${SITE_IMAGES.pix}" alt="Pix"/></div><input class="form-control" id="login-new-pix" placeholder="Chave Pix se for upador"/></div>
         <button class="btn btn-primary" onclick="adminCreateUser()">Cadastrar login</button>
       </div>
     </div>
@@ -5137,10 +5412,11 @@ async function adminCreateUser(){
   const phone = document.getElementById('login-new-phone')?.value.trim() || '';
   const password = document.getElementById('login-new-password')?.value || '';
   const role = document.getElementById('login-new-role')?.value || 'cliente';
+  const pixKey = document.getElementById('login-new-pix')?.value.trim() || '';
   if(!name || !email || !password) return showToast('Preencha nome, email e senha.','⚠️');
   if(role === 'dono' && !isOwner()) return showToast('Apenas dono pode criar outro dono.','🔒');
   if(users.some(u => String(u.email || '').toLowerCase() === email)) return showToast('Já existe login com esse email.','⚠️');
-  users.push({id:uid('USR-'),name,email,phone,passwordHash:await sha256(password),role,active:true,customerCode:generateCustomerCode()});
+  users.push({id:uid('USR-'),name,email,phone,passwordHash:await sha256(password),role,active:true,customerCode:generateCustomerCode(),pixKey});
   saveStore(LS_KEYS.users, users);
   renderLogins(); updateAdminMenu(); showToast('Login cadastrado.','✅');
 }
@@ -5251,6 +5527,149 @@ function renderFinance(){
   const revenue = orders.reduce((sum,o)=>sum + moneyFromText(o.price), 0);
   document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💰 Financeiro</h2><div class="admin-stat-grid"><div class="admin-stat-card"><div class="admin-stat-val">R$ ${revenue.toFixed(2).replace('.',',')}</div><div class="admin-stat-label">Total registrado</div></div><div class="admin-stat-card"><div class="admin-stat-val">${orders.filter(o=>o.payment==='PIX').length}</div><div class="admin-stat-label">Pagamentos PIX</div></div></div>`;
 }
+function payoutOrdersForUploader(userId){
+  return loadStore(LS_KEYS.orders, [])
+    .filter(o => isOrderPaid(o) && o.uploaderId === userId && !o.accountProductId)
+    .sort((a,b)=>(b.approvedAtMs || b.completedAtMs || b.createdAtMs || 0) - (a.approvedAtMs || a.completedAtMs || a.createdAtMs || 0));
+}
+function payoutLedgerForUploader(uploader){
+  const orders = payoutOrdersForUploader(uploader.id);
+  const gross = orders.reduce((sum,o)=>sum + moneyFromText(o.paymentAmount || o.price), 0);
+  const netTotal = gross * 0.7;
+  const fee = gross * 0.3;
+  const payments = loadStore(LS_KEYS.uploaderPayments, []).filter(p => p.uploaderId === uploader.id);
+  const paidNet = payments.reduce((sum,p)=>sum + Number(p.net || 0), 0);
+  const dueNet = Math.max(0, netTotal - paidNet);
+  return {orders, gross, fee, netTotal, paidNet, dueNet, pixKey:uploader.pixKey || ''};
+}
+function renderPaymentsAdmin(){
+  if(!canManageAdmin()){
+    document.getElementById('admin-content').innerHTML = `<h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">Pagamentos</h2><div class="locked-note">Apenas dono/admin pode ver pagamentos.</div>`;
+    return;
+  }
+  const users = loadStore(LS_KEYS.users, []);
+  const orderUploaderIds = new Set(loadStore(LS_KEYS.orders, []).map(o => o.uploaderId).filter(Boolean));
+  const uploaders = users
+    .filter(u => u.role === 'upador' || orderUploaderIds.has(u.id))
+    .sort((a,b)=>String(a.name || '').localeCompare(String(b.name || ''), 'pt-BR'));
+  const ledgers = uploaders.map(u => ({u, ledger:payoutLedgerForUploader(u)}));
+  const gross = ledgers.reduce((sum,item)=>sum + item.ledger.gross, 0);
+  const netDue = ledgers.reduce((sum,item)=>sum + item.ledger.dueNet, 0);
+  document.getElementById('admin-content').innerHTML = `
+    <div class="admin-title-row"><h2>Pagamentos</h2><button class="btn btn-outline mini-btn" onclick="renderPaymentsAdmin()">Atualizar</button></div>
+    <div class="admin-lite-grid">
+      <div class="admin-lite-card"><strong>${formatBRL(gross)}</strong><span>Total bruto em servicos + gorjetas</span></div>
+      <div class="admin-lite-card"><strong>${formatBRL(gross * 0.3)}</strong><span>30% da plataforma</span></div>
+      <div class="admin-lite-card"><strong>${formatBRL(netDue)}</strong><span>Total a pagar agora depois do desconto</span></div>
+    </div>
+    <div class="admin-card">
+      <div class="payment-ledger-grid">
+        ${ledgers.map(({u, ledger}) => `
+          <div class="payment-ledger-card">
+            <div style="display:flex;justify-content:space-between;gap:.75rem;align-items:start">
+              <div><strong>${escapeHTML(u.name || 'Upador')}</strong><div style="color:var(--text-muted);font-size:.78rem">${ledger.orders.length} compras vinculadas</div></div>
+              ${roleBadge(u.role)}
+            </div>
+            <div class="payment-money-row"><span>Bruto</span><strong>${formatBRL(ledger.gross)}</strong></div>
+            <div class="payment-money-row"><span>Desconto 30%</span><strong>${formatBRL(ledger.fee)}</strong></div>
+            <div class="payment-money-row"><span>Ja pago</span><strong>${formatBRL(ledger.paidNet)}</strong></div>
+            <div><span style="color:var(--text-muted);font-size:.75rem">A pagar depois do desconto</span><div class="payment-net">${formatBRL(ledger.dueNet)}</div></div>
+            <div class="payment-pix-line">
+              <img src="${SITE_IMAGES.pix}" alt="Pix"/>
+              <div class="payment-pix-key">${escapeHTML(ledger.pixKey || 'Chave Pix nao cadastrada')}</div>
+              <button class="btn btn-outline mini-btn" onclick="copyUploaderPix('${escapeJS(u.id)}')" ${ledger.pixKey ? '' : 'disabled'}>Copiar</button>
+              <button class="btn btn-primary mini-btn" onclick="notifyUploaderPaid('${escapeJS(u.id)}')" ${ledger.dueNet > 0 ? '' : 'disabled'}>Notificar pago</button>
+            </div>
+            <div style="color:var(--text-muted);font-size:.72rem;line-height:1.5">O valor soma servicos e gorjetas aprovados, desconta 30% e abate pagamentos ja notificados.</div>
+          </div>
+        `).join('') || '<div style="color:var(--text-muted);font-size:.86rem">Nenhum upador com compras ainda.</div>'}
+      </div>
+    </div>`;
+}
+function copyUploaderPix(userId){
+  const user = loadStore(LS_KEYS.users, []).find(u => u.id === userId);
+  const key = user?.pixKey || '';
+  if(!key) return showToast('Esse upador ainda nao cadastrou chave Pix.','⚠️');
+  if(navigator.clipboard) navigator.clipboard.writeText(key).catch(()=>{});
+  showToast('Chave Pix copiada.','📋');
+}
+function notifyUploaderPaid(userId){
+  if(!canManageAdmin()) return;
+  const users = loadStore(LS_KEYS.users, []);
+  const uploader = users.find(u => u.id === userId);
+  if(!uploader) return showToast('Upador nao encontrado.','⚠️');
+  const ledger = payoutLedgerForUploader(uploader);
+  if(ledger.dueNet <= 0) return showToast('Nao ha valor pendente para esse upador.','⚠️');
+  const record = {
+    id:uid('PAY-'),
+    uploaderId:uploader.id,
+    uploaderName:uploader.name,
+    pixKey:ledger.pixKey,
+    gross:ledger.gross,
+    fee:ledger.fee,
+    net:ledger.dueNet,
+    paidNetBefore:ledger.paidNet,
+    createdAt:todayLabel(),
+    createdAtMs:Date.now(),
+    notifiedBy:currentUser?.name || 'Admin'
+  };
+  const payments = loadStore(LS_KEYS.uploaderPayments, []);
+  payments.unshift(record);
+  saveStore(LS_KEYS.uploaderPayments, payments.slice(0, 300));
+  const messages = loadStore(LS_KEYS.chat, []);
+  messages.push({
+    id:`PAY-CHAT-${record.id}`,
+    author:'Sistema',
+    role:'bot',
+    kind:'payment_notice',
+    text:`@${uploader.name} voce foi pago no valor de ${formatBRL(record.net)}. Confira seu extrato.`,
+    mentions:[uploader.id],
+    createdAt:todayLabel(),
+    createdAtMs:Date.now()
+  });
+  saveStore(LS_KEYS.chat, messages.slice(-220));
+  renderPaymentsAdmin();
+  showToast('Upador notificado sobre o pagamento.','✅');
+}
+function paymentSeenKey(user=currentUser){
+  return `${LS_KEYS.paymentSeen}_${user?.id || 'anon'}`;
+}
+function renderUploaderPaymentNotification(){
+  const el = document.getElementById('payment-notification');
+  if(!el) return;
+  if(!currentUser?.id || !['upador','admin','mod','dono'].includes(currentUser.role)){
+    el.classList.remove('active');
+    el.innerHTML = '';
+    return;
+  }
+  const seen = loadStore(paymentSeenKey(), []);
+  const notice = loadStore(LS_KEYS.uploaderPayments, [])
+    .filter(p => p.uploaderId === currentUser.id && !seen.includes(p.id))
+    .sort((a,b)=>(b.createdAtMs || 0) - (a.createdAtMs || 0))[0];
+  if(!notice){
+    el.classList.remove('active');
+    el.innerHTML = '';
+    return;
+  }
+  el.innerHTML = `
+    <div class="order-head">
+      <img src="${SITE_IMAGES.pix}" alt="Pix"/>
+      <div>
+        <div class="order-title">Pagamento recebido</div>
+        <div class="order-sub">${escapeHTML(notice.createdAt || '')}</div>
+      </div>
+      <span class="order-dot green"></span>
+    </div>
+    <div class="order-message">Voce foi pago no valor de <strong>${formatBRL(notice.net)}</strong>. Confira seu extrato.</div>
+    <button class="btn btn-primary mini-btn" onclick="dismissUploaderPaymentNotice('${escapeJS(notice.id)}')">Entendi</button>`;
+  el.classList.add('active');
+}
+function dismissUploaderPaymentNotice(id){
+  const seen = loadStore(paymentSeenKey(), []);
+  if(!seen.includes(id)) seen.push(id);
+  localStorage.setItem(paymentSeenKey(), JSON.stringify(seen.slice(-200)));
+  renderUploaderPaymentNotification();
+}
 function adminNav(section, el){
   currentAdminSection = section;
   document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
@@ -5267,6 +5686,7 @@ function adminNav(section, el){
   if(section==='edithistory') renderEditHistory();
   if(section==='users') renderUsers();
   if(section==='logins') renderLogins();
+  if(section==='payments') renderPaymentsAdmin();
   if(section==='financeiro') renderFinance();
   updateAdminBadges();
 }
@@ -5285,12 +5705,13 @@ function refreshAdminSection({force=false}={}){
 function handleLiveStoreUpdate(key){
   if(!Object.values(LS_KEYS).includes(key)) return;
   if(key === LS_KEYS.currentUser || key === LS_KEYS.users) syncCurrentUserFromStore();
-  if([LS_KEYS.users, LS_KEYS.orders, LS_KEYS.currentUser].includes(key)){
+  if([LS_KEYS.users, LS_KEYS.orders, LS_KEYS.currentUser, LS_KEYS.uploaderPayments].includes(key)){
     if(key === LS_KEYS.orders) ensureTeamTaskNotices();
     updateAuthUI();
     renderAccountPanel();
     renderOrderNotification();
     renderTeamTaskNotification();
+    renderUploaderPaymentNotification();
     notifyOwnerApprovedPurchases();
     if(key === LS_KEYS.orders && document.getElementById('schedule-modal')?.classList.contains('active')) renderScheduleStep();
     refreshAdminSection();
@@ -5301,6 +5722,7 @@ function handleLiveStoreUpdate(key){
   }
   if(key === LS_KEYS.chat && currentAdminSection === 'chat') refreshAdminSection();
   if(key === LS_KEYS.chat) updateAdminBadges();
+  if(key === LS_KEYS.uploaderPayments && currentAdminSection === 'payments') refreshAdminSection();
   if(key === LS_KEYS.ownerDismissed) renderAccountPanel();
   if(key === LS_KEYS.availability){
     if(document.getElementById('schedule-modal')?.classList.contains('active')) renderScheduleStep();
