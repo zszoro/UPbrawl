@@ -226,6 +226,8 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .time-slot.blocked{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.18);color:rgba(255,255,255,.25);cursor:not-allowed;text-decoration:line-through;font-size:.73rem}
 .cal-day.available{border-color:rgba(34,197,94,.35);color:#86efac;background:rgba(34,197,94,.08)}
 .cal-day.locked{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22);color:rgba(255,255,255,.28);cursor:not-allowed}
+.cal-day.disabled,.cal-day.locked{flex-direction:column;gap:.08rem}
+.cal-day.locked.today{border-color:rgba(239,68,68,.34);color:#fecaca}
 .cal-day small{display:block;font-size:.55rem;line-height:1;margin-top:.12rem}
 .pix-box{background:linear-gradient(135deg,rgba(0,180,100,.1),rgba(6,182,212,.08));border:1px solid rgba(0,200,100,.25);border-radius:1rem;padding:1.5rem;text-align:center;margin:1rem 0}
 .confirm-box{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(6,182,212,.07));border:1px solid rgba(34,197,94,.3);border-radius:1rem;padding:1.5rem;text-align:center;margin:1rem 0}
@@ -387,6 +389,10 @@ body.edit-mode-active nav{top:42px}
 .chat-bot-warning{color:#f87171;font-size:.68rem;line-height:1.4;margin-top:.45rem}
 .chat-delete-link{display:inline-block;margin-top:.45rem;color:#94a3b8;font-size:.67rem;text-decoration:underline;cursor:pointer}
 .chat-delete-link:hover{color:#fff}
+.chat-bot-list{display:flex;flex-direction:column;gap:.42rem;margin-top:.55rem}
+.chat-bot-line{font-size:.78rem;color:#dbeafe;line-height:1.45}
+.chat-bot-line strong{color:#fff}
+.chat-command-chip{display:inline-flex;align-items:center;border:1px solid rgba(147,197,253,.26);background:rgba(59,130,246,.12);border-radius:.45rem;padding:.05rem .32rem;color:#bfdbfe;font-family:monospace;font-size:.72rem;font-weight:900}
 .performance-list{display:flex;flex-direction:column;gap:.75rem}
 .performance-item{display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:center;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:.8rem;padding:.85rem}
 .sold-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .65rem;border-radius:50px;background:rgba(100,116,139,.16);border:1px solid rgba(148,163,184,.28);color:#cbd5e1;font-size:.72rem;font-weight:900}
@@ -2011,7 +2017,7 @@ function renderTestimonials(){
   if(!grid) return;
   const saved = feedbacks().map(f => ({
     name:f.name || 'Cliente verificado',
-    meta:f.service || 'Compra verificada',
+    meta:[f.service || 'Compra verificada', f.product || ''].filter(Boolean).join(' • '),
     rating:f.rating,
     description:f.description,
     initials:initialsFromName(f.name),
@@ -2230,7 +2236,10 @@ function submitFeedback(){
     product:pending.product || '',
     rating:selectedFeedbackRating,
     description,
-    createdAt:todayLabel()
+    createdAt:todayLabel(),
+    createdAtMs:Date.now(),
+    public:true,
+    verified:true
   });
   saveStore(LS_KEYS.feedbacks, all.slice(0, 60));
   hideFeedbackPrompt();
@@ -3019,8 +3028,9 @@ function renderCalendar(){
     const state = dayAvailabilityState(fullDate);
     const locked = !past && state.locked;
     const cls = past ? ' disabled' : locked ? ' locked' : ' available';
-    const label = past ? '' : locked ? '<small>🔒</small>' : `<small>${state.free}</small>`;
-    grid += `<div class="cal-day${cls}${d===today?' today':''}" onclick="${past || locked ? '' : "selectDate('"+fullDate+"',this)"}">${d}${label}</div>`;
+    const label = past || locked ? '<small>&#128274;</small>' : `<small>${state.free}</small>`;
+    const disabledAttrs = past || locked ? ' aria-disabled="true" title="Sem upador livre nesse dia"' : '';
+    grid += `<div class="cal-day${cls}${d===today?' today':''}"${disabledAttrs} onclick="${past || locked ? '' : "selectDate('"+fullDate+"',this)"}">${d}${label}</div>`;
   }
   grid += '</div>';
   return `<div style="font-size:.9rem;font-weight:700;text-align:center;margin-bottom:.9rem">${months[now.getMonth()]} ${now.getFullYear()}</div>
@@ -4386,6 +4396,19 @@ function renderPixCommandCard(message){
 function renderDeleteBotMessageLink(message){
   return `<span class="chat-delete-link" onclick="deleteChatMessage('${escapeJS(message.id)}')">apagar mensagem</span>`;
 }
+function renderBotInfoCard(message){
+  const lines = Array.isArray(message.lines) ? message.lines : [];
+  return `<div class="chat-bot-card">
+    <div class="chat-pix-grid">
+      <div class="chat-bot-pix-icon"><img src="${message.icon || SITE_IMAGES.orderNotification}" alt="Bot"/></div>
+      <div>
+        <strong>${escapeHTML(message.title || 'Bot ZS')}</strong>
+        ${lines.length ? `<div class="chat-bot-list">${lines.map(line => `<div class="chat-bot-line">${renderMentionText(line)}</div>`).join('')}</div>` : ''}
+        ${renderDeleteBotMessageLink(message)}
+      </div>
+    </div>
+  </div>`;
+}
 function renderChatMessage(message){
   const mine = message.author === currentUser?.name ? 'mine' : '';
   const privateClass = message.privateTo ? 'private' : '';
@@ -4393,6 +4416,7 @@ function renderChatMessage(message){
     <div class="chat-meta">${escapeHTML(message.author || 'Sistema')} · ${escapeHTML(message.createdAt || '')}</div>
     <div>${renderMentionText(message.text || '')}</div>
     ${message.kind === 'pix_command' ? renderPixCommandCard(message) : ''}
+    ${message.kind === 'bot_info' ? renderBotInfoCard(message) : ''}
     ${message.taskId ? renderChatTaskAction(message.taskId) : ''}
   </div>`;
 }
@@ -4405,7 +4429,7 @@ function renderChat(){
     <div class="admin-card">
       ${isOwner() ? '<div style="display:flex;justify-content:flex-end;margin-bottom:.75rem"><button class="btn btn-outline mini-btn" onclick="clearChat()">Limpar chat</button></div>' : ''}
       <div class="chat-box" id="chat-box">${messages.map(renderChatMessage).join('')}</div>
-      <div style="font-size:.72rem;color:var(--text-muted);margin-top:.75rem">Use @todos, @upador, @admin, @mod, @dono ou @nome da pessoa.</div>
+      <div style="font-size:.72rem;color:var(--text-muted);margin-top:.75rem">Use @todos, @upador, @admin, @mod, @dono ou @nome da pessoa. Comandos: !ajuda, !saldo, !extrato, !tarefas, !meus servicos, !cadastrar pix.</div>
       <div style="display:flex;gap:.7rem;margin-top:.55rem"><input class="form-control" id="chat-input" placeholder="Mensagem para donos e upadores" list="chat-mentions" onkeydown="if(event.key==='Enter') sendChat()"/><datalist id="chat-mentions">${chatMentionTargets().map(t=>`<option value="@${escapeHTML(t.label.replace(/^@/,''))}"></option>`).join('')}</datalist><button class="btn btn-primary" onclick="sendChat()">Enviar</button></div>
     </div>`;
   const box = document.getElementById('chat-box'); if(box) box.scrollTop = box.scrollHeight;
@@ -4415,14 +4439,199 @@ function sendChat(){
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if(!text) return;
-  if(normalizeMention(text) === 'cadastrarpix'){
+  if(handleChatCommand(text)){
     input.value = '';
-    sendPixCommandBotMessage();
     return;
   }
   const messages = loadStore(LS_KEYS.chat, []);
   messages.push({id:uid('MSG-'),author:currentUser?.name || 'Equipe',role:currentUser?.role || 'dono',text,mentions:parseMentions(text),createdAt:todayLabel(),createdAtMs:Date.now()});
   saveStore(LS_KEYS.chat, messages); renderChat();
+}
+function sendBotInfoMessage({title, text='', lines=[], icon=SITE_IMAGES.orderNotification}){
+  if(!currentUser?.id) return;
+  const messages = loadStore(LS_KEYS.chat, []);
+  messages.push({
+    id:uid('BOT-'),
+    author:'Bot ZS',
+    role:'bot',
+    kind:'bot_info',
+    privateTo:currentUser.id,
+    text,
+    title,
+    lines,
+    icon,
+    mentions:[currentUser.id],
+    createdAt:todayLabel(),
+    createdAtMs:Date.now()
+  });
+  saveStore(LS_KEYS.chat, messages.slice(-240));
+  renderChat();
+}
+function commandLine(command, description){
+  return `${command} - ${description}`;
+}
+function chatCommandsHelpLines(){
+  const common = [
+    commandLine('!ajuda ou !comandos','mostra esta lista de comandos.'),
+    commandLine('!cadastrar pix','abre o cadastro privado da sua chave Pix.'),
+    commandLine('!saldo','mostra seu saldo de servicos e gorjetas, ja com desconto de 30%.'),
+    commandLine('!extrato','mostra ultimos servicos, gorjetas e pagamentos recebidos.'),
+    commandLine('!tarefas','mostra tarefas disponiveis agora.'),
+    commandLine('!meus servicos','mostra os servicos que voce pegou.'),
+    commandLine('!limpar bot','apaga suas mensagens privadas do bot.')
+  ];
+  if(canManageAdmin()){
+    common.push(
+      commandLine('!resumo','mostra vendas, tarefas abertas, feedbacks e saldo total a pagar.'),
+      commandLine('!pagamentos','lista quanto deve para cada upador.'),
+      commandLine('!clientes','lista clientes e logins recentes.'),
+      commandLine('!feedbacks','mostra os feedbacks publicos mais recentes.')
+    );
+  }
+  return common;
+}
+function handleChatCommand(text){
+  const key = normalizeMention(text);
+  if(!key || !String(text).trim().startsWith('!')) return false;
+  if(key === 'cadastrarpix'){ sendPixCommandBotMessage(); return true; }
+  if(['ajuda','comandos','help'].includes(key)){
+    sendBotInfoMessage({title:'Comandos do chat', text:'Lista de comandos disponiveis.', lines:chatCommandsHelpLines(), icon:SITE_IMAGES.orderNotification});
+    return true;
+  }
+  if(['saldo','meusaldo'].includes(key)){ sendBalanceCommand(); return true; }
+  if(['extrato','meuextrato'].includes(key)){ sendStatementCommand(); return true; }
+  if(['tarefas','servicosdisponiveis'].includes(key)){ sendTasksCommand(); return true; }
+  if(['meusservicos','meuspedidos','minhastarefas'].includes(key)){ sendMyServicesCommand(); return true; }
+  if(['limparbot','apagarsbot','apagarbot'].includes(key)){ clearMyBotMessages(); return true; }
+  if(['resumo','resumodono','dashboard'].includes(key)){ sendOwnerSummaryCommand(); return true; }
+  if(['pagamentos','repasse','repasses'].includes(key)){ sendOwnerPaymentsCommand(); return true; }
+  if(['clientes','usuarios','logins'].includes(key)){ sendOwnerClientsCommand(); return true; }
+  if(['feedbacks','avaliacoes'].includes(key)){ sendOwnerFeedbacksCommand(); return true; }
+  sendBotInfoMessage({title:'Comando nao encontrado', text:'Comando nao encontrado.', lines:['Digite !ajuda para ver todos os comandos disponiveis.']});
+  return true;
+}
+function compactOrderLine(order){
+  return `${order.id || 'Pedido'} | ${order.service || 'Servico'} | ${order.client || order.owner || 'Cliente'} | ${order.paymentAmount || order.price || 'R$ 0,00'} | ${order.status || 'pendente'}`;
+}
+function sendBalanceCommand(){
+  if(currentUser?.role !== 'upador' && !canManageAdmin()){
+    sendBotInfoMessage({title:'Saldo indisponivel', text:'Saldo indisponivel.', lines:['Este comando e para upadores ou administradores.']});
+    return;
+  }
+  if(currentUser?.role === 'upador'){
+    const ledger = payoutLedgerForUploader(currentUser);
+    sendBotInfoMessage({
+      title:'Seu saldo de upador',
+      text:`Saldo atual: ${formatBRL(ledger.dueNet)}`,
+      icon:SITE_IMAGES.pix,
+      lines:[
+        `Compras vinculadas: ${ledger.orders.length}`,
+        `Total bruto: ${formatBRL(ledger.gross)}`,
+        `Desconto da plataforma 30%: ${formatBRL(ledger.fee)}`,
+        `Ja pago: ${formatBRL(ledger.paidNet)}`,
+        `Saldo a receber: ${formatBRL(ledger.dueNet)}`
+      ]
+    });
+    return;
+  }
+  sendOwnerPaymentsCommand('Resumo de saldos dos upadores');
+}
+function sendStatementCommand(){
+  if(currentUser?.role !== 'upador'){
+    if(!requireManagerCommand('!extrato')) return;
+    sendBotInfoMessage({title:'Extrato', text:'Extrato do admin.', lines:ownerPaymentsLines().slice(0, 8), icon:SITE_IMAGES.pix});
+    return;
+  }
+  const services = payoutOrdersForUploader(currentUser.id).slice(0, 5).map(compactOrderLine);
+  const payments = loadStore(LS_KEYS.uploaderPayments, [])
+    .filter(p => p.uploaderId === currentUser.id)
+    .slice(0, 4)
+    .map(p => `Pagamento ${p.createdAt || ''}: ${formatBRL(p.net)}`);
+  sendBotInfoMessage({
+    title:'Seu extrato',
+    text:'Extrato privado do upador.',
+    icon:SITE_IMAGES.pix,
+    lines:[...(services.length ? services : ['Nenhum servico/gorjeta aprovado ainda.']), ...(payments.length ? payments : ['Nenhum pagamento marcado ainda.'])]
+  });
+}
+function sendTasksCommand(){
+  const tasks = availableTaskOrders().slice(0, 6);
+  sendBotInfoMessage({
+    title:'Tarefas disponiveis',
+    text:`${tasks.length} tarefas disponiveis.`,
+    lines:tasks.length ? tasks.map(compactOrderLine) : ['Nenhuma tarefa livre agora.'],
+    icon:SITE_IMAGES.orderNotification
+  });
+}
+function sendMyServicesCommand(){
+  if(currentUser?.role !== 'upador'){
+    sendBotInfoMessage({title:'Meus servicos', text:'Comando para upadores.', lines:['Este comando mostra tarefas aceitas pelo upador logado.']});
+    return;
+  }
+  const mine = loadStore(LS_KEYS.orders, [])
+    .filter(o => o.uploaderId === currentUser.id && !isTipOrder(o))
+    .sort((a,b)=>(b.takenAtMs || b.createdAtMs || 0) - (a.takenAtMs || a.createdAtMs || 0))
+    .slice(0, 7);
+  sendBotInfoMessage({
+    title:'Seus servicos',
+    text:`${mine.length} servicos encontrados.`,
+    lines:mine.length ? mine.map(compactOrderLine) : ['Voce ainda nao pegou nenhum servico.']
+  });
+}
+function ownerSummaryLines(){
+  const orders = loadStore(LS_KEYS.orders, []);
+  const paid = orders.filter(isOrderPaid);
+  const users = loadStore(LS_KEYS.users, []);
+  const due = users.reduce((sum,u)=>sum + payoutLedgerForUploader(u).dueNet, 0);
+  return [
+    `Compras aprovadas: ${paid.length}`,
+    `Faturamento bruto aprovado: ${formatBRL(paid.reduce((sum,o)=>sum + moneyFromText(o.paymentAmount || o.price), 0))}`,
+    `Tarefas sem upador: ${availableTaskOrders().length}`,
+    `Pedidos finalizados: ${orders.filter(o => o.status === 'realizado' && !isTipOrder(o)).length}`,
+    `Total a pagar para upadores: ${formatBRL(due)}`,
+    `Feedbacks publicos: ${feedbacks().length}`,
+    `Logins salvos: ${users.length}`
+  ];
+}
+function requireManagerCommand(command){
+  if(canManageAdmin()) return true;
+  sendBotInfoMessage({title:'Comando restrito', text:'Comando restrito.', lines:[`${command} e apenas para dono/admin.`]});
+  return false;
+}
+function sendOwnerSummaryCommand(){
+  if(!requireManagerCommand('!resumo')) return;
+  sendBotInfoMessage({title:'Resumo do dono', text:'Resumo administrativo.', lines:ownerSummaryLines(), icon:SITE_IMAGES.money});
+}
+function ownerPaymentsLines(){
+  const uploaders = loadStore(LS_KEYS.users, []).filter(u => u.role === 'upador' || payoutOrdersForUploader(u.id).length);
+  const rows = uploaders
+    .map(u => ({u, ledger:payoutLedgerForUploader(u)}))
+    .filter(item => item.ledger.gross > 0 || item.ledger.dueNet > 0)
+    .sort((a,b)=>b.ledger.dueNet - a.ledger.dueNet)
+    .slice(0, 8);
+  return rows.length ? rows.map(({u, ledger}) => `${u.name}: deve ${formatBRL(ledger.dueNet)} | bruto ${formatBRL(ledger.gross)} | Pix ${u.pixKey ? 'cadastrado' : 'faltando'}`) : ['Nenhum repasse pendente.'];
+}
+function sendOwnerPaymentsCommand(title='Pagamentos dos upadores'){
+  if(!requireManagerCommand('!pagamentos')) return;
+  sendBotInfoMessage({title, text:'Saldos dos upadores.', lines:ownerPaymentsLines(), icon:SITE_IMAGES.pix});
+}
+function sendOwnerClientsCommand(){
+  if(!requireManagerCommand('!clientes')) return;
+  const rows = allKnownUsers().slice(0, 8).map(u => `${u.name || 'Cliente'} | ${u.email || '-'} | ${u.phone || '-'} | ${u.role || 'cliente'} | ${u.source || 'login'}`);
+  sendBotInfoMessage({title:'Clientes e logins recentes', text:'Clientes e usuarios.', lines:rows.length ? rows : ['Nenhum usuario encontrado.']});
+}
+function sendOwnerFeedbacksCommand(){
+  if(!requireManagerCommand('!feedbacks')) return;
+  const rows = feedbacks().slice(0, 7).map(f => `${f.name || 'Cliente'} | ${starsText(f.rating)} | ${f.service || 'Compra'} | ${f.description || ''}`);
+  sendBotInfoMessage({title:'Feedbacks publicos', text:'Ultimos feedbacks publicados.', lines:rows.length ? rows : ['Nenhum feedback publicado ainda.']});
+}
+function clearMyBotMessages(){
+  if(!currentUser?.id) return;
+  const before = loadStore(LS_KEYS.chat, []);
+  const after = before.filter(m => !(m.privateTo === currentUser.id && m.author === 'Bot ZS'));
+  saveStore(LS_KEYS.chat, after);
+  renderChat();
+  showToast('Mensagens privadas do bot apagadas.','✅');
 }
 function sendPixCommandBotMessage(){
   if(!currentUser?.id) return;
@@ -5722,6 +5931,7 @@ function handleLiveStoreUpdate(key){
   }
   if(key === LS_KEYS.chat && currentAdminSection === 'chat') refreshAdminSection();
   if(key === LS_KEYS.chat) updateAdminBadges();
+  if(key === LS_KEYS.feedbacks) renderTestimonials();
   if(key === LS_KEYS.uploaderPayments && currentAdminSection === 'payments') refreshAdminSection();
   if(key === LS_KEYS.ownerDismissed) renderAccountPanel();
   if(key === LS_KEYS.availability){
