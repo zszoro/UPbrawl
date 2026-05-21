@@ -258,11 +258,37 @@ section{position:relative;z-index:1;padding:5rem 2rem}
 .role-owner{color:#fbbf24;background:rgba(251,191,36,.12)}
 .role-uploader{color:#60a5fa;background:rgba(96,165,250,.12)}
 .locked-note{font-size:.78rem;color:var(--text-muted);line-height:1.6;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:.65rem;padding:.75rem;margin-bottom:1rem}
-.chat-box{height:360px;overflow-y:auto;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.08);border-radius:.8rem;padding:1rem;display:flex;flex-direction:column;gap:.75rem}
-.chat-message{max-width:78%;padding:.7rem .85rem;border-radius:.8rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+.chat-shell{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:1rem;align-items:start}
+.chat-toolbar{display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap;margin-bottom:.75rem}
+.chat-secure-note{color:var(--text-muted);font-size:.72rem;line-height:1.45}
+.chat-box{height:430px;overflow-y:auto;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.08);border-radius:.8rem;padding:1rem;display:flex;flex-direction:column;gap:.75rem}
+.chat-message{position:relative;max-width:min(78%,760px);padding:.75rem .85rem;border-radius:.8rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
 .chat-message.mine{align-self:flex-end;background:rgba(168,85,247,.16);border-color:rgba(168,85,247,.3)}
-.chat-meta{font-size:.68rem;color:var(--text-muted);margin-bottom:.25rem;font-weight:700}
+.chat-message.system{align-self:center;max-width:92%;background:rgba(148,163,184,.08);border-style:dashed}
+.chat-message.private{border-color:rgba(45,212,191,.28);background:rgba(45,212,191,.08)}
+.chat-message.deleted{opacity:.74;border-style:dashed}
+.chat-meta{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;font-size:.68rem;color:var(--text-muted);margin-bottom:.25rem;font-weight:700}
+.chat-author-btn{border:0;background:transparent;color:#fff;font:inherit;font-weight:900;padding:0;cursor:pointer}
+.chat-author-btn:hover{text-decoration:underline}
+.chat-message-actions{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.55rem}
+.chat-message-action{border:0;background:transparent;color:#94a3b8;font-size:.67rem;text-decoration:underline;cursor:pointer;padding:0}
+.chat-message-action:hover{color:#fff}
 .chat-mention{display:inline-block;color:#93c5fd;background:rgba(59,130,246,.14);border:1px solid rgba(59,130,246,.24);border-radius:.35rem;padding:0 .25rem;font-weight:800}
+.chat-mention-btn{cursor:pointer;font:inherit}
+.chat-composer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.7rem;margin-top:.55rem}
+.chat-profile-panel{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);border-radius:.8rem;padding:1rem;min-height:220px}
+.chat-profile-empty{color:var(--text-muted);font-size:.78rem;line-height:1.55}
+.chat-profile-card{display:flex;flex-direction:column;gap:.85rem}
+.chat-profile-head{display:grid;grid-template-columns:48px minmax(0,1fr);gap:.75rem;align-items:center}
+.chat-avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,rgba(168,85,247,.72),rgba(6,182,212,.62));border:1px solid rgba(255,255,255,.22);font-family:'Orbitron',sans-serif;font-weight:900;color:#fff}
+.chat-profile-name{font-weight:900;color:#fff;line-height:1.2;word-break:break-word}
+.chat-profile-meta{color:var(--text-muted);font-size:.72rem;line-height:1.45;word-break:break-word}
+.chat-profile-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem}
+.chat-profile-stat{background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.07);border-radius:.55rem;padding:.55rem;text-align:center}
+.chat-profile-stat strong{display:block;color:#fff;font-family:'Orbitron',sans-serif;font-size:.92rem}
+.chat-profile-stat span{display:block;color:var(--text-muted);font-size:.64rem;margin-top:.15rem}
+.chat-profile-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+.chat-role-select{min-width:130px}
 .brand-icon{width:1.1em;height:1.1em;display:inline-block;vertical-align:-.18em;fill:currentColor;flex-shrink:0}
 .icon-btn-content{display:inline-flex;align-items:center;justify-content:center;gap:.45rem}
 .code-box{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.35);border-radius:.8rem;padding:1rem;text-align:center;margin:1rem 0}
@@ -413,6 +439,7 @@ footer{position:relative;z-index:1;background:rgba(0,0,0,.95);border-top:1px sol
 /* ── WHATSAPP FLOAT ── */
 .wa-float{position:fixed;bottom:2rem;left:2rem;z-index:500;width:52px;height:52px;border-radius:50%;background:#fff;color:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 18px rgba(255,255,255,.35);transition:.3s;text-decoration:none}
 .wa-float:hover{transform:scale(1.12);box-shadow:0 0 32px rgba(37,211,102,.7)}
+body.admin-open .wa-float,body.admin-open .edit-capsule{display:none!important}
 
 /* ── CHART BAR ── */
 .chart-wrap{display:flex;align-items:flex-end;gap:.4rem;height:90px;margin:1rem 0}
@@ -478,6 +505,8 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
   .admin-content{margin-left:0}
   .admin-live-item{grid-template-columns:1fr}
   .admin-filter-row{grid-template-columns:1fr}
+  .chat-shell{grid-template-columns:1fr}
+  .chat-profile-panel{min-height:0}
   .ranks-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
 }
 @media(max-width:540px){
@@ -502,6 +531,10 @@ body.owner-mode #admin-page .admin-nav-item.active{background:rgba(251,191,36,.1
   .order-uploader-stats{grid-template-columns:1fr}
   .account-panel{position:fixed;top:4.6rem;left:.75rem;right:.75rem;width:auto}
   .service-edit-choice-modal .admin-actions{grid-template-columns:1fr}
+  .chat-box{height:380px;padding:.75rem}
+  .chat-message{max-width:100%}
+  .chat-composer{grid-template-columns:1fr}
+  .chat-profile-stats{grid-template-columns:1fr}
   .edit-mode-ribbon{justify-content:flex-end;padding-left:7.1rem;text-align:right;font-size:.72rem}
   .edit-ribbon-icon{left:.35rem;top:-13px;width:96px;height:62px}
 }
@@ -1558,6 +1591,11 @@ const LS_KEYS = {
   paymentSeen:'zsup_payment_seen'
 };
 const GLOBAL_SYNC_KEYS = ['zsup_users','zsup_orders','zsup_chat','zsup_products','zsup_feedbacks','zsup_owner_dismissed_notices','zsup_availability','zsup_site_edits','zsup_edit_history','zsup_uploader_payments'];
+const TEAM_ROLES = ['dono','admin','mod','upador'];
+const ROLE_VALUES = ['cliente', ...TEAM_ROLES];
+const PRIVILEGED_ROLES = ['dono','admin'];
+const CHAT_MESSAGE_MAX = 700;
+const CHAT_HISTORY_LIMIT = 260;
 
 function loadStore(key, fallback){
   try{ return JSON.parse(localStorage.getItem(key)) || fallback; }catch(e){ return fallback; }
@@ -1649,6 +1687,33 @@ async function sha256(text){
 function canManageAdmin(){ return ['dono','admin'].includes(currentUser?.role); }
 function canModerate(){ return ['dono','admin','mod'].includes(currentUser?.role); }
 function canUseTeamChat(){ return ['dono','admin','mod','upador'].includes(currentUser?.role); }
+function normalizeRole(role='cliente'){ return ROLE_VALUES.includes(role) ? role : 'cliente'; }
+function isTeamRole(role){ return TEAM_ROLES.includes(normalizeRole(role)); }
+function roleLabel(role){
+  const labels = {dono:'Dono', admin:'Admin', mod:'Mod', upador:'Upador', cliente:'Cliente', bot:'Bot'};
+  const key = role === 'bot' ? 'bot' : normalizeRole(role);
+  return labels[key] || 'Cliente';
+}
+function safeInlineText(value='', max=160){
+  return String(value ?? '').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim().slice(0, max);
+}
+function sanitizeChatText(value=''){
+  return safeInlineText(value, CHAT_MESSAGE_MAX);
+}
+function isLastActiveOwner(userId){
+  return loadStore(LS_KEYS.users, []).filter(u => u.active !== false && u.role === 'dono' && u.id !== userId).length === 0;
+}
+function canSetUserRole(user, nextRole=user?.role){
+  if(!user || !canManageAdmin()) return false;
+  nextRole = normalizeRole(nextRole);
+  if(currentUser?.id === user.id && nextRole !== user.role) return false;
+  if(isOwner()){
+    if(user.role === 'dono' && nextRole !== 'dono' && isLastActiveOwner(user.id)) return false;
+    return true;
+  }
+  if(PRIVILEGED_ROLES.includes(user.role) || PRIVILEGED_ROLES.includes(nextRole)) return false;
+  return ['cliente','upador','mod'].includes(nextRole);
+}
 function generateCustomerCode(){ return uid('COD-'); }
 function ensureCustomerCode(user){
   if(user && !user.customerCode) user.customerCode = generateCustomerCode();
@@ -1721,6 +1786,7 @@ async function loginOwnerViaServer(email, password){
   }
 }
 function rememberSessionUser(user){
+  user.role = normalizeRole(user.role || 'cliente');
   ensureCustomerCode(user);
   const users = loadStore(LS_KEYS.users, []);
   const existing = users.find(u => u.id === user.id || u.email?.toLowerCase() === user.email?.toLowerCase());
@@ -2315,6 +2381,7 @@ function syncCurrentUserFromStore(){
   const byEmail = session.email ? users.find(u => String(u.email || '').toLowerCase() === String(session.email || '').toLowerCase()) : null;
   const stored = byId || byEmail;
   currentUser = stored ? {...session, ...stored, passwordHash:stored.passwordHash || session.passwordHash || ''} : {...session};
+  currentUser.role = normalizeRole(currentUser.role || 'cliente');
   if(currentUser?.active === false){
     clearCurrentSession();
     currentUser = null;
@@ -2749,8 +2816,16 @@ function notifyTipApproved(order){
 // ═══ MODALS ═══
 function openModal(id){ document.getElementById(id).classList.add('active'); }
 function closeModal(id){ document.getElementById(id).classList.remove('active'); }
-function openPage(id){ document.getElementById(id).classList.add('active'); document.body.style.overflow='hidden'; }
-function closePage(id){ document.getElementById(id).classList.remove('active'); document.body.style.overflow=''; }
+function openPage(id){
+  document.getElementById(id).classList.add('active');
+  document.body.style.overflow='hidden';
+  document.body.classList.toggle('admin-open', id === 'admin-page');
+}
+function closePage(id){
+  document.getElementById(id).classList.remove('active');
+  document.body.style.overflow='';
+  if(id === 'admin-page') document.body.classList.remove('admin-open');
+}
 
 function openLogin(){
   if(currentUser){
@@ -3751,7 +3826,7 @@ function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
 function showToast(msg, icon){
   const t = document.createElement('div');
   t.className = 'toast';
-  t.innerHTML = `<span style="font-size:1.1rem">${icon}</span><span style="font-size:.87rem;font-weight:500">${msg}</span>`;
+  t.innerHTML = `<span style="font-size:1.1rem">${escapeHTML(icon || '')}</span><span style="font-size:.87rem;font-weight:500">${escapeHTML(msg || '')}</span>`;
   document.getElementById('toast-container').appendChild(t);
   setTimeout(()=>{ t.style.cssText='transform:translateX(110%);opacity:0;transition:.4s'; }, 2800);
   setTimeout(()=>t.remove(), 3300);
@@ -3828,7 +3903,9 @@ function canSeeChatMessage(message){
 }
 function chatMentionCount(){
   const lastRead = Number(localStorage.getItem(`${LS_KEYS.chatRead}_${currentUser?.id || 'anon'}`) || 0);
-  return loadStore(LS_KEYS.chat, []).filter(m => canSeeChatMessage(m) && mentionMatchesCurrentUser(m) && (m.createdAtMs || 0) > lastRead).length;
+  return loadStore(LS_KEYS.chat, [])
+    .filter(m => canSeeChatMessage(m) && !isOwnChatMessage(m) && !m.deletedAt && ((m.createdAtMs || 0) > lastRead || (m.updatedAtMs || 0) > lastRead))
+    .length;
 }
 function markChatMentionsRead(){
   if(currentUser) localStorage.setItem(`${LS_KEYS.chatRead}_${currentUser.id}`, String(Date.now()));
@@ -3909,7 +3986,7 @@ async function loginEmail(){
     return;
   }
   const users = loadStore(LS_KEYS.users, []);
-  const user = users.find(u => u.email.toLowerCase() === email && u.active);
+  const user = users.find(u => String(u.email || '').toLowerCase() === email && u.active);
   if(user?.needsPasswordReset){
     if(err){ err.textContent = 'Por segurança, esta conta precisa redefinir a senha pelo dono.'; err.style.display='block'; }
     return;
@@ -3941,7 +4018,11 @@ async function signupUser(){
     if(err){ err.textContent = 'Preencha nome, email, WhatsApp e senha.'; err.style.display='block'; }
     return;
   }
-  if(users.some(u => u.email.toLowerCase() === email)){
+  if(password.length < 6){
+    if(err){ err.textContent = 'Use uma senha com pelo menos 6 caracteres.'; err.style.display='block'; }
+    return;
+  }
+  if(users.some(u => String(u.email || '').toLowerCase() === email)){
     if(err){ err.textContent = 'Esse email já está cadastrado.'; err.style.display='block'; }
     return;
   }
@@ -4024,8 +4105,8 @@ function quickAdminNav(section){
   adminNav(section, item);
 }
 function roleBadge(role){
-  const label = role === 'dono' ? 'Dono' : role === 'admin' ? 'Admin' : role === 'mod' ? 'Mod' : role === 'upador' ? 'Upador' : 'Cliente';
-  return `<span class="role-pill ${role==='dono'?'role-owner':'role-uploader'}">${label}</span>`;
+  const safeRole = normalizeRole(role);
+  return `<span class="role-pill ${safeRole==='dono'?'role-owner':'role-uploader'}">${roleLabel(safeRole)}</span>`;
 }
 function allKnownUsers(){
   const map = new Map();
@@ -4240,25 +4321,26 @@ function renderMyPerformance(){
 function renderUploaders(){
   if(!canManageAdmin()){ document.getElementById('admin-content').innerHTML = ''; return; }
   const users = loadStore(LS_KEYS.users, []);
+  const teamUsers = users.filter(u => isTeamRole(u.role));
   const orders = loadStore(LS_KEYS.orders, []);
   document.getElementById('admin-content').innerHTML = `
     <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">⚡ Equipe</h2>
     <div class="admin-card"><div class="admin-grid">
-      <select class="form-control" id="team-existing-user"><option value="">Selecionar login existente</option>${users.map(u=>`<option value="${u.id}">${u.name} - ${u.email}</option>`).join('')}</select>
-      <select class="form-control" id="team-role"><option value="upador">Upador</option><option value="mod">Mod</option><option value="admin">Admin</option>${isOwner()?'<option value="dono">Dono</option>':''}</select>
+      <select class="form-control" id="team-existing-user"><option value="">Selecionar login existente</option>${users.map(u=>`<option value="${escapeHTML(u.id)}">${escapeHTML(u.name || 'Usuario')} - ${escapeHTML(u.email || '-')}</option>`).join('')}</select>
+      <select class="form-control" id="team-role">${adminRoleOptions('upador')}</select>
       <button class="btn btn-primary" onclick="setExistingUserRole()">Alterar cargo</button>
     </div></div>
     <div class="admin-card">
       <div style="display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap">
-        <div><strong>Cadastrar novo upador/admin</strong><div style="color:var(--text-muted);font-size:.82rem;margin-top:.25rem">Abre um modal com login, senha e chave Pix do upador.</div></div>
+        <div><strong>Cadastrar novo upador/admin</strong><div style="color:var(--text-muted);font-size:.82rem;margin-top:.25rem">Cargos seguem permissao real: upador executa tarefas, mod modera, admin gerencia e dono controla tudo.</div></div>
         <button class="btn btn-primary" onclick="openTeamUserModal()">Novo login da equipe</button>
       </div>
     </div>
-    <div class="admin-grid">${users.map(u=>{
+    <div class="admin-grid">${teamUsers.map(u=>{
       const mine = orders.filter(o=>o.uploaderId===u.id);
-      const owners = [...new Set(mine.map(o=>o.owner || o.client))].join(', ') || 'Nenhum';
-      return `<div class="admin-card"><div style="display:flex;justify-content:space-between;gap:1rem"><strong>${u.name}</strong>${roleBadge(u.role)}</div><div style="color:var(--text-muted);font-size:.82rem;margin:.5rem 0">${u.email}</div><div>${mine.length} pedidos realizados/pegos</div><div style="color:var(--text-muted);font-size:.78rem;margin-top:.35rem">Donos/clientes: ${owners}</div><div style="color:#99f6e4;font-size:.76rem;margin-top:.45rem">Pix: ${escapeHTML(u.pixKey || 'nao cadastrado')}</div></div>`;
-    }).join('')}</div>`;
+      const owners = [...new Set(mine.map(o=>o.owner || o.client).filter(Boolean))].join(', ') || 'Nenhum';
+      return `<div class="admin-card"><div style="display:flex;justify-content:space-between;gap:1rem"><strong>${escapeHTML(u.name || 'Usuario')}</strong>${roleBadge(u.role)}</div><div style="color:var(--text-muted);font-size:.82rem;margin:.5rem 0">${escapeHTML(u.email || '-')}</div><div>${mine.length} pedidos realizados/pegos</div><div style="color:var(--text-muted);font-size:.78rem;margin-top:.35rem">Donos/clientes: ${escapeHTML(owners)}</div><div style="color:#99f6e4;font-size:.76rem;margin-top:.45rem">Pix: ${escapeHTML(u.pixKey || 'nao cadastrado')}</div><div class="admin-actions" style="margin-top:.7rem"><button class="btn btn-outline mini-btn" onclick="quickAdminNav('chat');setTimeout(()=>openChatProfile('${escapeJS(u.id)}'),0)">Ver perfil</button>${isOwner() && u.id !== currentUser?.id ? `<button class="btn btn-outline mini-btn" onclick="ownerRemoveUserRole('${escapeJS(u.id)}')">Remover cargo</button>` : ''}</div></div>`;
+    }).join('') || '<div class="locked-note">Nenhum perfil de equipe cadastrado.</div>'}</div>`;
 }
 function createUploader(){
   createTeamUser();
@@ -4282,6 +4364,8 @@ async function createTeamUser(){
   const role = document.getElementById('up-role').value;
   const pixKey = document.getElementById('up-pix')?.value.trim() || '';
   if(!name || !email || !password) return showToast('Preencha nome, email e senha.','⚠️');
+  if(password.length < 6) return showToast('Use uma senha com pelo menos 6 caracteres.','🔒');
+  if(PRIVILEGED_ROLES.includes(role) && !isOwner()) return showToast('Apenas dono pode criar admin/dono.','🔒');
   if(users.some(u => String(u.email || '').toLowerCase() === email.toLowerCase())) return showToast('Ja existe login com esse email.','⚠️');
   users.push({id:uid('USR-'),name,email:email.toLowerCase(),phone,passwordHash:await sha256(password),role,active:true,customerCode:generateCustomerCode(),pixKey});
   saveStore(LS_KEYS.users, users); closeModal('team-user-modal'); renderUploaders(); showToast('Login da equipe cadastrado.','✅');
@@ -4293,9 +4377,7 @@ function setExistingUserRole(){
   const users = loadStore(LS_KEYS.users, []);
   const user = users.find(u=>u.id===id);
   if(!user) return showToast('Selecione um login.','⚠️');
-  if(role==='dono' && !isOwner()) return showToast('Apenas dono pode criar outro dono.','🔒');
-  user.role = role;
-  saveStore(LS_KEYS.users, users); renderUploaders(); updateAdminMenu(); showToast('Cargo atualizado.','✅');
+  if(setUserRoleSecure(user.id, role)) renderUploaders();
 }
 function ensureTeamTaskNotices(){
   if(applyingTaskNotices) return;
@@ -4353,11 +4435,21 @@ function renderChatTaskAction(taskId){
 function normalizeMention(value=''){
   return String(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/^@/,'').replace(/[^\w.-]+/g,'');
 }
+function chatUserHandle(user){
+  return normalizeMention(user?.name || user?.email || user?.id || 'usuario') || normalizeMention(user?.id || 'usuario');
+}
 function chatMentionTargets(){
-  const users = loadStore(LS_KEYS.users, []).filter(u => ['dono','admin','mod','upador'].includes(u.role));
-  const people = users.map(u => ({token:u.id, label:u.name, aliases:[u.id, normalizeMention(u.name), normalizeMention(u.email || '')]}));
+  const users = loadStore(LS_KEYS.users, []).filter(u => isTeamRole(u.role) && u.active !== false);
+  const people = users.map(u => {
+    const handle = chatUserHandle(u);
+    return {token:u.id, userId:u.id, label:'@'+handle, displayName:u.name, aliases:[u.id, handle, normalizeMention(u.email || '')].filter(Boolean)};
+  });
   const roles = ['todos','equipe','dono','admin','mod','upador'].map(role => ({token:role, label:'@'+role, aliases:[role]}));
   return [...roles, ...people];
+}
+function chatMentionTargetFor(value=''){
+  const tag = normalizeMention(value);
+  return chatMentionTargets().find(target => target.aliases.includes(tag));
 }
 function parseMentions(text=''){
   const tags = [...String(text).matchAll(/@([\p{L}\p{N}_.-]+)/gu)].map(m => normalizeMention(m[1]));
@@ -4367,7 +4459,152 @@ function parseMentions(text=''){
   return [...found];
 }
 function renderMentionText(text=''){
-  return escapeHTML(text).replace(/@([\p{L}\p{N}_.-]+)/gu, '<span class="chat-mention">@$1</span>');
+  const source = String(text || '');
+  let html = '';
+  let last = 0;
+  for(const match of source.matchAll(/@([\p{L}\p{N}_.-]+)/gu)){
+    html += escapeHTML(source.slice(last, match.index));
+    const raw = match[1] || '';
+    const target = chatMentionTargetFor(raw);
+    if(target?.userId){
+      html += `<button class="chat-mention chat-mention-btn" type="button" onclick="openChatProfile('${escapeJS(target.userId)}')">@${escapeHTML(raw)}</button>`;
+    } else {
+      html += `<span class="chat-mention">@${escapeHTML(raw)}</span>`;
+    }
+    last = match.index + match[0].length;
+  }
+  html += escapeHTML(source.slice(last));
+  return html;
+}
+function safeImageSrc(value, fallback=SITE_IMAGES.orderNotification){
+  const raw = String(value || '').trim();
+  if(!raw) return fallback;
+  if(raw.startsWith('/') || /^https:\/\/[^\s"'<>]+$/i.test(raw) || /^data:image\/(?:png|jpe?g|webp|gif);base64,[a-z0-9+/=]+$/i.test(raw)) return raw;
+  return fallback;
+}
+function chatUserById(userId){
+  return loadStore(LS_KEYS.users, []).find(u => u.id === userId) || null;
+}
+function chatMessageAuthorUser(message){
+  if(message?.authorId) return chatUserById(message.authorId);
+  const name = normalizeMention(message?.author || '');
+  if(!name) return null;
+  return loadStore(LS_KEYS.users, []).find(u => normalizeMention(u.name) === name && (!message.role || u.role === message.role)) || null;
+}
+function isOwnChatMessage(message){
+  if(!currentUser || !message) return false;
+  return (message.authorId && message.authorId === currentUser.id) ||
+    (!message.authorId && message.author === currentUser.name && message.role === currentUser.role);
+}
+function canDeleteChatMessage(message){
+  if(!currentUser || !message || message.deletedAt) return false;
+  if(message.privateTo === currentUser.id) return true;
+  if(isOwnChatMessage(message)) return true;
+  if(isOwner()) return true;
+  if(currentUser.role === 'admin') return !['dono','admin'].includes(message.role);
+  if(currentUser.role === 'mod') return ['upador','bot'].includes(message.role) && message.author !== 'Sistema';
+  return false;
+}
+function chatMessageActions(message){
+  const authorUser = chatMessageAuthorUser(message);
+  const viewProfile = authorUser ? `<button class="chat-message-action" type="button" onclick="openChatProfile('${escapeJS(authorUser.id)}')">ver perfil</button>` : '';
+  const del = canDeleteChatMessage(message) ? `<button class="chat-message-action" type="button" onclick="deleteChatMessage('${escapeJS(message.id)}')">apagar mensagem</button>` : '';
+  return viewProfile || del ? `<div class="chat-message-actions">${viewProfile}${del}</div>` : '';
+}
+function chatInitials(user){
+  const words = safeInlineText(user?.name || user?.email || 'ZS', 40).split(/\s+/).filter(Boolean);
+  return escapeHTML((words[0]?.[0] || 'Z') + (words[1]?.[0] || words[0]?.[1] || 'S')).toUpperCase();
+}
+function roleCapabilityText(role){
+  const map = {
+    dono:'controle total: cargos, mensagens, financeiro, produtos e logins.',
+    admin:'administra equipe, pedidos, produtos, pagamentos e suporte.',
+    mod:'modera pedidos, agenda, disponibilidade e chat da equipe.',
+    upador:'pega tarefas, finaliza servicos, cadastra Pix e conversa no chat.',
+    cliente:'perfil de cliente, sem acesso ao chat interno.'
+  };
+  return map[normalizeRole(role)] || map.cliente;
+}
+function renderChatProfilePanel(user){
+  if(!user){
+    return '<div class="chat-profile-empty">Clique no nome de alguem no chat ou em uma mencao para abrir o perfil, mencionar rapido e ver as permissoes do cargo.</div>';
+  }
+  const stats = getUploaderStats(user.id);
+  const handle = '@' + chatUserHandle(user);
+  const roleOptions = ROLE_VALUES
+    .filter(role => isOwner() || role === user.role || !PRIVILEGED_ROLES.includes(role))
+    .map(role => `<option value="${role}" ${normalizeRole(user.role)===role?'selected':''}>${roleLabel(role)}</option>`)
+    .join('');
+  const ownerControls = isOwner() && user.id !== currentUser?.id ? `
+    <div class="chat-profile-actions">
+      <select class="form-control chat-role-select" id="chat-profile-role-${escapeHTML(user.id)}">${roleOptions}</select>
+      <button class="btn btn-outline mini-btn" onclick="saveChatProfileRole('${escapeJS(user.id)}')">Salvar cargo</button>
+      ${isTeamRole(user.role) ? `<button class="btn btn-outline mini-btn" onclick="ownerRemoveUserRole('${escapeJS(user.id)}')">Remover cargo</button>` : ''}
+    </div>` : '';
+  return `<div class="chat-profile-card">
+    <div class="chat-profile-head">
+      <div class="chat-avatar">${chatInitials(user)}</div>
+      <div>
+        <div class="chat-profile-name">${escapeHTML(user.name || 'Usuario')}</div>
+        <div class="chat-profile-meta">${escapeHTML(user.email || '-')}<br/>${roleBadge(user.role)}</div>
+      </div>
+    </div>
+    <div class="chat-profile-meta">${escapeHTML(roleCapabilityText(user.role))}</div>
+    <div class="chat-profile-stats">
+      <div class="chat-profile-stat"><strong>${stats.taken}</strong><span>tarefas</span></div>
+      <div class="chat-profile-stat"><strong>${stats.done}</strong><span>finalizadas</span></div>
+      <div class="chat-profile-stat"><strong>${stats.trophies.toLocaleString('pt-BR')}</strong><span>trofeus</span></div>
+    </div>
+    <div class="chat-profile-actions">
+      <button class="btn btn-primary mini-btn" onclick="insertChatMention('${escapeJS(user.id)}')">Mencionar ${escapeHTML(handle)}</button>
+      ${user.pixKey ? '<span class="admin-user-state active">Pix cadastrado</span>' : '<span class="admin-user-state paused">Sem Pix</span>'}
+    </div>
+    ${ownerControls}
+  </div>`;
+}
+function openChatProfile(userId){
+  const panel = document.getElementById('chat-profile-panel');
+  if(panel) panel.innerHTML = renderChatProfilePanel(chatUserById(userId));
+}
+function insertChatMention(userId){
+  const user = chatUserById(userId);
+  const input = document.getElementById('chat-input');
+  if(!user || !input) return;
+  const mention = '@' + chatUserHandle(user);
+  const prefix = input.value.trim() ? input.value.trimEnd() + ' ' : '';
+  input.value = prefix + mention + ' ';
+  input.focus();
+}
+function setUserRoleSecure(userId, nextRole){
+  const users = loadStore(LS_KEYS.users, []);
+  const user = users.find(u => u.id === userId);
+  nextRole = normalizeRole(nextRole);
+  if(!canSetUserRole(user, nextRole)) return showToast('Voce nao pode alterar este cargo.','🔒');
+  user.role = nextRole;
+  ensureCustomerCode(user);
+  saveStore(LS_KEYS.users, users);
+  if(currentUser?.id === user.id){
+    currentUser = {...currentUser, ...user};
+    saveCurrentSession(currentUser);
+  }
+  updateAdminMenu();
+  updateAuthUI();
+  if(currentAdminSection === 'chat') renderChat(user.id);
+  else refreshAdminSection({force:true});
+  showToast('Cargo atualizado com seguranca.','✅');
+  return true;
+}
+function saveChatProfileRole(userId){
+  const role = document.getElementById(`chat-profile-role-${userId}`)?.value || 'cliente';
+  setUserRoleSecure(userId, role);
+}
+function ownerRemoveUserRole(userId){
+  if(!isOwner()) return showToast('Apenas dono pode remover cargo.','🔒');
+  const user = chatUserById(userId);
+  if(!user || user.id === currentUser?.id) return showToast('Nao e possivel remover este cargo.','⚠️');
+  if(user.role === 'dono' && isLastActiveOwner(user.id)) return showToast('Mantenha pelo menos um dono ativo.','🔒');
+  if(!confirm(`Remover o cargo de ${user.name || 'usuario'} e deixar como cliente?`)) return;
+  setUserRoleSecure(userId, 'cliente');
 }
 function renderPixCommandCard(message){
   if(message.status === 'success'){
@@ -4394,13 +4631,13 @@ function renderPixCommandCard(message){
   </div>`;
 }
 function renderDeleteBotMessageLink(message){
-  return `<span class="chat-delete-link" onclick="deleteChatMessage('${escapeJS(message.id)}')">apagar mensagem</span>`;
+  return canDeleteChatMessage(message) ? `<button class="chat-message-action" type="button" onclick="deleteChatMessage('${escapeJS(message.id)}')">apagar mensagem</button>` : '';
 }
 function renderBotInfoCard(message){
   const lines = Array.isArray(message.lines) ? message.lines : [];
   return `<div class="chat-bot-card">
     <div class="chat-pix-grid">
-      <div class="chat-bot-pix-icon"><img src="${message.icon || SITE_IMAGES.orderNotification}" alt="Bot"/></div>
+      <div class="chat-bot-pix-icon"><img src="${escapeHTML(safeImageSrc(message.icon))}" alt="Bot"/></div>
       <div>
         <strong>${escapeHTML(message.title || 'Bot ZS')}</strong>
         ${lines.length ? `<div class="chat-bot-list">${lines.map(line => `<div class="chat-bot-line">${renderMentionText(line)}</div>`).join('')}</div>` : ''}
@@ -4410,48 +4647,68 @@ function renderBotInfoCard(message){
   </div>`;
 }
 function renderChatMessage(message){
-  const mine = message.author === currentUser?.name ? 'mine' : '';
+  const mine = isOwnChatMessage(message) ? 'mine' : '';
   const privateClass = message.privateTo ? 'private' : '';
-  return `<div class="chat-message ${mine} ${privateClass}">
-    <div class="chat-meta">${escapeHTML(message.author || 'Sistema')} · ${escapeHTML(message.createdAt || '')}</div>
-    <div>${renderMentionText(message.text || '')}</div>
-    ${message.kind === 'pix_command' ? renderPixCommandCard(message) : ''}
-    ${message.kind === 'bot_info' ? renderBotInfoCard(message) : ''}
-    ${message.taskId ? renderChatTaskAction(message.taskId) : ''}
+  const deletedClass = message.deletedAt ? 'deleted' : '';
+  const systemClass = ['Sistema','Bot ZS'].includes(message.author) ? 'system' : '';
+  const authorUser = chatMessageAuthorUser(message);
+  const author = authorUser
+    ? `<button class="chat-author-btn" type="button" onclick="openChatProfile('${escapeJS(authorUser.id)}')">${escapeHTML(message.author || authorUser.name || 'Equipe')}</button>`
+    : `<span>${escapeHTML(message.author || 'Sistema')}</span>`;
+  const text = message.deletedAt ? `Mensagem apagada por ${message.deletedBy || 'moderacao'}.` : (message.text || '');
+  return `<div class="chat-message ${mine} ${privateClass} ${deletedClass} ${systemClass}">
+    <div class="chat-meta">${author}<span>·</span><span>${escapeHTML(roleLabel(message.role || 'cliente'))}</span><span>·</span><span>${escapeHTML(message.createdAt || '')}</span></div>
+    <div>${renderMentionText(text)}</div>
+    ${!message.deletedAt && message.kind === 'pix_command' ? renderPixCommandCard(message) : ''}
+    ${!message.deletedAt && message.kind === 'bot_info' ? renderBotInfoCard(message) : ''}
+    ${!message.deletedAt && message.taskId ? renderChatTaskAction(message.taskId) : ''}
+    ${chatMessageActions(message)}
   </div>`;
 }
-function renderChat(){
+function renderChat(selectedUserId=''){
   if(!canUseTeamChat()){ document.getElementById('admin-content').innerHTML = ''; return; }
   ensureTeamTaskNotices();
   const messages = loadStore(LS_KEYS.chat, []).filter(canSeeChatMessage);
+  const selectedUser = selectedUserId ? chatUserById(selectedUserId) : null;
   document.getElementById('admin-content').innerHTML = `
     <h2 style="font-family:'Orbitron',sans-serif;margin-bottom:1rem">💬 Chat Upador</h2>
     <div class="admin-card">
-      ${isOwner() ? '<div style="display:flex;justify-content:flex-end;margin-bottom:.75rem"><button class="btn btn-outline mini-btn" onclick="clearChat()">Limpar chat</button></div>' : ''}
-      <div class="chat-box" id="chat-box">${messages.map(renderChatMessage).join('')}</div>
-      <div style="font-size:.72rem;color:var(--text-muted);margin-top:.75rem">Use @todos, @upador, @admin, @mod, @dono ou @nome da pessoa. Comandos: !ajuda, !saldo, !extrato, !tarefas, !meus servicos, !cadastrar pix.</div>
-      <div style="display:flex;gap:.7rem;margin-top:.55rem"><input class="form-control" id="chat-input" placeholder="Mensagem para donos e upadores" list="chat-mentions" onkeydown="if(event.key==='Enter') sendChat()"/><datalist id="chat-mentions">${chatMentionTargets().map(t=>`<option value="@${escapeHTML(t.label.replace(/^@/,''))}"></option>`).join('')}</datalist><button class="btn btn-primary" onclick="sendChat()">Enviar</button></div>
+      <div class="chat-toolbar">
+        <div class="chat-secure-note">Chat interno da equipe. Mensagens sao escapadas, limitadas e cada acao respeita cargo/permissao.</div>
+        ${isOwner() ? '<button class="btn btn-outline mini-btn" onclick="clearChat()">Limpar chat</button>' : ''}
+      </div>
+      <div class="chat-shell">
+        <div>
+          <div class="chat-box" id="chat-box">${messages.map(renderChatMessage).join('')}</div>
+          <div style="font-size:.72rem;color:var(--text-muted);margin-top:.75rem">Use @todos, @upador, @admin, @mod, @dono ou o @handle do perfil. Comandos: !ajuda, !saldo, !extrato, !tarefas, !meus servicos, !cadastrar pix.</div>
+          <div class="chat-composer"><input class="form-control" id="chat-input" maxlength="${CHAT_MESSAGE_MAX}" placeholder="Mensagem para donos e upadores" list="chat-mentions" onkeydown="if(event.key==='Enter') sendChat()"/><datalist id="chat-mentions">${chatMentionTargets().map(t=>`<option value="${escapeHTML(t.label)}"></option>`).join('')}</datalist><button class="btn btn-primary" onclick="sendChat()">Enviar</button></div>
+        </div>
+        <div class="chat-profile-panel" id="chat-profile-panel">${renderChatProfilePanel(selectedUser)}</div>
+      </div>
     </div>`;
   const box = document.getElementById('chat-box'); if(box) box.scrollTop = box.scrollHeight;
   markChatMentionsRead();
 }
 function sendChat(){
+  if(!canUseTeamChat()) return showToast('Chat restrito para a equipe.','🔒');
   const input = document.getElementById('chat-input');
-  const text = input.value.trim();
+  const text = sanitizeChatText(input?.value || '');
   if(!text) return;
   if(handleChatCommand(text)){
     input.value = '';
     return;
   }
   const messages = loadStore(LS_KEYS.chat, []);
-  messages.push({id:uid('MSG-'),author:currentUser?.name || 'Equipe',role:currentUser?.role || 'dono',text,mentions:parseMentions(text),createdAt:todayLabel(),createdAtMs:Date.now()});
-  saveStore(LS_KEYS.chat, messages); renderChat();
+  messages.push({id:uid('MSG-'),authorId:currentUser?.id || '',author:currentUser?.name || 'Equipe',role:normalizeRole(currentUser?.role || 'dono'),text,mentions:parseMentions(text),createdAt:todayLabel(),createdAtMs:Date.now()});
+  saveStore(LS_KEYS.chat, messages.slice(-CHAT_HISTORY_LIMIT));
+  renderChat();
 }
 function sendBotInfoMessage({title, text='', lines=[], icon=SITE_IMAGES.orderNotification}){
   if(!currentUser?.id) return;
   const messages = loadStore(LS_KEYS.chat, []);
   messages.push({
     id:uid('BOT-'),
+    authorId:'BOT-ZS',
     author:'Bot ZS',
     role:'bot',
     kind:'bot_info',
@@ -4464,7 +4721,7 @@ function sendBotInfoMessage({title, text='', lines=[], icon=SITE_IMAGES.orderNot
     createdAt:todayLabel(),
     createdAtMs:Date.now()
   });
-  saveStore(LS_KEYS.chat, messages.slice(-240));
+  saveStore(LS_KEYS.chat, messages.slice(-CHAT_HISTORY_LIMIT));
   renderChat();
 }
 function commandLine(command, description){
@@ -4638,6 +4895,7 @@ function sendPixCommandBotMessage(){
   const messages = loadStore(LS_KEYS.chat, []);
   messages.push({
     id:uid('BOT-'),
+    authorId:'BOT-ZS',
     author:'Bot ZS',
     role:'bot',
     kind:'pix_command',
@@ -4648,21 +4906,25 @@ function sendPixCommandBotMessage(){
     createdAt:todayLabel(),
     createdAtMs:Date.now()
   });
-  saveStore(LS_KEYS.chat, messages.slice(-220));
+  saveStore(LS_KEYS.chat, messages.slice(-CHAT_HISTORY_LIMIT));
   renderChat();
 }
 function updateChatMessage(messageId, updater){
   const messages = loadStore(LS_KEYS.chat, []);
-  const msg = messages.find(m => m.id === messageId && (!m.privateTo || m.privateTo === currentUser?.id || isOwner()));
+  const msg = messages.find(m => m.id === messageId && (m.privateTo === currentUser?.id || isOwnChatMessage(m) || isOwner()));
   if(!msg) return null;
   updater(msg);
-  saveStore(LS_KEYS.chat, messages.slice(-220));
+  saveStore(LS_KEYS.chat, messages.slice(-CHAT_HISTORY_LIMIT));
   return msg;
 }
 function submitChatPixKey(messageId){
   const input = document.getElementById(`chat-pix-${messageId}`);
   const pixKey = input?.value.trim() || '';
   if(!pixKey) return showToast('Digite uma chave Pix.','⚠️');
+  const command = loadStore(LS_KEYS.chat, []).find(m => m.id === messageId);
+  if(!command || command.kind !== 'pix_command' || command.privateTo !== currentUser?.id || command.deletedAt){
+    return showToast('Comando Pix invalido ou expirado.','🔒');
+  }
   const users = loadStore(LS_KEYS.users, []);
   const user = users.find(u => u.id === currentUser?.id);
   if(!user) return showToast('Login nao encontrado.','⚠️');
@@ -4691,8 +4953,18 @@ function cancelChatPixCommand(messageId){
 }
 function deleteChatMessage(messageId){
   const messages = loadStore(LS_KEYS.chat, []);
-  const next = messages.filter(m => !(m.id === messageId && (m.privateTo === currentUser?.id || isOwner())));
-  saveStore(LS_KEYS.chat, next);
+  const msg = messages.find(m => m.id === messageId);
+  if(!msg) return;
+  if(!canDeleteChatMessage(msg)) return showToast('Voce nao pode apagar esta mensagem.','🔒');
+  msg.deletedAt = todayLabel();
+  msg.deletedAtMs = Date.now();
+  msg.deletedBy = currentUser?.name || 'moderacao';
+  msg.text = 'Mensagem apagada.';
+  msg.kind = 'deleted';
+  delete msg.lines;
+  delete msg.taskId;
+  delete msg.status;
+  saveStore(LS_KEYS.chat, messages.slice(-CHAT_HISTORY_LIMIT));
   renderChat();
 }
 function clearChat(){
@@ -5464,8 +5736,8 @@ function adminRoleFilterOptions(selected=''){
   return roles.map(([value,label]) => `<option value="${value}" ${selected===value?'selected':''}>${label}</option>`).join('');
 }
 function adminRoleOptions(current='cliente'){
-  const roles = ['cliente','upador','mod','admin'];
-  if(isOwner() || current === 'dono') roles.push('dono');
+  const roles = isOwner() ? ['cliente','upador','mod','admin','dono'] : ['cliente','upador','mod'];
+  if(current && !roles.includes(current)) roles.push(current);
   return roles.map(role => `<option value="${role}" ${current===role?'selected':''}>${role === 'dono' ? 'Dono' : role === 'admin' ? 'Admin' : role === 'mod' ? 'Mod' : role === 'upador' ? 'Upador' : 'Cliente'}</option>`).join('');
 }
 function filterAdminUsers(users, prefix){
@@ -5494,7 +5766,10 @@ function adminUserRow(u){
       <td><button class="btn btn-primary mini-btn" onclick="adminCreateLoginFromOrderUser('${sid}')">Criar login</button></td>
     </tr>`;
   }
-  const lockedOwner = u.role === 'dono' && !isOwner();
+  const lockedOwner = !isOwner() && PRIVILEGED_ROLES.includes(u.role);
+  const removeRoleButton = isOwner() && u.id !== currentUser?.id && isTeamRole(u.role)
+    ? `<button class="btn btn-outline mini-btn" onclick="ownerRemoveUserRole('${sid}')">Remover cargo</button>`
+    : '';
   return `<tr>
     <td><input class="form-control" id="user-name-${id}" value="${escapeHTML(u.name || '')}" ${lockedOwner?'disabled':''}/></td>
     <td><input class="form-control" id="user-email-${id}" value="${escapeHTML(u.email || '')}" ${lockedOwner?'disabled':''}/><input class="form-control" style="margin-top:.4rem" id="user-phone-${id}" value="${escapeHTML(u.phone || '')}" placeholder="WhatsApp" ${lockedOwner?'disabled':''}/><div class="pix-input-wrap" style="grid-template-columns:32px 1fr;margin-top:.4rem"><div class="pix-input-icon" style="width:32px;height:32px;border-radius:.55rem"><img src="${SITE_IMAGES.pix}" alt="Pix" style="width:20px;height:20px"/></div><input class="form-control" id="user-pix-${id}" value="${escapeHTML(u.pixKey || '')}" placeholder="Chave Pix" ${lockedOwner?'disabled':''}/></div></td>
@@ -5502,14 +5777,13 @@ function adminUserRow(u){
     <td><span class="admin-user-state">Login</span></td>
     <td><select class="form-control" id="role-user-${id}" ${lockedOwner?'disabled':''}>${adminRoleOptions(u.role || 'cliente')}</select></td>
     <td><select class="form-control" id="active-user-${id}" ${lockedOwner?'disabled':''}><option value="true" ${u.active!==false?'selected':''}>Ativo</option><option value="false" ${u.active===false?'selected':''}>Pausado</option></select></td>
-    <td><div class="admin-actions"><button class="btn btn-outline mini-btn" onclick="adminSaveUser('${sid}')" ${lockedOwner?'disabled':''}>Salvar</button><button class="btn btn-outline mini-btn" onclick="adminRemoveUser('${sid}')" ${lockedOwner?'disabled':''}>Pausar</button></div></td>
+    <td><div class="admin-actions"><button class="btn btn-outline mini-btn" onclick="adminSaveUser('${sid}')" ${lockedOwner?'disabled':''}>Salvar</button><button class="btn btn-outline mini-btn" onclick="adminRemoveUser('${sid}')" ${lockedOwner?'disabled':''}>Pausar</button>${removeRoleButton}</div></td>
   </tr>`;
 }
 function canEditStoredUser(user, nextRole=user?.role){
-  if(!user) return false;
-  if(isOwner()) return true;
-  if(user.role === 'dono' || nextRole === 'dono') return false;
-  return canManageAdmin();
+  if(!user || !canManageAdmin()) return false;
+  if(currentUser?.id === user.id && normalizeRole(nextRole) !== normalizeRole(user.role)) return false;
+  return canSetUserRole(user, nextRole);
 }
 function changeUserRole(id){
   adminSaveUser(id);
@@ -5548,6 +5822,7 @@ async function adminCreateLoginFromOrderUser(id){
   if(users.some(u => String(u.email || '').toLowerCase() === String(source.email || '').toLowerCase())) return showToast('Esse email já possui login.','⚠️');
   const password = prompt('Digite uma senha inicial para este cliente:');
   if(!password) return;
+  if(password.length < 6) return showToast('Use uma senha com pelo menos 6 caracteres.','🔒');
   users.push({id:uid('USR-'),name:source.name || 'Cliente',email:String(source.email).toLowerCase(),phone:source.phone || '',passwordHash:await sha256(password),role:'cliente',active:true,customerCode:source.customerCode || generateCustomerCode()});
   saveStore(LS_KEYS.users, users);
   renderUsers();
@@ -5558,6 +5833,7 @@ function adminRemoveUser(id){
   const user = users.find(u => u.id === id);
   if(!canEditStoredUser(user)) return showToast('Você não pode pausar este perfil.','🔒');
   if(currentUser?.id === id) return showToast('Você não pode pausar seu próprio login ativo.','⚠️');
+  if(user?.role === 'dono' && isLastActiveOwner(user.id)) return showToast('Mantenha pelo menos um dono ativo.','🔒');
   if(!confirm('Pausar este login? Ele não conseguirá entrar até ser ativado novamente.')) return;
   user.active = false;
   saveStore(LS_KEYS.users, users);
@@ -5623,7 +5899,8 @@ async function adminCreateUser(){
   const role = document.getElementById('login-new-role')?.value || 'cliente';
   const pixKey = document.getElementById('login-new-pix')?.value.trim() || '';
   if(!name || !email || !password) return showToast('Preencha nome, email e senha.','⚠️');
-  if(role === 'dono' && !isOwner()) return showToast('Apenas dono pode criar outro dono.','🔒');
+  if(password.length < 6) return showToast('Use uma senha com pelo menos 6 caracteres.','🔒');
+  if(PRIVILEGED_ROLES.includes(role) && !isOwner()) return showToast('Apenas dono pode criar admin/dono.','🔒');
   if(users.some(u => String(u.email || '').toLowerCase() === email)) return showToast('Já existe login com esse email.','⚠️');
   users.push({id:uid('USR-'),name,email,phone,passwordHash:await sha256(password),role,active:true,customerCode:generateCustomerCode(),pixKey});
   saveStore(LS_KEYS.users, users);
@@ -5634,7 +5911,7 @@ async function adminResetUserPassword(id){
   const user = users.find(u => u.id === id);
   if(!canEditStoredUser(user)) return showToast('Você não pode redefinir esta senha.','🔒');
   const password = document.getElementById(`reset-pass-${id}`)?.value || '';
-  if(password.length < 4) return showToast('Use uma senha com pelo menos 4 caracteres.','⚠️');
+  if(password.length < 6) return showToast('Use uma senha com pelo menos 6 caracteres.','⚠️');
   user.passwordHash = await sha256(password);
   delete user.needsPasswordReset;
   saveStore(LS_KEYS.users, users);
@@ -5645,6 +5922,7 @@ function adminToggleUserActive(id){
   const user = users.find(u => u.id === id);
   if(!canEditStoredUser(user)) return showToast('Você não pode alterar este login.','🔒');
   if(currentUser?.id === id && user.active !== false) return showToast('Você não pode pausar seu próprio login ativo.','⚠️');
+  if(user?.role === 'dono' && user.active !== false && isLastActiveOwner(user.id)) return showToast('Mantenha pelo menos um dono ativo.','🔒');
   user.active = user.active === false;
   saveStore(LS_KEYS.users, users);
   renderLogins(); updateAuthUI(); showToast(user.active ? 'Login ativado.' : 'Login pausado.','✅');
